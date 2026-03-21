@@ -2,6 +2,7 @@
 import { useCartStore } from '@/store/useCartStore';
 import { toast } from '@/components/ui/Toast';
 import Link from 'next/link';
+import CartItemCard from '@/components/ui/CartItemCard';
 
 interface CartDrawerProps {
   open: boolean;
@@ -51,37 +52,16 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
             </div>
           ) : (
             items.map((item) => (
-              <div key={item.id} className="flex gap-4 py-4 border-b border-gray-50">
-                <div className="w-16 h-16 rounded-xl bg-violet-50 flex items-center justify-center text-3xl flex-shrink-0">
-                  🎈
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-bold text-gray-900 text-sm truncate">{item.name}</p>
-                  {item.customText && (
-                    <p className="text-xs text-gray-400 mt-0.5">"{item.customText}"</p>
-                  )}
-                  <p className="text-violet-600 font-bold text-sm mt-1">AED {(item.price * item.quantity).toFixed(0)}</p>
-                  
-                  {/* Quantity */}
-                  <div className="flex items-center gap-2 mt-2">
-                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="w-7 h-7 rounded-lg bg-gray-100 hover:bg-violet-100 flex items-center justify-center text-gray-700 font-bold transition-colors">
-                      −
-                    </button>
-                    <span className="text-sm font-bold text-gray-800 w-6 text-center">{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="w-7 h-7 rounded-lg bg-gray-100 hover:bg-violet-100 flex items-center justify-center text-gray-700 font-bold transition-colors">
-                      +
-                    </button>
-                  </div>
-                </div>
-                <button onClick={() => handleRemove(item.id, item.name)}
-                  className="p-1.5 text-gray-300 hover:text-red-400 transition-colors flex-shrink-0 self-start">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
-                </button>
-              </div>
+              <CartItemCard
+                key={item.id}
+                name={item.name}
+                price={item.price}
+                quantity={item.quantity}
+                customText={item.customText}
+                variant="drawer"
+                onQuantityChange={(q) => updateQuantity(item.id, q)}
+                onRemove={() => handleRemove(item.id, item.name)}
+              />
             ))
           )}
         </div>

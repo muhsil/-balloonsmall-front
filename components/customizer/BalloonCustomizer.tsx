@@ -5,6 +5,8 @@ import { Stage, Layer, Image as KonvaImage, Text, Circle } from 'react-konva';
 import useImage from 'use-image';
 import { useCartStore } from '@/store/useCartStore';
 import { toast } from '@/components/ui/Toast';
+import ColorPicker from '@/components/ui/ColorPicker';
+import QuantitySelector from '@/components/ui/QuantitySelector';
 
 const COLOR_PALETTE = [
   '#7C3AED', '#EC4899', '#F59E0B', '#10B981', '#3B82F6',
@@ -76,21 +78,7 @@ export default function BalloonCustomizer({ productId, price, name }: { productI
 
         <div>
           <label className="block text-sm font-bold text-gray-700 mb-2">🎨 Text Color</label>
-          <div className="flex flex-wrap gap-2">
-            {COLOR_PALETTE.map(c => (
-              <button
-                key={c} onClick={() => setCustomColor(c)}
-                className="w-9 h-9 rounded-full border-2 transition-all hover:scale-110"
-                style={{
-                  backgroundColor: c,
-                  borderColor: customColor === c ? '#7C3AED' : '#e5e7eb',
-                  boxShadow: customColor === c ? `0 0 0 3px #ede9fe` : 'none'
-                }}
-              />
-            ))}
-            <input type="color" value={customColor} onChange={e => setCustomColor(e.target.value)}
-              className="w-9 h-9 rounded-full cursor-pointer border-2 border-gray-200 p-0.5" title="Custom color" />
-          </div>
+          <ColorPicker colors={COLOR_PALETTE} selected={customColor} onChange={setCustomColor} />
         </div>
 
         <div>
@@ -108,13 +96,7 @@ export default function BalloonCustomizer({ productId, price, name }: { productI
         {/* Quantity */}
         <div>
           <label className="block text-sm font-bold text-gray-700 mb-2">📦 Quantity</label>
-          <div className="flex items-center gap-3">
-            <button onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="w-10 h-10 rounded-xl bg-gray-100 hover:bg-violet-100 text-gray-700 font-bold text-lg transition-colors">−</button>
-            <span className="text-xl font-extrabold text-gray-900 w-8 text-center">{quantity}</span>
-            <button onClick={() => setQuantity(quantity + 1)}
-              className="w-10 h-10 rounded-xl bg-gray-100 hover:bg-violet-100 text-gray-700 font-bold text-lg transition-colors">+</button>
-          </div>
+          <QuantitySelector value={quantity} onChange={setQuantity} />
         </div>
 
         {/* Total + Add to Cart */}

@@ -6,6 +6,7 @@ import ProductCard from '@/components/ui/ProductCard';
 import FeatureCard from '@/components/ui/FeatureCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import StatBadge from '@/components/ui/StatBadge';
+import GradientBanner from '@/components/ui/GradientBanner';
 
 export const revalidate = 60;
 
@@ -251,29 +252,14 @@ export default async function HomePage() {
       </section>
 
       {/* ═══ CTA BANNER ═══ */}
-      <section className="py-20 max-md:py-12 px-4">
-        <div className="max-w-4xl mx-auto text-center rounded-3xl max-md:rounded-2xl overflow-hidden relative"
-          style={{ background: 'linear-gradient(135deg, #7C3AED 0%, #DB2777 100%)', padding: '60px 40px' }}>
-          <div className="absolute inset-0 opacity-10 max-md:hidden">
-            {['🎈', '🎊', '🎀', '✨', '🎉', '🎈'].map((e, i) => (
-              <span key={i} className="absolute text-5xl" style={{ top: `${[10,60,30,70,20,50][i]}%`, left: `${[5,85,20,65,40,75][i]}%` }}>{e}</span>
-            ))}
-          </div>
-          <div className="relative z-10 max-md:px-2">
-            <h2 className="text-white font-extrabold text-4xl max-md:text-2xl mb-4">Ready to Celebrate? 🎉</h2>
-            <p className="text-white/80 text-lg max-md:text-sm mb-8 max-md:mb-6 max-w-xl mx-auto">Order your custom balloons today and make every moment extraordinary. Same-day delivery available across Dubai!</p>
-            <div className="flex flex-col sm:flex-row gap-4 max-md:gap-3 justify-center">
-              <Link href="/shop" className="bg-white text-violet-700 font-bold py-4 px-8 max-md:py-3 max-md:px-6 rounded-full hover:shadow-xl transition-all hover:-translate-y-1 max-md:text-sm">
-                Shop Now 🛍️
-              </Link>
-              <a href="https://wa.me/971500000000?text=Hello, I want to order balloons!" target="_blank" rel="noopener noreferrer"
-                className="border-2 border-white text-white font-bold py-4 px-8 max-md:py-3 max-md:px-6 rounded-full hover:bg-white/10 transition-all hover:-translate-y-1 max-md:text-sm">
-                WhatsApp Us 💬
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <GradientBanner
+        title="Ready to Celebrate? 🎉"
+        subtitle="Order your custom balloons today and make every moment extraordinary. Same-day delivery available across Dubai!"
+        actions={[
+          { label: 'Shop Now 🛍️', href: '/shop' },
+          { label: 'WhatsApp Us 💬', href: 'https://wa.me/971500000000?text=Hello, I want to order balloons!', variant: 'outline', external: true },
+        ]}
+      />
     </div>
   );
 }

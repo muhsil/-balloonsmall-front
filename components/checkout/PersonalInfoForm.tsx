@@ -2,6 +2,7 @@
 
 import React from 'react';
 import FormField from '@/components/ui/FormField';
+import SectionCard from '@/components/ui/SectionCard';
 
 export interface CustomerInfo {
   firstName: string;
@@ -22,14 +23,7 @@ export default function PersonalInfoForm({ customer, onChange }: PersonalInfoFor
   };
 
   return (
-    <div className="bg-white p-8 md:p-10 max-md:p-5 rounded-[2rem] max-md:rounded-2xl shadow-sm border border-gray-100 animate-in fade-in duration-500">
-      <div className="flex items-center gap-3 max-md:gap-2 mb-8 max-md:mb-5">
-        <div className="w-10 h-10 max-md:w-8 max-md:h-8 bg-violet-50 text-violet-600 rounded-xl max-md:rounded-lg flex items-center justify-center text-xl max-md:text-base font-bold">
-          👤
-        </div>
-        <h3 className="text-2xl max-md:text-lg font-bold text-gray-900">Personal Information</h3>
-      </div>
-
+    <SectionCard icon="👤" title="Personal Information">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-md:gap-4 mb-6 max-md:mb-4">
         <FormField
           label="First Name"
@@ -64,6 +58,6 @@ export default function PersonalInfoForm({ customer, onChange }: PersonalInfoFor
         onChange={(v) => update('address', v)}
         placeholder="Building/Villa No, Street, Community"
       />
-    </div>
+    </SectionCard>
   );
 }
