@@ -20,26 +20,26 @@ export default function CheckoutSteps({ paymentReady }: CheckoutStepsProps) {
   ];
 
   return (
-    <div className="flex items-center gap-4 max-md:gap-2 mb-4 overflow-x-auto pb-2 no-scrollbar">
+    <div className="flex items-center gap-3 max-md:gap-1.5 overflow-x-auto pb-1 no-scrollbar">
       {steps.map((s) => (
-        <div key={s.n} className="flex items-center gap-2 shrink-0">
+        <div key={s.n} className="flex items-center gap-1.5 shrink-0">
           <div
-            className={`w-8 h-8 max-md:w-7 max-md:h-7 rounded-full flex items-center justify-center text-xs font-bold ${
+            className={`w-7 h-7 max-md:w-6 max-md:h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${
               s.active
-                ? 'bg-violet-600 text-white shadow-lg shadow-violet-200'
-                : 'bg-gray-200 text-gray-500'
+                ? 'bg-[#F26522] text-white'
+                : 'bg-gray-200 text-gray-400'
             }`}
           >
             {s.n}
           </div>
           <span
-            className={`text-sm max-md:text-xs font-bold ${
+            className={`text-xs font-bold ${
               s.active ? 'text-gray-900' : 'text-gray-400'
             }`}
           >
             {s.label}
           </span>
-          {s.n < 3 && <div className="w-8 h-0.5 bg-gray-200 mx-1" />}
+          {s.n < 3 && <div className="w-6 h-0.5 bg-gray-200 mx-0.5" />}
         </div>
       ))}
     </div>

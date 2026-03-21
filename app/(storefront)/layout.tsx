@@ -1,50 +1,83 @@
 import Navbar from '@/components/ui/Navbar';
 import WhatsAppFab from '@/components/ui/WhatsAppFab';
 import MobileBottomNav from '@/components/ui/mobile/MobileBottomNav';
+import Link from 'next/link';
 
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--color-bg)' }}>
+    <div className="min-h-screen flex flex-col bg-[#F5F5F5]">
       <Navbar />
-      <main className="flex-1 max-md:pb-20">
-        {children}
-      </main>
-      <footer className="bg-gray-900 text-gray-400 py-12 max-md:py-8 mt-20 max-md:mt-10 max-md:mb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-md:gap-6">
-            <div className="max-md:text-center">
-              <div className="flex items-center gap-2 mb-4 max-md:mb-2 max-md:justify-center">
-                <span className="text-2xl max-md:text-xl">🎈</span>
-                <span className="font-bold text-white text-lg max-md:text-base">BalloonsMall</span>
+
+      <main className="flex-1 mobile-body-padding">{children}</main>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-100 max-md:hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Brand */}
+            <div>
+              <Link href="/" className="flex items-center gap-2 mb-3">
+                <span className="text-2xl">🎈</span>
+                <span className="font-extrabold text-lg text-[#F26522]">BalloonsMall</span>
+              </Link>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Dubai&apos;s premium balloon delivery service. Making celebrations unforgettable with custom balloon arrangements.
+              </p>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-bold text-gray-900 text-sm mb-3">Quick Links</h4>
+              <div className="flex flex-col gap-2">
+                {[
+                  { label: 'Shop All', href: '/shop' },
+                  { label: 'Birthday', href: '/shop?category=birthday' },
+                  { label: 'Wedding', href: '/shop?category=wedding' },
+                  { label: 'Events', href: '/shop?category=events' },
+                ].map(link => (
+                  <Link key={link.href} href={link.href} className="text-gray-500 text-sm hover:text-[#F26522] transition-colors">
+                    {link.label}
+                  </Link>
+                ))}
               </div>
-              <p className="text-sm max-md:text-xs leading-relaxed max-md:max-w-xs max-md:mx-auto">Dubai&apos;s premier destination for premium customized balloons and event decorations. Same-day delivery available.</p>
             </div>
-            {/* Quick Links - horizontal on mobile */}
-            <div className="max-md:text-center">
-              <h4 className="text-white font-semibold mb-4 max-md:mb-2 max-md:text-sm">Quick Links</h4>
-              <ul className="space-y-2 max-md:space-y-0 text-sm max-md:text-xs max-md:flex max-md:flex-wrap max-md:justify-center max-md:gap-x-4 max-md:gap-y-1">
-                <li><a href="/shop" className="hover:text-violet-400 transition-colors">Shop All</a></li>
-                <li><a href="/shop?category=birthday" className="hover:text-violet-400 transition-colors">Birthday</a></li>
-                <li><a href="/shop?category=wedding" className="hover:text-violet-400 transition-colors">Wedding</a></li>
-                <li><a href="/checkout" className="hover:text-violet-400 transition-colors">Cart</a></li>
-              </ul>
-            </div>
-            {/* Contact - compact on mobile */}
-            <div className="max-md:text-center">
-              <h4 className="text-white font-semibold mb-4 max-md:mb-2 max-md:text-sm">Contact</h4>
-              <ul className="space-y-2 max-md:space-y-1 text-sm max-md:text-xs">
-                <li>📍 Dubai, UAE</li>
-                <li>📞 <a href="tel:+971500000000" className="hover:text-violet-400 transition-colors">+971 50 000 0000</a></li>
-                <li>✉️ <a href="mailto:hello@balloonsmall.com" className="hover:text-violet-400 transition-colors">hello@balloonsmall.com</a></li>
-                <li className="pt-1 max-md:pt-0 text-gray-500 max-md:text-[10px]">10 AM – 8 PM daily</li>
-              </ul>
+
+            {/* Contact */}
+            <div>
+              <h4 className="font-bold text-gray-900 text-sm mb-3">Contact Us</h4>
+              <div className="flex flex-col gap-2 text-gray-500 text-sm">
+                <span>📍 Dubai, UAE</span>
+                <a href="https://wa.me/971585501786" className="hover:text-[#F26522] transition-colors">💬 WhatsApp Support</a>
+                <a href="mailto:muhsilv@gmail.com" className="hover:text-[#F26522] transition-colors">📧 muhsilv@gmail.com</a>
+              </div>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-10 max-md:mt-6 pt-6 max-md:pt-4 text-center text-xs max-md:text-[10px]">
-            © {new Date().getFullYear()} BalloonsMall. All rights reserved. Made with ❤️ in Dubai.
+
+          <div className="border-t border-gray-100 mt-8 pt-6 text-center">
+            <p className="text-gray-400 text-xs">&copy; {new Date().getFullYear()} BalloonsMall. All rights reserved.</p>
           </div>
         </div>
       </footer>
+
+      {/* Mobile Footer - compact */}
+      <footer className="md:hidden bg-white border-t border-gray-100 mb-14 px-4 py-4">
+        <div className="text-center">
+          <Link href="/" className="inline-flex items-center gap-1.5 mb-2">
+            <span className="text-lg">🎈</span>
+            <span className="font-bold text-sm text-[#F26522]">BalloonsMall</span>
+          </Link>
+          <p className="text-gray-400 text-[10px] mb-2">Dubai&apos;s Premium Balloon Delivery</p>
+          <div className="flex items-center justify-center gap-3 text-xs text-gray-500">
+            <Link href="/shop" className="hover:text-[#F26522]">Shop</Link>
+            <span className="text-gray-200">|</span>
+            <a href="https://wa.me/971585501786" className="hover:text-[#F26522]">WhatsApp</a>
+            <span className="text-gray-200">|</span>
+            <a href="mailto:muhsilv@gmail.com" className="hover:text-[#F26522]">Email</a>
+          </div>
+          <p className="text-gray-300 text-[10px] mt-2">&copy; {new Date().getFullYear()} BalloonsMall</p>
+        </div>
+      </footer>
+
       <WhatsAppFab />
       <MobileBottomNav />
     </div>

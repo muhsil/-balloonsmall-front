@@ -11,14 +11,14 @@ interface SectionCardProps {
 
 export default function SectionCard({ icon, title, children, className = '' }: SectionCardProps) {
   return (
-    <div className={`bg-white p-8 md:p-10 max-md:p-5 rounded-[2rem] max-md:rounded-2xl shadow-sm border border-gray-100 animate-in fade-in duration-500 ${className}`}>
-      <div className="flex items-center gap-3 max-md:gap-2 mb-8 max-md:mb-5">
+    <div className={`bg-white p-5 max-md:p-4 rounded-xl border border-gray-100 ${className}`}>
+      <div className="flex items-center gap-2 mb-4 max-md:mb-3">
         {icon && (
-          <div className="w-10 h-10 max-md:w-8 max-md:h-8 bg-violet-50 text-violet-600 rounded-xl max-md:rounded-lg flex items-center justify-center text-xl max-md:text-base font-bold">
+          <div className="w-8 h-8 bg-[#FFF3EC] text-[#F26522] rounded-lg flex items-center justify-center text-base font-bold">
             {icon}
           </div>
         )}
-        <h3 className="text-2xl max-md:text-lg font-bold text-gray-900">{title}</h3>
+        <h3 className="text-base max-md:text-sm font-bold text-gray-900">{title}</h3>
       </div>
       {children}
     </div>

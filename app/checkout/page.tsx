@@ -16,7 +16,6 @@ import PaymentButton from '@/components/checkout/PaymentButton';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import SectionCard from '@/components/ui/SectionCard';
 import PaymentMethodCard from '@/components/ui/PaymentMethodCard';
-import PageHeader from '@/components/ui/PageHeader';
 import PriceDisplay from '@/components/ui/PriceDisplay';
 
 const CHECKOUT_DATA_KEY = 'balloonsmall-checkout';
@@ -71,7 +70,6 @@ function CheckoutContent() {
   const isDeliverySelected = !!(deliveryDate && deliveryTime);
   const isFormValid = customer.firstName && customer.email && customer.address && isDeliverySelected;
 
-  // Handle return from Ziina payment page
   const verifyPayment = useCallback(async (paymentIntentId: string) => {
     setIsVerifying(true);
     try {
@@ -124,7 +122,6 @@ function CheckoutContent() {
     try {
       setIsInitializing(true);
 
-      // 1. Create WooCommerce order
       const resWoo = await fetch('/api/woo-create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -155,14 +152,12 @@ function CheckoutContent() {
         console.warn('WooCommerce order creation failed, continuing with payment...');
       }
 
-      // 2. Save checkout data before redirect
       saveCheckoutData({
         customer,
         deliveryDate: deliveryDate!,
         deliveryTime: deliveryTime!,
       });
 
-      // 3. Create Ziina payment intent
       const origin = window.location.origin;
       const resPayment = await fetch('/api/create-payment-intent', {
         method: 'POST',
@@ -178,7 +173,6 @@ function CheckoutContent() {
       const data = await resPayment.json();
 
       if (data.redirectUrl) {
-        // 4. Redirect to Ziina payment page
         window.location.href = data.redirectUrl;
       } else {
         throw new Error(data.error || 'No redirect URL returned');
@@ -191,7 +185,6 @@ function CheckoutContent() {
     }
   };
 
-  // Show loading while verifying payment after redirect
   if (isVerifying) {
     return <LoadingSpinner title="Verifying Payment" subtitle="Please wait while we confirm your payment..." size="lg" />;
   }
@@ -211,43 +204,42 @@ function CheckoutContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] py-16 max-md:py-4 max-md:pb-36">
-      <div className="section-wrapper max-md:px-4">
-        <PageHeader
-          backHref="/shop"
-          backLabel="Back to Shop"
-          title="Checkout"
-          highlight="Details"
-          rightContent={
-            <div className="flex items-center gap-6 px-6 max-md:px-4 py-3 max-md:py-2 bg-white rounded-2xl shadow-sm border border-gray-100">
-              <div className="text-right max-md:text-left">
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total</p>
-                <PriceDisplay amount={subtotal} size="lg" />
-              </div>
-            </div>
-          }
-        />
+    <div className="min-h-screen bg-[#F5F5F5] py-4 max-md:pb-36">
+      <div className="max-w-5xl mx-auto px-4 max-md:px-3">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <a href="/shop" className="p-1.5 rounded-lg hover:bg-white transition-colors">
+              <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </a>
+            <h1 className="text-lg font-extrabold text-gray-900">Checkout</h1>
+          </div>
+          <div className="bg-white px-3 py-1.5 rounded-lg border border-gray-100">
+            <PriceDisplay amount={subtotal} size="md" />
+          </div>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 max-md:gap-4 items-start">
-          <div className="lg:col-span-12 xl:col-span-8 space-y-8 max-md:space-y-4">
-            <CheckoutSteps paymentReady={false} />
+        <CheckoutSteps paymentReady={false} />
 
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-4 items-start">
+          <div className="lg:col-span-8 space-y-4">
             <PersonalInfoForm customer={customer} onChange={setCustomer} />
 
-            <SectionCard icon="\uD83D\uDCC5" title="Delivery Schedule">
+            <SectionCard icon="📅" title="Delivery Schedule">
               <DeliveryScheduler />
             </SectionCard>
 
-            {/* Payment Method Section - visible payment gateway */}
-            <SectionCard icon="\uD83D\uDCB3" title="Payment Method">
+            <SectionCard icon="💳" title="Payment Method">
               <PaymentMethodCard selected />
-              <div className="mt-4 max-md:mt-3 p-4 max-md:p-3 bg-green-50 rounded-xl max-md:rounded-lg border border-green-100">
+              <div className="mt-3 p-3 bg-[#E8F8F0] rounded-lg border border-[#00B578]/20">
                 <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-[#00B578] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
-                  <p className="text-xs max-md:text-[11px] text-green-700 font-medium">
-                    Your payment is processed securely. You&apos;ll be redirected to Ziina to complete payment.
+                  <p className="text-xs text-[#00B578] font-medium">
+                    Secure payment via Ziina. You&apos;ll be redirected to complete payment.
                   </p>
                 </div>
               </div>
@@ -263,8 +255,8 @@ function CheckoutContent() {
             </div>
           </div>
 
-          {/* Sticky Order Summary Sidebar */}
-          <div className="lg:col-span-12 xl:col-span-4 lg:sticky lg:top-24">
+          {/* Order Summary Sidebar */}
+          <div className="lg:col-span-4 lg:sticky lg:top-20">
             <OrderSummary items={items} subtotal={subtotal} />
             <SupportBox />
           </div>
@@ -275,14 +267,14 @@ function CheckoutContent() {
       <div className="md:hidden mobile-sticky-bottom">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-bold text-gray-400">Total</span>
-          <span className="text-lg font-black gradient-text">AED {subtotal}</span>
+          <span className="text-lg font-extrabold text-[#F26522]">AED {subtotal.toFixed(0)}</span>
         </div>
         <button
           onClick={handleCreateOrder}
           disabled={!isFormValid || isInitializing}
-          className="btn-primary w-full py-4 text-base shadow-lg shadow-violet-200 disabled:grayscale"
+          className="btn-primary w-full py-3.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isInitializing ? 'Preparing Payment...' : 'Pay with Ziina \uD83D\uDCB3'}
+          {isInitializing ? 'Preparing Payment...' : 'Pay with Ziina 💳'}
         </button>
       </div>
     </div>
