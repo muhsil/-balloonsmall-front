@@ -1,5 +1,11 @@
 import Link from 'next/link';
 import { wooApi } from '@/lib/woocommerce';
+import SectionHeader from '@/components/ui/SectionHeader';
+import CategoryCard from '@/components/ui/CategoryCard';
+import ProductCard from '@/components/ui/ProductCard';
+import FeatureCard from '@/components/ui/FeatureCard';
+import TestimonialCard from '@/components/ui/TestimonialCard';
+import StatBadge from '@/components/ui/StatBadge';
 
 export const revalidate = 60;
 
@@ -8,7 +14,6 @@ async function getFeaturedProducts() {
     const { data } = await wooApi.get('/products', {
       params: { per_page: 4, status: 'publish', featured: true }
     });
-    // Fall back to latest products if no featured ones exist
     if (!data || data.length === 0) {
       const { data: latest } = await wooApi.get('/products', {
         params: { per_page: 4, status: 'publish', orderby: 'date', order: 'desc' }
@@ -43,9 +48,15 @@ const FEATURES = [
 ];
 
 const TESTIMONIALS = [
-  { name: 'Sarah Al Maktoum', role: 'Birthday Party', text: 'Absolutely stunning! The balloon arch was the highlight of my daughter&apos;s birthday. 5 stars easily!', avatar: '👩‍🦱' },
+  { name: 'Sarah Al Maktoum', role: 'Birthday Party', text: 'Absolutely stunning! The balloon arch was the highlight of my daughter\'s birthday. 5 stars easily!', avatar: '👩‍🦱' },
   { name: 'Ahmed Hassan', role: 'Wedding Decoration', text: 'BalloonsMall transformed our wedding venue into a fairy-tale. The team was so professional and fast.', avatar: '👨' },
-  { name: 'Priya Nair', role: 'Baby Shower', text: 'I loved how I could customize the balloons with my baby&apos;s name. Delivered on time – perfect!', avatar: '👩‍🦰' },
+  { name: 'Priya Nair', role: 'Baby Shower', text: 'I loved how I could customize the balloons with my baby\'s name. Delivered on time – perfect!', avatar: '👩‍🦰' },
+];
+
+const STATS = [
+  { value: '500+', label: 'Happy Clients' },
+  { value: '1-Day', label: 'Delivery' },
+  { value: '100%', label: 'Custom Made' },
 ];
 
 export default async function HomePage() {
@@ -68,55 +79,54 @@ export default async function HomePage() {
         display: 'flex',
         alignItems: 'center'
       }}>
-        {/* Background bubbles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Background bubbles - hidden on mobile for performance */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none max-md:hidden">
           {['w-72 h-72 -top-16 -left-16', 'w-48 h-48 top-32 right-20', 'w-32 h-32 bottom-20 left-1/4', 'w-56 h-56 -bottom-10 right-10'].map((classes, i) => (
             <div key={i} className={`absolute ${classes} rounded-full opacity-20`}
               style={{ background: `linear-gradient(135deg, #7C3AED, #EC4899)`, animationDelay: `${i * 0.8}s` }} />
           ))}
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 max-md:py-10 relative z-10 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-md:gap-8 items-center">
             {/* Left: Text */}
-            <div>
-              <div className="badge badge-brand mb-6 text-sm">
-                ✨ Dubai&apos;s #1 Balloon Studio
+            <div className="max-md:text-center">
+              <div className="badge badge-brand mb-6 max-md:mb-4 text-sm">
+                Dubai&apos;s #1 Balloon Studio
               </div>
-              <h1 className="section-title gradient-text mb-6" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}>
-                Make Every<br />Celebration<br />Unforgettable
+              <h1 className="section-title gradient-text mb-6 max-md:mb-4" style={{ fontSize: 'clamp(2rem, 5vw, 4.5rem)' }}>
+                Make Every<br className="max-md:hidden" />
+                <span className="md:hidden"> </span>Celebration<br className="max-md:hidden" />
+                <span className="md:hidden"> </span>Unforgettable
               </h1>
-              <p className="text-gray-500 text-lg mb-10 leading-relaxed max-w-md">
+              <p className="text-gray-500 text-lg max-md:text-base mb-10 max-md:mb-6 leading-relaxed max-w-md max-md:max-w-sm max-md:mx-auto">
                 Premium customized balloons and event decoration — designed live, delivered to your door across Dubai.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Link href="/shop" className="btn-primary text-base">
+              <div className="flex flex-wrap gap-4 max-md:gap-3 max-md:justify-center">
+                <Link href="/shop" className="btn-primary text-base max-md:text-sm max-md:py-3 max-md:px-5">
                   Explore Collection 🎈
                 </Link>
-                <Link href="/shop?customizable=true" className="btn-outline text-base">
+                <Link href="/shop?customizable=true" className="btn-outline text-base max-md:text-sm max-md:py-3 max-md:px-5">
                   Customize Now 🎨
                 </Link>
               </div>
-              <div className="flex items-center gap-6 mt-10">
-                {[['500+', 'Happy Clients'], ['1-Day', 'Delivery'], ['100%', 'Custom Made']].map(([val, label]) => (
-                  <div key={label}>
-                    <div className="text-2xl font-extrabold gradient-text">{val}</div>
-                    <div className="text-xs text-gray-500 font-medium">{label}</div>
-                  </div>
+              <div className="flex items-center gap-6 mt-10 max-md:mt-6 max-md:justify-center">
+                {STATS.map((stat) => (
+                  <StatBadge key={stat.label} value={stat.value} label={stat.label} />
                 ))}
               </div>
             </div>
 
             {/* Right: Hero image */}
-            <div className="flex justify-center lg:justify-end">
+            <div className="flex justify-center lg:justify-end max-md:px-8">
               <div className="relative float">
                 <img
                   src="https://images.unsplash.com/photo-1525286335722-c30c6b5df541?w=800"
                   alt="Premium Balloons"
-                  className="w-full max-w-lg rounded-[3rem] shadow-2xl relative z-10"
+                  className="w-full max-w-lg max-md:max-w-xs rounded-[3rem] max-md:rounded-[2rem] shadow-2xl relative z-10"
                   style={{ filter: 'drop-shadow(0 20px 60px rgba(124,58,237,0.3))' }}
                 />
-                <div className="absolute -inset-4 bg-gradient-to-tr from-violet-200 to-pink-200 rounded-[3.5rem] -z-10 blur-2xl opacity-50" />
+                <div className="absolute -inset-4 bg-gradient-to-tr from-violet-200 to-pink-200 rounded-[3.5rem] -z-10 blur-2xl opacity-50 max-md:hidden" />
               </div>
             </div>
           </div>
@@ -124,56 +134,69 @@ export default async function HomePage() {
       </section>
 
       {/* ═══ CATEGORIES ═══ */}
-      <section className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="text-center mb-14">
-          <div className="badge badge-accent mb-3">Our Collections</div>
-          <h2 className="section-title">Shop By <span className="gradient-text">Occasion</span></h2>
-          <p className="text-gray-500 mt-3 max-w-md mx-auto">From intimate birthdays to grand weddings — we have the perfect balloons for every celebration.</p>
+      <section className="py-20 max-md:py-12 px-4 max-w-7xl mx-auto">
+        <div className="mb-14 max-md:mb-8">
+          <SectionHeader
+            badge="Our Collections"
+            badgeVariant="accent"
+            title="Shop By"
+            highlight="Occasion"
+            subtitle="From intimate birthdays to grand weddings — we have the perfect balloons for every celebration."
+          />
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-md:gap-3">
           {displayCategories.map((cat: any) => (
-            <Link key={cat.slug} href={`/shop?category=${cat.slug}`}
-              className="group relative rounded-2xl overflow-hidden aspect-square shadow-md hover:shadow-xl transition-all hover:-translate-y-2">
-              <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-              <div className={`absolute inset-0 bg-gradient-to-t ${cat.color} opacity-50 group-hover:opacity-70 transition-opacity`} />
-              <div className="absolute inset-0 flex items-end p-5">
-                <span className="text-white font-bold text-lg drop-shadow-md">{cat.name}</span>
-              </div>
-            </Link>
+            <CategoryCard
+              key={cat.slug}
+              name={cat.name}
+              image={cat.image}
+              slug={cat.slug}
+              color={cat.color}
+            />
           ))}
         </div>
       </section>
 
       {/* ═══ FEATURED PRODUCTS ═══ */}
       {featured.length > 0 && (
-        <section className="py-20 px-4" style={{ background: 'linear-gradient(180deg, #fafafa 0%, #f5f3ff10 100%)' }}>
+        <section className="py-20 max-md:py-12 px-4" style={{ background: 'linear-gradient(180deg, #fafafa 0%, #f5f3ff10 100%)' }}>
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-end justify-between mb-12">
+            <div className="flex items-end justify-between mb-12 max-md:mb-6">
               <div>
                 <div className="badge badge-pink mb-3">🔥 Trending Now</div>
                 <h2 className="section-title">Featured <span className="gradient-text">Products</span></h2>
               </div>
-              <Link href="/shop" className="text-violet-600 font-semibold hover:underline text-sm">
+              <Link href="/shop" className="text-violet-600 font-semibold hover:underline text-sm max-md:text-xs">
                 View All →
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+            {/* Desktop grid */}
+            <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-8">
               {featured.map((product: any) => (
-                <Link key={product.id} href={`/product/${product.slug}`} className="product-card group block">
-                  <div className="aspect-square overflow-hidden bg-gray-50">
-                    {product.images?.[0]?.src
-                      ? <img src={product.images[0].src} alt={product.name} className="w-full h-full object-cover" />
-                      : <div className="w-full h-full flex items-center justify-center text-7xl">🎈</div>
-                    }
-                  </div>
-                  <div className="p-5">
-                    <h3 className="font-bold text-gray-900 mb-1 line-clamp-2">{product.name}</h3>
-                    <p className="text-violet-600 font-bold text-lg">AED {parseFloat(product.price || '0').toFixed(0)}</p>
-                    <div className="mt-3 btn-primary w-full text-sm py-2.5 text-center group-hover:opacity-90">
-                      Customize & Order ✨
-                    </div>
-                  </div>
-                </Link>
+                <ProductCard
+                  key={product.id}
+                  slug={product.slug}
+                  name={product.name}
+                  price={parseFloat(product.price || '0')}
+                  imageSrc={product.images?.[0]?.src}
+                  variant="default"
+                />
+              ))}
+            </div>
+
+            {/* Mobile horizontal scroll */}
+            <div className="md:hidden mobile-scroll-x px-1">
+              {featured.map((product: any) => (
+                <div key={product.id} className="w-[70vw] min-w-[240px]">
+                  <ProductCard
+                    slug={product.slug}
+                    name={product.name}
+                    price={parseFloat(product.price || '0')}
+                    imageSrc={product.images?.[0]?.src}
+                    variant="compact"
+                  />
+                </div>
               ))}
             </div>
           </div>
@@ -181,43 +204,46 @@ export default async function HomePage() {
       )}
 
       {/* ═══ FEATURES SECTION ═══ */}
-      <section className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="text-center mb-14">
-          <div className="badge badge-brand mb-3">Why BalloonsMall?</div>
-          <h2 className="section-title">The <span className="gradient-text">Best Experience</span> Guaranteed</h2>
+      <section className="py-20 max-md:py-12 px-4 max-w-7xl mx-auto">
+        <div className="mb-14 max-md:mb-8">
+          <SectionHeader
+            badge="Why BalloonsMall?"
+            badgeVariant="brand"
+            title="The"
+            highlight="Best Experience Guaranteed"
+          />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 max-md:gap-3">
           {FEATURES.map((f) => (
-            <div key={f.title} className="text-center p-8 rounded-2xl bg-white shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-50">
-              <div className="text-5xl mb-5">{f.icon}</div>
-              <h3 className="font-bold text-gray-900 mb-2 text-lg">{f.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
-            </div>
+            <FeatureCard key={f.title} icon={f.icon} title={f.title} description={f.desc} />
           ))}
         </div>
       </section>
 
       {/* ═══ TESTIMONIALS ═══ */}
-      <section className="py-20 px-4" style={{ background: 'linear-gradient(135deg, #f5f3ff 0%, #fce7f3 100%)' }}>
+      <section className="py-20 max-md:py-12 px-4" style={{ background: 'linear-gradient(135deg, #f5f3ff 0%, #fce7f3 100%)' }}>
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-14">
-            <div className="badge badge-accent mb-3">Customer Love ❤️</div>
-            <h2 className="section-title">What Our <span className="gradient-text">Customers Say</span></h2>
+          <div className="mb-14 max-md:mb-8">
+            <SectionHeader
+              badge="Customer Love"
+              badgeVariant="accent"
+              title="What Our"
+              highlight="Customers Say"
+            />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+          {/* Desktop grid */}
+          <div className="hidden md:grid md:grid-cols-3 gap-8">
             {TESTIMONIALS.map((t) => (
-              <div key={t.name} className="bg-white rounded-2xl p-8 shadow-sm border border-white">
-                <div className="flex items-center gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => <span key={i} className="text-amber-400">★</span>)}
-                </div>
-                <p className="text-gray-600 mb-6 leading-relaxed italic">&quot;{t.text}&quot;</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full bg-violet-100 flex items-center justify-center text-2xl">{t.avatar}</div>
-                  <div>
-                    <p className="font-bold text-gray-900 text-sm">{t.name}</p>
-                    <p className="text-gray-400 text-xs">{t.role}</p>
-                  </div>
-                </div>
+              <TestimonialCard key={t.name} name={t.name} role={t.role} text={t.text} avatar={t.avatar} />
+            ))}
+          </div>
+
+          {/* Mobile horizontal scroll */}
+          <div className="md:hidden mobile-scroll-x px-1">
+            {TESTIMONIALS.map((t) => (
+              <div key={t.name} className="w-[85vw] min-w-[280px]">
+                <TestimonialCard name={t.name} role={t.role} text={t.text} avatar={t.avatar} />
               </div>
             ))}
           </div>
@@ -225,23 +251,23 @@ export default async function HomePage() {
       </section>
 
       {/* ═══ CTA BANNER ═══ */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center rounded-3xl overflow-hidden relative"
+      <section className="py-20 max-md:py-12 px-4">
+        <div className="max-w-4xl mx-auto text-center rounded-3xl max-md:rounded-2xl overflow-hidden relative"
           style={{ background: 'linear-gradient(135deg, #7C3AED 0%, #DB2777 100%)', padding: '60px 40px' }}>
-          <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 opacity-10 max-md:hidden">
             {['🎈', '🎊', '🎀', '✨', '🎉', '🎈'].map((e, i) => (
               <span key={i} className="absolute text-5xl" style={{ top: `${[10,60,30,70,20,50][i]}%`, left: `${[5,85,20,65,40,75][i]}%` }}>{e}</span>
             ))}
           </div>
-          <div className="relative z-10">
-            <h2 className="text-white font-extrabold text-4xl mb-4">Ready to Celebrate? 🎉</h2>
-            <p className="text-white/80 text-lg mb-8 max-w-xl mx-auto">Order your custom balloons today and make every moment extraordinary. Same-day delivery available across Dubai!</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/shop" className="bg-white text-violet-700 font-bold py-4 px-8 rounded-full hover:shadow-xl transition-all hover:-translate-y-1">
+          <div className="relative z-10 max-md:px-2">
+            <h2 className="text-white font-extrabold text-4xl max-md:text-2xl mb-4">Ready to Celebrate? 🎉</h2>
+            <p className="text-white/80 text-lg max-md:text-sm mb-8 max-md:mb-6 max-w-xl mx-auto">Order your custom balloons today and make every moment extraordinary. Same-day delivery available across Dubai!</p>
+            <div className="flex flex-col sm:flex-row gap-4 max-md:gap-3 justify-center">
+              <Link href="/shop" className="bg-white text-violet-700 font-bold py-4 px-8 max-md:py-3 max-md:px-6 rounded-full hover:shadow-xl transition-all hover:-translate-y-1 max-md:text-sm">
                 Shop Now 🛍️
               </Link>
               <a href="https://wa.me/971500000000?text=Hello, I want to order balloons!" target="_blank" rel="noopener noreferrer"
-                className="border-2 border-white text-white font-bold py-4 px-8 rounded-full hover:bg-white/10 transition-all hover:-translate-y-1">
+                className="border-2 border-white text-white font-bold py-4 px-8 max-md:py-3 max-md:px-6 rounded-full hover:bg-white/10 transition-all hover:-translate-y-1 max-md:text-sm">
                 WhatsApp Us 💬
               </a>
             </div>

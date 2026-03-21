@@ -14,6 +14,14 @@ export async function GET(req: Request) {
       );
     }
 
+    // Validate paymentIntentId to prevent path traversal
+    if (!/^[a-zA-Z0-9_-]+$/.test(paymentIntentId)) {
+      return NextResponse.json(
+        { error: 'Invalid payment intent ID' },
+        { status: 400 }
+      );
+    }
+
     const response = await fetch(
       `${ZIINA_API_URL}/payment_intent/${paymentIntentId}`,
       {
