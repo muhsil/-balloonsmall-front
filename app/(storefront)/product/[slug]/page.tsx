@@ -31,7 +31,8 @@ async function getRelated(categoryIds: number[]) {
   } catch { return []; }
 }
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+export default async function ProductPage({ params: paramsPromise }: { params: Promise<{ slug: string }> }) {
+  const params = await paramsPromise;
   const product = await getProduct(params.slug);
   const related = product ? await getRelated(product.categories?.map((c: any) => c.id)) : [];
   const similarProducts = related.filter((p: any) => p.slug !== params.slug).slice(0, 3);
