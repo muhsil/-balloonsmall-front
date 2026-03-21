@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { wooApi } from '@/lib/woocommerce';
+import ShopSortBar from '@/components/shop/ShopSortBar';
 
 export const revalidate = 60;
 
@@ -94,16 +95,7 @@ export default async function ShopPage({ searchParams }: { searchParams: { categ
             {searchParams.search ? ` for "${searchParams.search}"` : ''}
             {searchParams.category ? ` in ${categories.find((c:any) => c.slug === searchParams.category)?.name || searchParams.category}` : ''}
           </p>
-          <form method="GET">
-            {searchParams.category && <input type="hidden" name="category" value={searchParams.category} />}
-            {searchParams.search && <input type="hidden" name="search" value={searchParams.search} />}
-            <select name="sort" className="input w-auto text-sm py-2" defaultValue={searchParams.sort || 'date'}
-              onChange={undefined}>
-              <option value="date">✨ Newest First</option>
-              <option value="price_asc">⬆️ Price: Low to High</option>
-              <option value="price_desc">⬇️ Price: High to Low</option>
-            </select>
-          </form>
+          <ShopSortBar currentSort={searchParams.sort} currentCategory={searchParams.category} currentSearch={searchParams.search} />
         </div>
 
         {/* ── Product Grid ── */}
