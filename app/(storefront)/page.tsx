@@ -148,16 +148,36 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Second Promo Banner */}
+      {/* Customize Your Balloon CTA */}
       <section className="px-4 pt-6 max-md:px-2 max-md:pt-4 max-w-7xl mx-auto">
-        <PromoBanner
-          title="Custom Balloon Designs"
-          subtitle="Add your personal text and choose colors"
-          ctaLabel="Start Customizing"
-          ctaHref="/shop"
-          bgColor="bg-gradient-to-r from-[#7C3AED] to-[#EC4899]"
-          discount="PERSONALIZE IT"
-        />
+        <div className="relative overflow-hidden rounded-2xl max-md:rounded-xl bg-gradient-to-r from-[#7C3AED] via-[#EC4899] to-[#F26522] p-6 max-md:p-4">
+          <div className="absolute top-0 right-0 w-40 h-40 max-md:w-28 max-md:h-28 opacity-20 text-[100px] max-md:text-[70px] leading-none pointer-events-none select-none">
+            🎈
+          </div>
+          <div className="relative z-10">
+            <div className="inline-block bg-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full mb-2 uppercase tracking-wider">
+              New Feature
+            </div>
+            <h2 className="text-xl max-md:text-lg font-extrabold text-white mb-1">
+              Customize Your Balloon 🎨
+            </h2>
+            <p className="text-white/80 text-sm max-md:text-xs mb-4 max-md:mb-3 max-w-md">
+              Choose size, color, add personal text &amp; save with bundle deals. Make every celebration unique!
+            </p>
+            <div className="flex flex-wrap gap-2 mb-4 max-md:mb-3">
+              <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-1 rounded-md">10 Colors</span>
+              <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-1 rounded-md">4 Sizes</span>
+              <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-1 rounded-md">Custom Text</span>
+              <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-1 rounded-md">Bundle &amp; Save</span>
+            </div>
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-2 bg-white text-[#7C3AED] font-bold text-sm px-5 py-2.5 rounded-full hover:bg-gray-50 transition-all active:scale-[0.98] shadow-lg"
+            >
+              Start Customizing →
+            </Link>
+          </div>
+        </div>
       </section>
 
       {/* All Products Grid */}

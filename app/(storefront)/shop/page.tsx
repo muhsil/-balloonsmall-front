@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { wooApi } from '@/lib/woocommerce';
 import ProductCard from '@/components/ui/ProductCard';
 import EmptyState from '@/components/ui/EmptyState';
