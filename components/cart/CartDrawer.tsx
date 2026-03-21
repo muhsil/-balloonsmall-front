@@ -1,6 +1,6 @@
 "use client";
 import { useCartStore } from '@/store/useCartStore';
-import { toast } from './Toast';
+import { toast } from '@/components/ui/Toast';
 import Link from 'next/link';
 
 interface CartDrawerProps {
