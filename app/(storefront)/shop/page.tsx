@@ -36,7 +36,8 @@ async function getCategories() {
   } catch { return []; }
 }
 
-export default async function ShopPage({ searchParams }: { searchParams: { category?: string; search?: string; sort?: string } }) {
+export default async function ShopPage({ searchParams: searchParamsPromise }: { searchParams: Promise<{ category?: string; search?: string; sort?: string }> }) {
+  const searchParams = await searchParamsPromise;
   const [products, categories] = await Promise.all([
     getProducts({
       category: searchParams.category,
