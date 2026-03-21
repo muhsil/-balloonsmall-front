@@ -1,25 +1,46 @@
 import { NextResponse } from 'next/server';
-import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-02-25.clover' as any,
-});
+const ZIINA_API_URL = 'https://api-v2.ziina.com/api';
 
 export async function POST(req: Request) {
   try {
-    const { amount } = await req.json();
+    const { amount, successUrl, cancelUrl, message } = await req.json();
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100), // Stripe expects amounts in smallest currency unit
-      currency: 'aed', // UAE Dirham based on the project location
-      automatic_payment_methods: {
-        enabled: true,
+    const response = await fetch(`${ZIINA_API_URL}/payment_intent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.ZIINA_API_KEY}`,
       },
+      body: JSON.stringify({
+        amount: Math.round(amount * 100), // Ziina expects amount in fils (base currency unit)
+        currency_code: 'AED',
+        message: message || 'BalloonsMall Order',
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        test: process.env.NODE_ENV !== 'production',
+      }),
     });
 
-    return NextResponse.json({ clientSecret: paymentIntent.client_secret });
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error('Ziina API error:', data);
+      return NextResponse.json(
+        { error: data.message || 'Failed to create payment intent' },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json({
+      paymentIntentId: data.id,
+      redirectUrl: data.redirect_url,
+    });
   } catch (error) {
-    console.error('Stripe configuration error:', error);
-    return NextResponse.json({ error: 'Failed to create payment intent' }, { status: 500 });
+    console.error('Ziina payment intent error:', error);
+    return NextResponse.json(
+      { error: 'Failed to create payment intent' },
+      { status: 500 }
+    );
   }
 }
