@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { format, addDays, isToday, startOfDay, getHours } from 'date-fns';
 import { useCartStore } from '@/store/useCartStore';
+import DatePickerCard from '@/components/ui/DatePickerCard';
+import TimeSlotGrid from '@/components/ui/TimeSlotGrid';
 
 const OPERATIONAL_HOURS = [
   '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', 
@@ -55,53 +57,28 @@ export default function DeliveryScheduler() {
       <div>
         <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">Choose Delivery Date</label>
         
-        <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
-          {availableDates.map((date) => {
-            const isSelected = selectedDate && date.getTime() === selectedDate.getTime();
-            return (
-              <button
-                key={date.toISOString()}
-                onClick={() => handleDateSelect(date)}
-                className={`min-w-[100px] p-5 rounded-[2rem] border-2 text-center transition-all duration-300 ${
-                  isSelected 
-                    ? 'border-violet-600 bg-violet-600 text-white shadow-xl shadow-violet-200 scale-105' 
-                    : 'border-gray-100 bg-white text-gray-600 hover:border-violet-200 hover:shadow-lg'
-                }`}
-              >
-                <div className={`text-[10px] uppercase font-black tracking-widest mb-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
-                  {format(date, 'MMM')}
-                </div>
-                <div className="text-3xl font-black mb-1">{format(date, 'd')}</div>
-                <div className={`text-[10px] font-bold ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
-                  {format(date, 'EEE')}
-                </div>
-              </button>
-            );
-          })}
+        <div className="flex gap-3 max-md:gap-2 overflow-x-auto pb-4 no-scrollbar">
+          {availableDates.map((date) => (
+            <DatePickerCard
+              key={date.toISOString()}
+              month={format(date, 'MMM')}
+              day={format(date, 'd')}
+              weekday={format(date, 'EEE')}
+              selected={!!(selectedDate && date.getTime() === selectedDate.getTime())}
+              onClick={() => handleDateSelect(date)}
+            />
+          ))}
         </div>
       </div>
 
       {selectedDate && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Select Time Slot</label>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {OPERATIONAL_HOURS.map((time) => {
-              const isSelected = selectedTime === time;
-              return (
-                <button
-                  key={time}
-                  onClick={() => handleTimeSelect(time)}
-                  className={`p-4 rounded-2xl border-2 text-sm font-black transition-all ${
-                    isSelected 
-                      ? 'border-violet-600 bg-violet-600 text-white shadow-lg shadow-violet-200' 
-                      : 'border-gray-100 bg-white text-gray-600 hover:border-violet-100 hover:bg-violet-50/30'
-                  }`}
-                >
-                  {time}
-                </button>
-              );
-            })}
-          </div>
+          <TimeSlotGrid
+            slots={OPERATIONAL_HOURS}
+            selected={selectedTime}
+            onSelect={handleTimeSelect}
+          />
         </div>
       )}
     </div>

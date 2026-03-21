@@ -3,7 +3,6 @@
 import React, { useState, useMemo, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCartStore } from '@/store/useCartStore';
-import Link from 'next/link';
 import { toast } from '@/components/ui/Toast';
 
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
@@ -15,6 +14,10 @@ import EmptyCart from '@/components/checkout/EmptyCart';
 import SupportBox from '@/components/checkout/SupportBox';
 import PaymentButton from '@/components/checkout/PaymentButton';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import SectionCard from '@/components/ui/SectionCard';
+import PaymentMethodCard from '@/components/ui/PaymentMethodCard';
+import PageHeader from '@/components/ui/PageHeader';
+import PriceDisplay from '@/components/ui/PriceDisplay';
 
 const CHECKOUT_DATA_KEY = 'balloonsmall-checkout';
 
@@ -208,27 +211,22 @@ function CheckoutContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] py-16 max-md:py-4 max-md:pb-32">
+    <div className="min-h-screen bg-[#FAFAFA] py-16 max-md:py-4 max-md:pb-36">
       <div className="section-wrapper max-md:px-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 max-md:gap-3 mb-12 max-md:mb-6">
-          <div>
-            <Link
-              href="/shop"
-              className="text-sm max-md:text-xs font-bold text-violet-600 hover:text-violet-700 transition-colors flex items-center gap-2 mb-2 max-md:mb-1"
-            >
-              ← Back to Shop
-            </Link>
-            <h1 className="section-title max-md:text-2xl">
-              Checkout <span className="gradient-text">Details</span>
-            </h1>
-          </div>
-          <div className="flex items-center gap-6 px-6 max-md:px-4 py-3 max-md:py-2 bg-white rounded-2xl shadow-sm border border-gray-100">
-            <div className="text-right max-md:text-left">
-              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Amount</p>
-              <p className="text-2xl max-md:text-xl font-black gradient-text">AED {subtotal}</p>
+        <PageHeader
+          backHref="/shop"
+          backLabel="Back to Shop"
+          title="Checkout"
+          highlight="Details"
+          rightContent={
+            <div className="flex items-center gap-6 px-6 max-md:px-4 py-3 max-md:py-2 bg-white rounded-2xl shadow-sm border border-gray-100">
+              <div className="text-right max-md:text-left">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total</p>
+                <PriceDisplay amount={subtotal} size="lg" />
+              </div>
             </div>
-          </div>
-        </div>
+          }
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 max-md:gap-4 items-start">
           <div className="lg:col-span-12 xl:col-span-8 space-y-8 max-md:space-y-4">
@@ -236,15 +234,24 @@ function CheckoutContent() {
 
             <PersonalInfoForm customer={customer} onChange={setCustomer} />
 
-            <div className="bg-white p-8 md:p-10 max-md:p-5 rounded-[2rem] max-md:rounded-2xl shadow-sm border border-gray-100 animate-in fade-in duration-500 delay-100">
-              <div className="flex items-center gap-3 max-md:gap-2 mb-8 max-md:mb-5">
-                <div className="w-10 h-10 max-md:w-8 max-md:h-8 bg-rose-50 text-rose-500 rounded-xl max-md:rounded-lg flex items-center justify-center text-xl max-md:text-base font-bold">
-                  📅
-                </div>
-                <h3 className="text-2xl max-md:text-lg font-bold text-gray-900">Delivery Schedule</h3>
-              </div>
+            <SectionCard icon="\uD83D\uDCC5" title="Delivery Schedule">
               <DeliveryScheduler />
-            </div>
+            </SectionCard>
+
+            {/* Payment Method Section - visible payment gateway */}
+            <SectionCard icon="\uD83D\uDCB3" title="Payment Method">
+              <PaymentMethodCard selected />
+              <div className="mt-4 max-md:mt-3 p-4 max-md:p-3 bg-green-50 rounded-xl max-md:rounded-lg border border-green-100">
+                <div className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  <p className="text-xs max-md:text-[11px] text-green-700 font-medium">
+                    Your payment is processed securely. You&apos;ll be redirected to Ziina to complete payment.
+                  </p>
+                </div>
+              </div>
+            </SectionCard>
 
             {/* Desktop payment button */}
             <div className="max-md:hidden">
@@ -266,12 +273,16 @@ function CheckoutContent() {
 
       {/* Mobile sticky bottom payment button */}
       <div className="md:hidden mobile-sticky-bottom">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-bold text-gray-400">Total</span>
+          <span className="text-lg font-black gradient-text">AED {subtotal}</span>
+        </div>
         <button
           onClick={handleCreateOrder}
           disabled={!isFormValid || isInitializing}
           className="btn-primary w-full py-4 text-base shadow-lg shadow-violet-200 disabled:grayscale"
         >
-          {isInitializing ? 'Preparing Payment...' : `Pay AED ${subtotal} 💳`}
+          {isInitializing ? 'Preparing Payment...' : 'Pay with Ziina \uD83D\uDCB3'}
         </button>
       </div>
     </div>
