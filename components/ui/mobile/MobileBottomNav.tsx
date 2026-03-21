@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useCartStore } from '@/store/useCartStore';
 
 interface NavItem {
@@ -53,6 +53,8 @@ function SupportIcon({ active }: { active: boolean }) {
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const searchParamsStr = searchParams.toString();
   const items = useCartStore((s) => s.items);
   const cartCount = items.reduce((sum, i) => sum + i.quantity, 0);
 
@@ -67,7 +69,17 @@ export default function MobileBottomNav() {
   return (
     <nav className="md:hidden mobile-bottom-nav">
       {tabs.map((tab) => {
-        const isActive = tab.href === '/' ? pathname === '/' : pathname.startsWith(tab.href.split('?')[0]);
+        const isActive = (() => {
+          if (tab.href === '/') return pathname === '/';
+          const [tabPath, tabQuery] = tab.href.split('?');
+          if (tabQuery) {
+            // For tabs with query params (Deals), only match when query matches
+            return pathname === tabPath && searchParamsStr.includes(tabQuery);
+          }
+          // For Shop, don't match when Deals query is present
+          if (tabPath === '/shop') return pathname.startsWith('/shop') && !searchParamsStr.includes('featured=true');
+          return pathname.startsWith(tabPath);
+        })();
         const isExternal = tab.href.startsWith('http');
         const Wrapper = isExternal ? 'a' : Link;
         const extraProps = isExternal ? { target: '_blank' as const, rel: 'noopener noreferrer' } : {};

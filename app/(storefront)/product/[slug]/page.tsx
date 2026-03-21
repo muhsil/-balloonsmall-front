@@ -55,7 +55,9 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
   const price = parseFloat(product.price || '0');
   const regularPrice = product.regular_price ? parseFloat(product.regular_price) : null;
   const discount = product.on_sale && regularPrice ? Math.round(((regularPrice - price) / regularPrice) * 100) : 0;
-  const soldNum = Math.floor(price * 7 + 150);
+  // Deterministic pseudo-random matching ProductCard formula
+  const hash = params.slug.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 0);
+  const soldNum = Math.floor((hash * 7 + price * 3) % 900 + 100);
   const reviewCount = Math.floor(price * 2 + 30);
 
   return (
