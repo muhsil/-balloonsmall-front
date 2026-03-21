@@ -29,10 +29,10 @@ async function getCategories() {
 }
 
 const STATIC_CATEGORIES = [
-  { name: 'Birthday 🎂', image: '/cat-birthday.png', slug: 'birthday', color: 'from-orange-400 to-pink-500' },
-  { name: 'Wedding 💍', image: '/cat-wedding.png', slug: 'wedding', color: 'from-pink-400 to-rose-500' },
-  { name: 'Baby Shower 👶', image: '/cat-birthday.png', slug: 'baby-shower', color: 'from-sky-400 to-blue-500' },
-  { name: 'Events 🎉', image: '/cat-wedding.png', slug: 'events', color: 'from-violet-400 to-purple-600' },
+  { name: 'Birthday 🎂', image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800', slug: 'birthday', color: 'from-orange-400 to-pink-500' },
+  { name: 'Wedding 💍', image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800', slug: 'wedding', color: 'from-pink-400 to-rose-500' },
+  { name: 'Baby Shower 👶', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800', slug: 'baby-shower', color: 'from-sky-400 to-blue-500' },
+  { name: 'Events 🎉', image: 'https://images.unsplash.com/photo-1574156993413-26bca01b4e2a?w=800', slug: 'events', color: 'from-violet-400 to-purple-600' },
 ];
 
 const FEATURES = [
@@ -111,11 +111,12 @@ export default async function HomePage() {
             <div className="flex justify-center lg:justify-end">
               <div className="relative float">
                 <img
-                  src="/hero-balloons.png"
+                  src="https://images.unsplash.com/photo-1525286335722-c30c6b5df541?w=800"
                   alt="Premium Balloons"
-                  className="w-full max-w-lg rounded-3xl shadow-2xl"
-                  style={{ filter: 'drop-shadow(0 20px 40px rgba(124,58,237,0.25))' }}
+                  className="w-full max-w-lg rounded-[3rem] shadow-2xl relative z-10"
+                  style={{ filter: 'drop-shadow(0 20px 60px rgba(124,58,237,0.3))' }}
                 />
+                <div className="absolute -inset-4 bg-gradient-to-tr from-violet-200 to-pink-200 rounded-[3.5rem] -z-10 blur-2xl opacity-50" />
               </div>
             </div>
           </div>

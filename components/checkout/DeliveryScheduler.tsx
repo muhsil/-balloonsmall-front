@@ -51,27 +51,30 @@ export default function DeliveryScheduler() {
   });
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-      <h3 className="text-xl font-bold text-gray-800 mb-4">Select Delivery Schedule</h3>
-      
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">Delivery Date</label>
-        <div className="flex gap-3 overflow-x-auto pb-2 custom-scrollbar">
+    <div className="space-y-8">
+      <div>
+        <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">Choose Delivery Date</label>
+        
+        <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
           {availableDates.map((date) => {
             const isSelected = selectedDate && date.getTime() === selectedDate.getTime();
             return (
               <button
                 key={date.toISOString()}
                 onClick={() => handleDateSelect(date)}
-                className={`min-w-[80px] p-3 rounded-lg border text-center transition-colors ${
+                className={`min-w-[100px] p-5 rounded-[2rem] border-2 text-center transition-all duration-300 ${
                   isSelected 
-                    ? 'border-blue-600 bg-blue-50 text-blue-700' 
-                    : 'border-gray-200 hover:border-blue-300'
+                    ? 'border-violet-600 bg-violet-600 text-white shadow-xl shadow-violet-200 scale-105' 
+                    : 'border-gray-100 bg-white text-gray-600 hover:border-violet-200 hover:shadow-lg'
                 }`}
               >
-                <div className="text-xs uppercase font-semibold">{format(date, 'MMM')}</div>
-                <div className="text-xl font-bold">{format(date, 'd')}</div>
-                <div className="text-xs text-gray-500">{format(date, 'EEE')}</div>
+                <div className={`text-[10px] uppercase font-black tracking-widest mb-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                  {format(date, 'MMM')}
+                </div>
+                <div className="text-3xl font-black mb-1">{format(date, 'd')}</div>
+                <div className={`text-[10px] font-bold ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                  {format(date, 'EEE')}
+                </div>
               </button>
             );
           })}
@@ -79,19 +82,19 @@ export default function DeliveryScheduler() {
       </div>
 
       {selectedDate && (
-        <div className="mt-4 animate-in fade-in slide-in-from-bottom-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Delivery Time</label>
-          <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Select Time Slot</label>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {OPERATIONAL_HOURS.map((time) => {
               const isSelected = selectedTime === time;
               return (
                 <button
                   key={time}
                   onClick={() => handleTimeSelect(time)}
-                  className={`p-2 rounded-md border text-sm transition-colors ${
+                  className={`p-4 rounded-2xl border-2 text-sm font-black transition-all ${
                     isSelected 
-                      ? 'border-blue-600 bg-blue-600 text-white shadow-sm' 
-                      : 'border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300'
+                      ? 'border-violet-600 bg-violet-600 text-white shadow-lg shadow-violet-200' 
+                      : 'border-gray-100 bg-white text-gray-600 hover:border-violet-100 hover:bg-violet-50/30'
                   }`}
                 >
                   {time}
