@@ -49,10 +49,11 @@ export default function ProductCard({
             src={imageSrc}
             alt={name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
           />
         ) : (
           <div className={`w-full h-full bg-gradient-to-br ${categoryGradient} flex items-center justify-center`}>
-            <span className="text-6xl max-md:text-4xl opacity-60">{categoryIcon}</span>
+            <span className="text-7xl max-md:text-5xl drop-shadow-sm">{categoryIcon}</span>
           </div>
         )}
 

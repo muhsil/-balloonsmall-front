@@ -204,8 +204,8 @@ function CheckoutContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] py-4 max-md:pb-36">
-      <div className="max-w-5xl mx-auto px-4 max-md:px-3">
+    <div className="min-h-screen bg-[#F5F5F5] py-6 max-md:py-4 max-md:pb-36">
+      <div className="max-w-5xl mx-auto px-6 max-md:px-3">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
@@ -223,8 +223,8 @@ function CheckoutContent() {
 
         <CheckoutSteps paymentReady={false} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-4 items-start">
-          <div className="lg:col-span-8 space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4 items-start">
+          <div className="lg:col-span-8 space-y-5">
             <PersonalInfoForm customer={customer} onChange={setCustomer} />
 
             <SectionCard icon="📅" title="Delivery Schedule">

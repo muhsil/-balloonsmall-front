@@ -67,7 +67,7 @@ export default function MobileBottomNav() {
   ];
 
   return (
-    <nav className="md:hidden mobile-bottom-nav">
+    <nav className="mobile-bottom-nav">
       {tabs.map((tab) => {
         const isActive = (() => {
           if (tab.href === '/') return pathname === '/';
