@@ -35,8 +35,10 @@ export default function ProductCard({
   variant = 'default',
 }: ProductCardProps) {
   const discount = onSale && regularPrice ? Math.round(((regularPrice - price) / regularPrice) * 100) : 0;
-  const soldNum = Math.floor(Math.random() * 900 + 100);
-  const rating = 4.5 + Math.random() * 0.5;
+  // Deterministic pseudo-random from slug so values are consistent across renders/pages
+  const hash = slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const soldNum = Math.floor((hash * 7 + price * 3) % 900 + 100);
+  const rating = 4.5 + ((hash % 5) / 10);
 
   return (
     <Link href={`/product/${slug}`} className="product-card group block">

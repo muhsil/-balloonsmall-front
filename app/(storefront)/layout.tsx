@@ -2,6 +2,7 @@ import Navbar from '@/components/ui/Navbar';
 import WhatsAppFab from '@/components/ui/WhatsAppFab';
 import MobileBottomNav from '@/components/ui/mobile/MobileBottomNav';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -79,7 +80,9 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
       </footer>
 
       <WhatsAppFab />
-      <MobileBottomNav />
+      <Suspense fallback={null}>
+        <MobileBottomNav />
+      </Suspense>
     </div>
   );
 }

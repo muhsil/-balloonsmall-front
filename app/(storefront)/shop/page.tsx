@@ -49,13 +49,19 @@ async function getCategories() {
 export default async function ShopPage({
   searchParams: searchParamsPromise,
 }: {
-  searchParams: Promise<{ search?: string; category?: string }>;
+  searchParams: Promise<{ search?: string; category?: string; featured?: string }>;
 }) {
   const searchParams = await searchParamsPromise;
   const [products, categories] = await Promise.all([
     getProducts(searchParams.search, searchParams.category),
     getCategories(),
   ]);
+
+  // Filter to featured/on-sale products when Deals tab is active
+  const isFeatured = searchParams.featured === 'true';
+  const displayProducts = isFeatured
+    ? products.filter((p: any) => p.featured || p.on_sale)
+    : products;
 
   const topCategories = categories.filter((c: any) => c.count > 0).slice(0, 8);
 
@@ -105,24 +111,25 @@ export default async function ShopPage({
         {/* Results header */}
         <div className="flex items-center justify-between mb-2 mt-1">
           <p className="text-xs text-gray-500 font-medium">
-            {products.length} {products.length === 1 ? 'item' : 'items'}
+            {displayProducts.length} {displayProducts.length === 1 ? 'item' : 'items'}
+            {isFeatured && <> — Deals &amp; Featured</>}
             {searchParams.search && <> for &quot;{searchParams.search}&quot;</>}
             {searchParams.category && <> in {searchParams.category}</>}
           </p>
         </div>
 
         {/* Product Grid */}
-        {products.length === 0 ? (
+        {displayProducts.length === 0 ? (
           <EmptyState
             icon="🎈"
-            title="No balloons found"
-            description="Try a different search or browse all categories."
+            title={isFeatured ? 'No deals right now' : 'No balloons found'}
+            description={isFeatured ? 'Check back soon for new deals and featured products.' : 'Try a different search or browse all categories.'}
             actionLabel="Browse All"
             actionHref="/shop"
           />
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 max-md:gap-1.5">
-            {products.map((p: any) => {
+            {displayProducts.map((p: any) => {
               const catSlug = p.categories?.[0]?.slug || 'default';
               return (
                 <ProductCard
