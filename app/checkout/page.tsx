@@ -152,7 +152,7 @@ export default function CheckoutPage() {
       <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center">
         <div className="text-8xl mb-8 animate-bounce">🎈</div>
         <h1 className="section-title mb-4">Your Cart is Empty</h1>
-        <p className="text-gray-500 mb-8 max-w-sm">It looks like you haven't added any magic to your cart yet.</p>
+        <p className="text-gray-500 mb-8 max-w-sm">It looks like you haven&apos;t added any magic to your cart yet.</p>
         <Link href="/shop" className="btn-primary">
           Discover Balloons 🛍️
         </Link>
@@ -184,11 +184,26 @@ export default function CheckoutPage() {
             <p className="text-gray-600">{customer.address}, {customer.city}</p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link href="/" className="btn-primary flex-1 py-4">Return Home</Link>
-            <a href={`https://wa.me/971500000000?text=I just placed an order! Name: ${customer.firstName}`} target="_blank" rel="noopener noreferrer" 
-               className="btn-outline flex-1 py-4 border-2 border-violet-100">
-              Support via WhatsApp 💬
+          <div className="mb-8 p-6 bg-violet-50 rounded-2xl border border-violet-100 flex items-start gap-4">
+            <span className="text-2xl">💡</span>
+            <p className="text-sm text-violet-700 leading-relaxed font-medium">
+              Need help with your order? Our team is available on WhatsApp to assist you with customization or any questions you may have.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => window.location.href = "/"}
+              className="px-8 py-4 bg-violet-600 text-white font-bold rounded-2xl hover:bg-violet-700 transition-all shadow-lg shadow-violet-200"
+            >
+              Continue Shopping
+            </button>
+            <a
+              href="https://wa.me/971500000000"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-4 bg-white text-violet-600 font-bold rounded-2xl border-2 border-violet-100 hover:bg-violet-50 transition-all text-center"
+            >
+              Contact Support 💬
             </a>
           </div>
         </div>

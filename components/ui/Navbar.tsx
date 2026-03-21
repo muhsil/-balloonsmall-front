@@ -20,7 +20,7 @@ export default function Navbar() {
             <span className="text-3xl group-hover:scale-110 transition-transform">🎈</span>
             <div>
               <span className="font-extrabold text-xl gradient-text tracking-tight">BalloonsMall</span>
-              <div className="text-[10px] text-gray-400 font-medium tracking-widest uppercase -mt-0.5">Dubai's Premium Balloons</div>
+              <div className="text-[10px] text-gray-400 font-medium tracking-widest uppercase -mt-0.5">Dubai&apos;s Premium Balloons</div>
             </div>
           </Link>
 

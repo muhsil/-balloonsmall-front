@@ -43,9 +43,9 @@ const FEATURES = [
 ];
 
 const TESTIMONIALS = [
-  { name: 'Sarah Al Maktoum', role: 'Birthday Party', text: 'Absolutely stunning! The balloon arch was the highlight of my daughter\'s birthday. 5 stars easily!', avatar: '👩‍🦱' },
+  { name: 'Sarah Al Maktoum', role: 'Birthday Party', text: 'Absolutely stunning! The balloon arch was the highlight of my daughter&apos;s birthday. 5 stars easily!', avatar: '👩‍🦱' },
   { name: 'Ahmed Hassan', role: 'Wedding Decoration', text: 'BalloonsMall transformed our wedding venue into a fairy-tale. The team was so professional and fast.', avatar: '👨' },
-  { name: 'Priya Nair', role: 'Baby Shower', text: 'I loved how I could customize the balloons with my baby\'s name. Delivered on time – perfect!', avatar: '👩‍🦰' },
+  { name: 'Priya Nair', role: 'Baby Shower', text: 'I loved how I could customize the balloons with my baby&apos;s name. Delivered on time – perfect!', avatar: '👩‍🦰' },
 ];
 
 export default async function HomePage() {
@@ -81,7 +81,7 @@ export default async function HomePage() {
             {/* Left: Text */}
             <div>
               <div className="badge badge-brand mb-6 text-sm">
-                ✨ Dubai's #1 Balloon Studio
+                ✨ Dubai&apos;s #1 Balloon Studio
               </div>
               <h1 className="section-title gradient-text mb-6" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}>
                 Make Every<br />Celebration<br />Unforgettable
@@ -210,7 +210,7 @@ export default async function HomePage() {
                 <div className="flex items-center gap-1 mb-4">
                   {[...Array(5)].map((_, i) => <span key={i} className="text-amber-400">★</span>)}
                 </div>
-                <p className="text-gray-600 mb-6 leading-relaxed italic">"{t.text}"</p>
+                <p className="text-gray-600 mb-6 leading-relaxed italic">&quot;{t.text}&quot;</p>
                 <div className="flex items-center gap-3">
                   <div className="w-11 h-11 rounded-full bg-violet-100 flex items-center justify-center text-2xl">{t.avatar}</div>
                   <div>
