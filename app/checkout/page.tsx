@@ -195,7 +195,7 @@ export default function CheckoutPage() {
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 mt-6 animate-in fade-in zoom-in-95">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Payment Information</h3>
                 <Elements stripe={stripePromise} options={{ clientSecret }}>
-                  <CheckoutForm onSuccess={() => {
+                  <CheckoutForm clientSecret={clientSecret!} onSuccess={() => {
                     setOrderCreated(true);
                     clearCart();
                   }} />
