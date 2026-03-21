@@ -11,18 +11,18 @@ interface OrderSuccessProps {
 
 export default function OrderSuccess({ deliveryDate, deliveryTime, customer }: OrderSuccessProps) {
   return (
-    <div className="min-h-[90vh] flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-white to-violet-50">
-      <div className="max-w-2xl w-full bg-white p-12 rounded-[2.5rem] shadow-2xl shadow-violet-100 border border-violet-50 relative overflow-hidden">
+    <div className="min-h-[90vh] flex flex-col items-center justify-center p-6 max-md:p-4 text-center bg-gradient-to-b from-white to-violet-50">
+      <div className="max-w-2xl w-full bg-white p-12 max-md:p-6 rounded-[2.5rem] max-md:rounded-2xl shadow-2xl shadow-violet-100 border border-violet-50 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-violet-400 via-pink-400 to-orange-400" />
 
-        <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8 text-5xl shadow-inner animate-in zoom-in-50 duration-500">
+        <div className="w-24 h-24 max-md:w-16 max-md:h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8 max-md:mb-5 text-5xl max-md:text-3xl shadow-inner animate-in zoom-in-50 duration-500">
           ✓
         </div>
 
-        <h1 className="text-4xl font-black text-gray-900 mb-4 tracking-tight">
+        <h1 className="text-4xl max-md:text-2xl font-black text-gray-900 mb-4 max-md:mb-3 tracking-tight">
           Woohoo! Order Confirmed
         </h1>
-        <p className="text-xl text-gray-600 mb-10 leading-relaxed font-medium">
+        <p className="text-xl max-md:text-sm text-gray-600 mb-10 max-md:mb-6 leading-relaxed font-medium">
           Your customized balloons are being prepared with love and will arrive on
           <span className="text-violet-600 block sm:inline">
             {' '}
@@ -35,7 +35,7 @@ export default function OrderSuccess({ deliveryDate, deliveryTime, customer }: O
           at <span className="text-violet-600">{deliveryTime}</span>.
         </p>
 
-        <div className="bg-gray-50 p-6 rounded-2xl mb-10 text-left border border-gray-100">
+        <div className="bg-gray-50 p-6 max-md:p-4 rounded-2xl mb-10 max-md:mb-6 text-left border border-gray-100">
           <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3">
             Delivery To
           </h4>
@@ -47,7 +47,7 @@ export default function OrderSuccess({ deliveryDate, deliveryTime, customer }: O
           </p>
         </div>
 
-        <div className="mb-8 p-6 bg-violet-50 rounded-2xl border border-violet-100 flex items-start gap-4">
+        <div className="mb-8 max-md:mb-5 p-6 max-md:p-4 bg-violet-50 rounded-2xl border border-violet-100 flex items-start gap-4 max-md:gap-3">
           <span className="text-2xl">💡</span>
           <p className="text-sm text-violet-700 leading-relaxed font-medium">
             Need help with your order? Our team is available on WhatsApp to assist you with

@@ -10,17 +10,17 @@ interface OrderSummaryProps {
 
 export default function OrderSummary({ items, subtotal }: OrderSummaryProps) {
   return (
-    <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden relative">
+    <div className="bg-white p-8 max-md:p-5 rounded-[2rem] max-md:rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
       <div className="absolute top-0 right-0 w-24 h-24 bg-violet-50 rounded-bl-[4rem] -z-10 opacity-50" />
 
-      <h3 className="text-xl font-black text-gray-900 mb-8 flex items-center gap-2">
+      <h3 className="text-xl max-md:text-lg font-black text-gray-900 mb-8 max-md:mb-5 flex items-center gap-2">
         Order Summary <span className="text-violet-600">({items.length})</span>
       </h3>
 
-      <div className="space-y-6 mb-10 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
+      <div className="space-y-6 max-md:space-y-4 mb-10 max-md:mb-6 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
         {items.map((item, idx) => (
           <div key={idx} className="flex gap-4 group">
-            <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 group-hover:scale-105 transition-transform border border-gray-100">
+            <div className="w-16 h-16 max-md:w-12 max-md:h-12 bg-gray-50 rounded-2xl max-md:rounded-xl flex items-center justify-center text-2xl max-md:text-lg flex-shrink-0 group-hover:scale-105 transition-transform border border-gray-100">
               🎈
             </div>
             <div className="flex-1 min-w-0">
@@ -56,7 +56,7 @@ export default function OrderSummary({ items, subtotal }: OrderSummaryProps) {
         </div>
         <div className="flex justify-between items-center pt-4 border-t border-gray-100">
           <span className="text-gray-900 font-black text-lg">Total</span>
-          <span className="text-3xl font-black gradient-text">AED {subtotal}</span>
+          <span className="text-3xl max-md:text-2xl font-black gradient-text">AED {subtotal}</span>
         </div>
       </div>
 

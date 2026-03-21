@@ -199,3 +199,100 @@
 /* prose overrides for WooCommerce HTML */
 .prose p  { margin-bottom: 0.5rem; }
 .prose ul { list-style: disc; margin-left: 1rem; }
+
+/* ── Mobile Bottom Navigation ── */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Add bottom padding on mobile to account for bottom nav */
+@media (max-width: 767px) {
+  .mobile-body-padding {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Mobile product card: disable hover translate, use tap feedback */
+  .product-card:hover {
+    transform: none;
+    box-shadow: var(--shadow-card);
+  }
+  .product-card:active {
+    transform: scale(0.98);
+  }
+
+  /* Smaller border radius on mobile for tighter layouts */
+  .product-card {
+    border-radius: 1rem;
+  }
+
+  /* Mobile-friendly section title */
+  .section-title {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  /* WhatsApp FAB repositioned above bottom nav */
+  .fixed.bottom-6.right-6 {
+    bottom: 80px !important;
+  }
+
+  /* Mobile sticky button bar */
+  .mobile-sticky-bottom {
+    position: fixed;
+    bottom: 64px;
+    left: 0;
+    right: 0;
+    z-index: 70;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* Mobile card with smooth transitions */
+.mobile-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+.mobile-card:active {
+  transform: scale(0.98);
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Mobile horizontal scroll container */
+.mobile-scroll-x {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 12px;
+  padding-bottom: 4px;
+}
+.mobile-scroll-x::-webkit-scrollbar { display: none; }
+.mobile-scroll-x > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}

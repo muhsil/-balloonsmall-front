@@ -1,14 +1,15 @@
 import Navbar from '@/components/ui/Navbar';
 import WhatsAppFab from '@/components/ui/WhatsAppFab';
+import MobileBottomNav from '@/components/ui/mobile/MobileBottomNav';
 
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--color-bg)' }}>
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1 max-md:pb-20">
         {children}
       </main>
-      <footer className="bg-gray-900 text-gray-400 py-12 mt-20">
+      <footer className="bg-gray-900 text-gray-400 py-12 mt-20 max-md:mb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             <div>
@@ -43,6 +44,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
         </div>
       </footer>
       <WhatsAppFab />
+      <MobileBottomNav />
     </div>
   );
 }

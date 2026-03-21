@@ -14,6 +14,7 @@ import OrderSuccess from '@/components/checkout/OrderSuccess';
 import EmptyCart from '@/components/checkout/EmptyCart';
 import SupportBox from '@/components/checkout/SupportBox';
 import PaymentButton from '@/components/checkout/PaymentButton';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 const CHECKOUT_DATA_KEY = 'balloonsmall-checkout';
 
@@ -48,6 +49,8 @@ function CheckoutContent() {
   const [orderCreated, setOrderCreated] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [savedDeliveryDate, setSavedDeliveryDate] = useState<string | null>(null);
+  const [savedDeliveryTime, setSavedDeliveryTime] = useState<string | null>(null);
 
   const [customer, setCustomer] = useState<CustomerInfo>({
     firstName: '',
@@ -76,10 +79,12 @@ function CheckoutContent() {
         const saved = loadCheckoutData();
         if (saved) {
           setCustomer(saved.customer);
+          setSavedDeliveryDate(saved.deliveryDate);
+          setSavedDeliveryTime(saved.deliveryTime);
         }
-        clearCheckoutData();
         setOrderCreated(true);
         clearCart();
+        clearCheckoutData();
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (data.status === 'failed') {
         toast('Payment failed. Please try again.', 'error');
@@ -185,24 +190,7 @@ function CheckoutContent() {
 
   // Show loading while verifying payment after redirect
   if (isVerifying) {
-    return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center">
-        <svg
-          className="animate-spin h-12 w-12 text-violet-600 mb-6"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          />
-        </svg>
-        <h2 className="text-2xl font-black text-gray-900 mb-2">Verifying Payment</h2>
-        <p className="text-gray-500">Please wait while we confirm your payment...</p>
-      </div>
-    );
+    return <LoadingSpinner title="Verifying Payment" subtitle="Please wait while we confirm your payment..." size="lg" />;
   }
 
   if (items.length === 0 && !orderCreated) {
@@ -212,57 +200,60 @@ function CheckoutContent() {
   if (orderCreated) {
     return (
       <OrderSuccess
-        deliveryDate={deliveryDate || loadCheckoutData()?.deliveryDate || new Date().toISOString()}
-        deliveryTime={deliveryTime || loadCheckoutData()?.deliveryTime || ''}
+        deliveryDate={deliveryDate || savedDeliveryDate || new Date().toISOString()}
+        deliveryTime={deliveryTime || savedDeliveryTime || ''}
         customer={customer}
       />
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] py-16">
-      <div className="section-wrapper">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+    <div className="min-h-screen bg-[#FAFAFA] py-16 max-md:py-4 max-md:pb-32">
+      <div className="section-wrapper max-md:px-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 max-md:gap-3 mb-12 max-md:mb-6">
           <div>
             <Link
               href="/shop"
-              className="text-sm font-bold text-violet-600 hover:text-violet-700 transition-colors flex items-center gap-2 mb-2"
+              className="text-sm max-md:text-xs font-bold text-violet-600 hover:text-violet-700 transition-colors flex items-center gap-2 mb-2 max-md:mb-1"
             >
               ← Back to Shop
             </Link>
-            <h1 className="section-title">
+            <h1 className="section-title max-md:text-2xl">
               Checkout <span className="gradient-text">Details</span>
             </h1>
           </div>
-          <div className="flex items-center gap-6 px-6 py-3 bg-white rounded-2xl shadow-sm border border-gray-100">
-            <div className="text-right">
+          <div className="flex items-center gap-6 px-6 max-md:px-4 py-3 max-md:py-2 bg-white rounded-2xl shadow-sm border border-gray-100">
+            <div className="text-right max-md:text-left">
               <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Amount</p>
-              <p className="text-2xl font-black gradient-text">AED {subtotal}</p>
+              <p className="text-2xl max-md:text-xl font-black gradient-text">AED {subtotal}</p>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          <div className="lg:col-span-12 xl:col-span-8 space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 max-md:gap-4 items-start">
+          <div className="lg:col-span-12 xl:col-span-8 space-y-8 max-md:space-y-4">
             <CheckoutSteps paymentReady={false} />
 
             <PersonalInfoForm customer={customer} onChange={setCustomer} />
 
-            <div className="bg-white p-8 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 animate-in fade-in duration-500 delay-100">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-10 h-10 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center text-xl font-bold">
+            <div className="bg-white p-8 md:p-10 max-md:p-5 rounded-[2rem] max-md:rounded-2xl shadow-sm border border-gray-100 animate-in fade-in duration-500 delay-100">
+              <div className="flex items-center gap-3 max-md:gap-2 mb-8 max-md:mb-5">
+                <div className="w-10 h-10 max-md:w-8 max-md:h-8 bg-rose-50 text-rose-500 rounded-xl max-md:rounded-lg flex items-center justify-center text-xl max-md:text-base font-bold">
                   📅
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Delivery Schedule</h3>
+                <h3 className="text-2xl max-md:text-lg font-bold text-gray-900">Delivery Schedule</h3>
               </div>
               <DeliveryScheduler />
             </div>
 
-            <PaymentButton
-              onClick={handleCreateOrder}
-              disabled={!isFormValid || isInitializing}
-              isLoading={isInitializing}
-            />
+            {/* Desktop payment button */}
+            <div className="max-md:hidden">
+              <PaymentButton
+                onClick={handleCreateOrder}
+                disabled={!isFormValid || isInitializing}
+                isLoading={isInitializing}
+              />
+            </div>
           </div>
 
           {/* Sticky Order Summary Sidebar */}
@@ -272,6 +263,17 @@ function CheckoutContent() {
           </div>
         </div>
       </div>
+
+      {/* Mobile sticky bottom payment button */}
+      <div className="md:hidden mobile-sticky-bottom">
+        <button
+          onClick={handleCreateOrder}
+          disabled={!isFormValid || isInitializing}
+          className="btn-primary w-full py-4 text-base shadow-lg shadow-violet-200 disabled:grayscale"
+        >
+          {isInitializing ? 'Preparing Payment...' : `Pay AED ${subtotal} 💳`}
+        </button>
+      </div>
     </div>
   );
 }
@@ -279,24 +281,7 @@ function CheckoutContent() {
 export default function CheckoutPage() {
   return (
     <Suspense
-      fallback={
-        <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center">
-          <svg
-            className="animate-spin h-12 w-12 text-violet-600 mb-6"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            />
-          </svg>
-          <h2 className="text-2xl font-black text-gray-900 mb-2">Loading Checkout</h2>
-          <p className="text-gray-500">Please wait...</p>
-        </div>
-      }
+      fallback={<LoadingSpinner title="Loading Checkout" subtitle="Please wait..." size="lg" />}
     >
       <CheckoutContent />
     </Suspense>
