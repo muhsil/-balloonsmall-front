@@ -1,8 +1,5 @@
 "use client";
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useCallback, Suspense } from 'react';
-import { wooApi } from '@/lib/woocommerce';
+import { useRouter } from 'next/navigation';
 
 // We need this page to be a separate client component for the sort select
 export default function ShopSortBar({ currentSort, currentCategory, currentSearch }: {

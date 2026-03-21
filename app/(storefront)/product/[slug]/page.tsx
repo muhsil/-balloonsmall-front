@@ -7,6 +7,8 @@ import RatingStars from '@/components/ui/RatingStars';
 import SoldCount from '@/components/ui/SoldCount';
 import DealBadge from '@/components/ui/DealBadge';
 import ShippingBadge from '@/components/ui/ShippingBadge';
+import ProductImageGallery from '@/components/ui/ProductImageGallery';
+import StickyAddToCart from '@/components/ui/StickyAddToCart';
 
 export const revalidate = 60;
 
@@ -73,28 +75,12 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
 
       {/* Product Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-md:gap-0 px-4 max-md:px-0 mb-10 max-md:mb-6">
-        {/* Left: Image */}
-        <div className="max-md:mb-0">
-          <div className="rounded-2xl max-md:rounded-none overflow-hidden bg-gray-50 aspect-square flex items-center justify-center relative">
-            {product.images?.[0]?.src
-              ? <img src={product.images[0].src} alt={product.name} className="w-full h-full object-cover" />
-              : <span className="text-[100px] max-md:text-[70px]">🎈</span>
-            }
-            {discount > 0 && (
-              <div className="absolute top-3 left-3 max-md:top-2 max-md:left-2">
-                <DealBadge text={`-${discount}%`} variant="red" size="md" />
-              </div>
-            )}
-          </div>
-          {product.images?.length > 1 && (
-            <div className="flex gap-2 mt-3 max-md:mt-2 px-0 max-md:px-3 overflow-x-auto no-scrollbar">
-              {product.images.slice(0, 5).map((img: any) => (
-                <img key={img.id} src={img.src} alt={product.name}
-                  className="w-16 h-16 max-md:w-14 max-md:h-14 rounded-lg object-cover border-2 border-transparent hover:border-[#F26522] cursor-pointer transition-all shrink-0" />
-              ))}
-            </div>
-          )}
-        </div>
+        {/* Left: Image Gallery */}
+        <ProductImageGallery
+          images={product.images || []}
+          name={product.name}
+          discount={discount}
+        />
 
         {/* Right: Info */}
         <div className="flex flex-col max-md:px-3 max-md:pt-3">
@@ -221,6 +207,9 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
           </div>
         </div>
       )}
+
+      {/* Mobile Sticky Add to Cart */}
+      <StickyAddToCart productId={product.id} name={product.name} price={price} />
     </div>
   );
 }
