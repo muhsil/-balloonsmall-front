@@ -12,14 +12,12 @@ interface OrderSummaryProps {
 
 export default function OrderSummary({ items, subtotal }: OrderSummaryProps) {
   return (
-    <div className="bg-white p-8 max-md:p-5 rounded-[2rem] max-md:rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
-      <div className="absolute top-0 right-0 w-24 h-24 bg-violet-50 rounded-bl-[4rem] -z-10 opacity-50" />
-
-      <h3 className="text-xl max-md:text-lg font-black text-gray-900 mb-8 max-md:mb-5 flex items-center gap-2">
-        Order Summary <span className="text-violet-600">({items.length})</span>
+    <div className="bg-white p-5 max-md:p-4 rounded-xl border border-gray-100">
+      <h3 className="text-base font-extrabold text-gray-900 mb-4 flex items-center gap-2">
+        Order Summary <span className="text-[#F26522]">({items.length})</span>
       </h3>
 
-      <div className="space-y-6 max-md:space-y-4 mb-10 max-md:mb-6 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
+      <div className="space-y-3 mb-4 max-h-[40vh] overflow-y-auto pr-1">
         {items.map((item, idx) => (
           <CartItemCard
             key={idx}
@@ -32,28 +30,28 @@ export default function OrderSummary({ items, subtotal }: OrderSummaryProps) {
         ))}
       </div>
 
-      <div className="space-y-4 pt-6 border-t border-dashed border-gray-200">
+      <div className="space-y-2.5 pt-4 border-t border-dashed border-gray-200">
         <div className="flex justify-between text-sm">
-          <span className="text-gray-400 font-bold uppercase tracking-wider">Subtotal</span>
-          <span className="text-gray-900 font-bold">AED {subtotal}</span>
+          <span className="text-gray-400 font-medium">Subtotal</span>
+          <span className="text-gray-900 font-bold">AED {subtotal.toFixed(0)}</span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-gray-400 font-bold uppercase tracking-wider">Delivery</span>
-          <span className="text-green-500 font-bold">FREE</span>
+          <span className="text-gray-400 font-medium">Delivery</span>
+          <span className="text-[#00B578] font-bold">FREE</span>
         </div>
-        <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-          <span className="text-gray-900 font-black text-lg">Total</span>
+        <div className="flex justify-between items-center pt-3 border-t border-gray-100">
+          <span className="text-gray-900 font-extrabold text-base">Total</span>
           <PriceDisplay amount={subtotal} size="xl" />
         </div>
       </div>
 
-      <div className="mt-8 flex gap-2">
+      <div className="mt-4 flex gap-2">
         <input
           type="text"
           placeholder="Promo code"
-          className="form-input text-xs py-2 bg-gray-50/50 border-gray-100"
+          className="form-input text-xs py-2 bg-gray-50 border-gray-100"
         />
-        <button className="text-xs font-bold text-violet-600 border border-violet-100 px-4 rounded-xl hover:bg-violet-50">
+        <button className="text-xs font-bold text-[#F26522] border border-[#F26522]/20 px-4 rounded-lg hover:bg-[#FFF3EC]">
           Apply
         </button>
       </div>
