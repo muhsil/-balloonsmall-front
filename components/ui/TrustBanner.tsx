@@ -17,13 +17,13 @@ export default function TrustBanner() {
   return (
     <div className="bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto">
-        <div className="flex overflow-x-auto no-scrollbar">
+        <div className="flex md:justify-center overflow-x-auto no-scrollbar">
           {TRUST_ITEMS.map((item) => (
             <div
               key={item.title}
-              className="flex items-center gap-2 px-4 py-2.5 shrink-0 min-w-[140px]"
+              className="flex items-center gap-2.5 px-5 max-md:px-3 py-3 max-md:py-2.5 shrink-0 min-w-[140px] md:min-w-0 md:flex-1 md:justify-center"
             >
-              <span className="text-base">{item.icon}</span>
+              <span className="text-lg max-md:text-base">{item.icon}</span>
               <div className="min-w-0">
                 <p className="text-xs font-bold text-gray-900 whitespace-nowrap">{item.title}</p>
                 <p className="text-[10px] text-gray-400 whitespace-nowrap">{item.subtitle}</p>

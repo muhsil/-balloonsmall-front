@@ -13,8 +13,8 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
 
       {/* Footer */}
       <footer className="bg-white border-t border-gray-100 max-md:hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {/* Brand */}
             <div>
               <Link href="/" className="flex items-center gap-2 mb-3">
@@ -54,7 +54,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
             </div>
           </div>
 
-          <div className="border-t border-gray-100 mt-8 pt-6 text-center">
+          <div className="border-t border-gray-100 mt-10 pt-6 text-center">
             <p className="text-gray-400 text-xs">&copy; {new Date().getFullYear()} BalloonsMall. All rights reserved.</p>
           </div>
         </div>

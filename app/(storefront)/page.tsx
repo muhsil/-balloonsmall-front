@@ -66,7 +66,7 @@ export default async function HomePage() {
       <TrustBanner />
 
       {/* Hero Banner */}
-      <section className="px-3 pt-3 max-md:px-2 max-md:pt-2">
+      <section className="px-4 pt-4 max-md:px-2 max-md:pt-2 max-w-7xl mx-auto">
         <PromoBanner
           title="Celebrate Every Moment"
           subtitle="Premium balloon decorations delivered to your door in Dubai"
@@ -78,12 +78,12 @@ export default async function HomePage() {
 
       {/* Categories Row */}
       {topCategories.length > 0 && (
-        <section className="px-3 pt-4 max-md:px-2">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-extrabold text-gray-900 max-md:text-sm">Categories</h2>
+        <section className="px-4 pt-6 max-md:px-2 max-md:pt-4 max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-4 max-md:mb-3">
+            <h2 className="text-lg font-extrabold text-gray-900 max-md:text-sm">Categories</h2>
             <Link href="/shop" className="text-xs font-semibold text-[#F26522]">See All &gt;</Link>
           </div>
-          <div className="flex gap-4 max-md:gap-2 overflow-x-auto no-scrollbar pb-2">
+          <div className="flex gap-6 max-md:gap-2 overflow-x-auto no-scrollbar pb-2">
             <CategoryIconPill
               icon="🎈"
               label="All"
@@ -103,7 +103,7 @@ export default async function HomePage() {
 
       {/* Flash Deals / Featured */}
       {featured.length > 0 && (
-        <section className="px-3 pt-4 max-md:px-2">
+        <section className="px-4 pt-6 max-md:px-2 max-md:pt-4 max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <span className="text-base font-extrabold text-[#FF4747] max-md:text-sm deal-pulse">⚡ Flash Deals</span>
@@ -112,7 +112,7 @@ export default async function HomePage() {
           </div>
 
           {/* Horizontal scroll on mobile, grid on desktop */}
-          <div className="hidden md:grid grid-cols-4 gap-3">
+          <div className="hidden md:grid grid-cols-4 gap-4">
             {featured.slice(0, 4).map((p: any) => (
               <ProductCard
                 key={p.id}
@@ -149,7 +149,7 @@ export default async function HomePage() {
       )}
 
       {/* Second Promo Banner */}
-      <section className="px-3 pt-4 max-md:px-2">
+      <section className="px-4 pt-6 max-md:px-2 max-md:pt-4 max-w-7xl mx-auto">
         <PromoBanner
           title="Custom Balloon Designs"
           subtitle="Add your personal text and choose colors"
@@ -162,12 +162,12 @@ export default async function HomePage() {
 
       {/* All Products Grid */}
       {allProducts.length > 0 && (
-        <section className="px-3 pt-4 pb-6 max-md:px-2 max-md:pb-20">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-extrabold text-gray-900 max-md:text-sm">Just For You</h2>
+        <section className="px-4 pt-6 pb-10 max-md:px-2 max-md:pt-4 max-md:pb-20 max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-4 max-md:mb-3">
+            <h2 className="text-lg font-extrabold text-gray-900 max-md:text-sm">Just For You</h2>
             <Link href="/shop" className="text-xs font-semibold text-[#F26522]">See All &gt;</Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-md:gap-1.5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-md:gap-1.5">
             {allProducts.map((p: any) => (
               <ProductCard
                 key={p.id}

@@ -69,18 +69,19 @@ export default async function ShopPage({
     <>
       <TrustBanner />
 
-      <div className="max-w-7xl mx-auto px-3 max-md:px-2 pb-6 max-md:pb-20">
+      <div className="max-w-7xl mx-auto px-4 max-md:px-2 pb-10 max-md:pb-20">
         {/* Search Bar */}
-        <form method="GET" action="/shop" className="pt-3 mb-3">
+        {/* Mobile search bar - desktop uses navbar search */}
+        <form method="GET" action="/shop" className="md:hidden pt-3 mb-3">
           <div className="flex border-2 border-[#F26522] rounded-full overflow-hidden bg-white">
             <input
               name="search"
               defaultValue={searchParams.search || ''}
               placeholder="Search balloons, occasions..."
-              className="flex-1 px-4 py-2.5 text-sm outline-none max-md:text-xs max-md:px-3"
+              className="flex-1 px-3 py-2.5 text-xs outline-none"
             />
-            <button type="submit" className="bg-[#F26522] text-white px-5 max-md:px-3 font-bold text-sm hover:bg-[#D4520F] transition-colors">
-              <svg className="w-5 h-5 max-md:w-4 max-md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button type="submit" className="bg-[#F26522] text-white px-3 font-bold text-sm hover:bg-[#D4520F] transition-colors">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
@@ -89,7 +90,7 @@ export default async function ShopPage({
 
         {/* Category Pills */}
         {topCategories.length > 0 && (
-          <div className="flex gap-3 max-md:gap-1.5 overflow-x-auto no-scrollbar pb-3">
+          <div className="flex gap-4 max-md:gap-1.5 overflow-x-auto no-scrollbar pb-3 pt-3 md:pt-4">
             <CategoryIconPill
               icon="🎈"
               label="All"
@@ -128,7 +129,7 @@ export default async function ShopPage({
             actionHref="/shop"
           />
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 max-md:gap-1.5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-md:gap-1.5">
             {displayProducts.map((p: any) => {
               const catSlug = p.categories?.[0]?.slug || 'default';
               return (

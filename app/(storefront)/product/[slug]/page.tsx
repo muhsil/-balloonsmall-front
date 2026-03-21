@@ -61,7 +61,7 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
   const reviewCount = Math.floor(price * 2 + 30);
 
   return (
-    <div className="max-w-7xl mx-auto pb-6 max-md:pb-24">
+    <div className="max-w-7xl mx-auto pb-10 max-md:pb-24">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs text-gray-400 px-4 py-3 max-md:px-3 overflow-x-auto no-scrollbar">
         <Link href="/" className="hover:text-[#F26522] transition-colors shrink-0">Home</Link>
@@ -72,7 +72,7 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
       </nav>
 
       {/* Product Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-md:gap-0 px-4 max-md:px-0 mb-10 max-md:mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-md:gap-0 px-4 max-md:px-0 mb-10 max-md:mb-6">
         {/* Left: Image */}
         <div className="max-md:mb-0">
           <div className="rounded-2xl max-md:rounded-none overflow-hidden bg-gray-50 aspect-square flex items-center justify-center relative">
@@ -183,14 +183,14 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
 
       {/* Related Products */}
       {similarProducts.length > 0 && (
-        <div className="mx-4 max-md:mx-3 max-md:mb-6">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-extrabold text-gray-900 max-md:text-sm">You May Also Like</h2>
+        <div className="mx-4 max-md:mx-3 mb-10 max-md:mb-6">
+          <div className="flex items-center justify-between mb-4 max-md:mb-3">
+            <h2 className="text-lg font-extrabold text-gray-900 max-md:text-sm">You May Also Like</h2>
             <Link href="/shop" className="text-xs font-semibold text-[#F26522]">See All &gt;</Link>
           </div>
 
           {/* Desktop grid */}
-          <div className="hidden md:grid grid-cols-4 gap-3">
+          <div className="hidden md:grid grid-cols-4 gap-4">
             {similarProducts.map((p: any) => (
               <ProductCard
                 key={p.id}
