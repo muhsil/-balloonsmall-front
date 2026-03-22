@@ -61,7 +61,7 @@ export default function ProductCard({
       </div>
 
       {/* Card body */}
-      <div className={`p-2.5 ${variant === 'compact' ? 'p-2' : ''}`}>
+      <div className={variant === 'compact' ? 'p-2' : 'p-2.5'}>
         {/* Product name */}
         <h3 className="text-[13px] text-[#191919] line-clamp-2 leading-[1.4] mb-1.5 min-h-[36px]">
           {name}
