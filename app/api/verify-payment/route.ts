@@ -2,6 +2,13 @@ import { NextResponse } from 'next/server';
 
 const ZIINA_API_URL = 'https://api-v2.ziina.com/api';
 
+// Per Ziina docs, possible payment intent statuses:
+// - failed: Payment has failed (check latest_error for details)
+// - completed: Payment is complete
+// - requires_user_action: User must complete an action (e.g., 3-D Secure)
+// - pending: Payment is processing
+// - requires_payment_instrument: Customer has not yet attempted payment
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -22,6 +29,13 @@ export async function GET(req: Request) {
       );
     }
 
+    if (!process.env.ZIINA_API_KEY) {
+      return NextResponse.json(
+        { error: 'Payment gateway is not configured' },
+        { status: 503 }
+      );
+    }
+
     const response = await fetch(
       `${ZIINA_API_URL}/payment_intent/${paymentIntentId}`,
       {
@@ -34,9 +48,9 @@ export async function GET(req: Request) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('Ziina verify error:', data);
+      console.error('Ziina verify error:', JSON.stringify(data));
       return NextResponse.json(
-        { error: data.message || 'Failed to verify payment' },
+        { error: data.message || data.error || 'Failed to verify payment' },
         { status: response.status }
       );
     }
@@ -50,7 +64,10 @@ export async function GET(req: Request) {
       status: data.status,
       amount: data.amount,
       currencyCode: data.currency_code,
+      message: data.message,
       testMode: isTestMode,
+      // Per Ziina docs: latest_error is available when status is 'failed'
+      latestError: data.latest_error || null,
     });
   } catch (error) {
     console.error('Ziina verify payment error:', error);
