@@ -55,7 +55,7 @@ export default function ProductVariationPicker({
           const vAttr = v.attributes.find(
             (va) => va.name.toLowerCase() === attr.name.toLowerCase() || va.name.toLowerCase() === attr.slug
           );
-          return vAttr && vAttr.option.toLowerCase() === sel.toLowerCase();
+          return vAttr && (vAttr.option === '' || vAttr.option.toLowerCase() === sel.toLowerCase());
         })
       )
     : null;
