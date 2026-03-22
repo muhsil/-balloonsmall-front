@@ -22,13 +22,13 @@ export async function PUT(req: Request) {
     const metaData: Array<{ key: string; value: string }> = [];
 
     if (paymentIntentId) {
-      metaData.push({ key: '_ziina_payment_intent_id', value: paymentIntentId });
+      metaData.push({ key: 'ziina_payment_intent_id', value: paymentIntentId });
     }
     if (paymentMethod) {
-      metaData.push({ key: '_ziina_payment_method', value: paymentMethod });
+      metaData.push({ key: 'ziina_payment_method', value: paymentMethod });
     }
     if (testMode !== undefined) {
-      metaData.push({ key: '_ziina_test_mode', value: String(testMode) });
+      metaData.push({ key: 'ziina_test_mode', value: String(testMode) });
     }
 
     if (metaData.length > 0) {

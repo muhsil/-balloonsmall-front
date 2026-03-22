@@ -1,5 +1,8 @@
+"use client";
+
 import Link from 'next/link';
 import React from 'react';
+import WishlistButton from '@/components/ui/WishlistButton';
 
 interface ProductCardProps {
   slug: string;
@@ -12,6 +15,7 @@ interface ProductCardProps {
   featured?: boolean;
   variant?: 'default' | 'compact';
   currency?: string;
+  productId?: number;
 }
 
 export default function ProductCard({
@@ -24,6 +28,7 @@ export default function ProductCard({
   featured,
   variant = 'default',
   currency = 'AED',
+  productId,
 }: ProductCardProps) {
   const discount = onSale && regularPrice ? Math.round(((regularPrice - price) / regularPrice) * 100) : 0;
   const hash = slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
@@ -60,6 +65,14 @@ export default function ProductCard({
             HOT
           </span>
         )}
+
+        {/* Wishlist heart */}
+        <div className="absolute top-2 right-2">
+          <WishlistButton
+            item={{ id: productId || 0, name, price, image: imageSrc, slug }}
+            size="sm"
+          />
+        </div>
       </div>
 
       {/* Card body */}

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useCartStore } from '@/store/useCartStore';
+import { useWishlistStore } from '@/store/useWishlistStore';
 import { useState } from 'react';
 
 function HomeIcon({ active }: { active: boolean }) {
@@ -29,18 +30,18 @@ function CartIcon({ active }: { active: boolean }) {
   );
 }
 
-function DealsIcon({ active }: { active: boolean }) {
+function HeartIcon({ active }: { active: boolean }) {
   return (
     <svg className="w-6 h-6" fill={active ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={active ? 0 : 1.8} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={active ? 0 : 1.8} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
     </svg>
   );
 }
 
-function MenuIcon({ active }: { active: boolean }) {
+function AccountIcon({ active }: { active: boolean }) {
   return (
-    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={active ? 2.4 : 1.8} d="M4 6h16M4 12h16M4 18h16" />
+    <svg className="w-6 h-6" fill={active ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={active ? 0 : 1.8} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
     </svg>
   );
 }
@@ -58,15 +59,17 @@ export default function MobileBottomNav() {
   const pathname = usePathname();
   const items = useCartStore((s) => s.items);
   const cartCount = items.reduce((sum, i) => sum + i.quantity, 0);
+  const wishlistItems = useWishlistStore((s) => s.items);
+  const wishlistCount = wishlistItems.length;
   const [menuOpen, setMenuOpen] = useState(false);
 
   const searchParams = useSearchParams();
-  const isFeatured = searchParams.get('featured') === 'true';
 
   const isHome = pathname === '/';
-  const isShop = pathname.startsWith('/shop') && !isFeatured;
-  const isDeals = pathname.startsWith('/shop') && isFeatured;
+  const isShop = pathname.startsWith('/shop');
   const isCart = pathname === '/checkout';
+  const isWishlist = pathname === '/account/wishlist';
+  const isAccount = pathname.startsWith('/account') && !isWishlist;
   const isMenu = ['/about', '/contact', '/faq', '/shipping', '/terms', '/privacy'].includes(pathname);
 
   return (
@@ -141,18 +144,22 @@ export default function MobileBottomNav() {
           <span className="mobile-nav-label">Cart</span>
         </Link>
 
-        <Link href="/shop?featured=true" className={`mobile-nav-item ${isDeals ? 'mobile-nav-active' : ''}`}>
-          <DealsIcon active={isDeals} />
-          <span className="mobile-nav-label">Deals</span>
+        <Link href="/account/wishlist" className={`mobile-nav-item ${isWishlist ? 'mobile-nav-active' : ''}`}>
+          <div className="relative">
+            <HeartIcon active={isWishlist} />
+            {wishlistCount > 0 && (
+              <span className="mobile-cart-badge">
+                {wishlistCount > 99 ? '99+' : wishlistCount}
+              </span>
+            )}
+          </div>
+          <span className="mobile-nav-label">Wishlist</span>
         </Link>
 
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className={`mobile-nav-item ${isMenu || menuOpen ? 'mobile-nav-active' : ''}`}
-        >
-          <MenuIcon active={isMenu || menuOpen} />
-          <span className="mobile-nav-label">Menu</span>
-        </button>
+        <Link href="/account" className={`mobile-nav-item ${isAccount || isMenu || menuOpen ? 'mobile-nav-active' : ''}`}>
+          <AccountIcon active={isAccount || isMenu || menuOpen} />
+          <span className="mobile-nav-label">Account</span>
+        </Link>
       </nav>
     </>
   );
