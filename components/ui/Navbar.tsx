@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useCartStore } from '@/store/useCartStore';
 import { useWishlistStore } from '@/store/useWishlistStore';
+import { useAuthStore } from '@/store/useAuthStore';
 import { useState, useEffect } from 'react';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { ToastContainer } from '@/components/ui/Toast';
@@ -19,6 +20,8 @@ export default function Navbar() {
   const items = useCartStore((s) => s.items);
   const cartCount = items.reduce((sum, i) => sum + i.quantity, 0);
   const wishlistCount = useWishlistStore((s) => s.items.length);
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+  const authCustomer = useAuthStore((s) => s.customer);
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
@@ -74,10 +77,13 @@ export default function Navbar() {
             </Link>
 
             {/* Account */}
-            <Link href="/account" className="hidden md:flex p-2 rounded-full hover:bg-[#f5f5f5] transition-colors">
-              <svg className="w-5 h-5 text-[#333]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <Link href={isLoggedIn ? '/account' : '/account/login'} className="hidden md:flex items-center gap-1.5 p-2 rounded-full hover:bg-[#f5f5f5] transition-colors">
+              <svg className="w-5 h-5 text-[#333]" fill={isLoggedIn ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
+              {isLoggedIn && authCustomer && (
+                <span className="text-xs font-medium text-[#333] max-w-[80px] truncate hidden lg:inline">{authCustomer.firstName}</span>
+              )}
             </Link>
 
             {/* Cart */}

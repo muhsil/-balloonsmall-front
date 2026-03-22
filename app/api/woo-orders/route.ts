@@ -1,11 +1,22 @@
 import { NextResponse } from 'next/server';
 import { wooApi } from '@/lib/woocommerce';
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const response = await wooApi.get('/orders', {
-      params: { per_page: 20, orderby: 'date', order: 'desc' },
-    });
+    const { searchParams } = new URL(req.url);
+    const customerId = searchParams.get('customer_id');
+
+    const params: Record<string, string | number> = {
+      per_page: 20,
+      orderby: 'date',
+      order: 'desc',
+    };
+
+    if (customerId) {
+      params.customer = Number(customerId);
+    }
+
+    const response = await wooApi.get('/orders', { params });
     return NextResponse.json({ orders: response.data });
   } catch (error) {
     console.error('Failed to fetch orders:', error);

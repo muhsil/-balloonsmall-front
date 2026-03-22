@@ -6,6 +6,7 @@ import OrderCard from '@/components/account/OrderCard';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import EmptyState from '@/components/ui/EmptyState';
 import { useStoreSettings } from '@/components/providers/StoreSettingsProvider';
+import { useAuthStore } from '@/store/useAuthStore';
 
 interface WooOrder {
   id: number;
@@ -20,11 +21,13 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState<WooOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const { currency } = useStoreSettings();
+  const customer = useAuthStore((s) => s.customer);
 
   useEffect(() => {
     async function fetchOrders() {
       try {
-        const res = await fetch('/api/woo-orders');
+        const url = customer?.id ? `/api/woo-orders?customer_id=${customer.id}` : '/api/woo-orders';
+        const res = await fetch(url);
         if (res.ok) {
           const data = await res.json();
           setOrders(data.orders || []);

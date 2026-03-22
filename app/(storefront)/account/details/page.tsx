@@ -7,6 +7,7 @@ import PhoneInput from '@/components/ui/PhoneInput';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import SectionCard from '@/components/ui/SectionCard';
 import { toast } from '@/components/ui/Toast';
+import { useAuthStore } from '@/store/useAuthStore';
 
 interface AccountDetails {
   firstName: string;
@@ -26,11 +27,14 @@ export default function AccountDetailsPage() {
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const authCustomer = useAuthStore((s) => s.customer);
+  const updateAuthCustomer = useAuthStore((s) => s.updateCustomer);
 
   useEffect(() => {
     async function fetchDetails() {
       try {
-        const res = await fetch('/api/woo-customer');
+        const url = authCustomer?.id ? `/api/woo-customer?id=${authCustomer.id}` : '/api/woo-customer';
+        const res = await fetch(url);
         if (res.ok) {
           const json = await res.json();
           const c = json.customer;
@@ -64,6 +68,7 @@ export default function AccountDetailsPage() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          customerId: authCustomer?.id,
           first_name: details.firstName,
           last_name: details.lastName,
           email: details.email,
@@ -71,6 +76,7 @@ export default function AccountDetailsPage() {
         }),
       });
       if (res.ok) {
+        updateAuthCustomer({ firstName: details.firstName, lastName: details.lastName, email: details.email });
         toast('Account details updated!');
       } else {
         toast('Failed to update. Please try again.');
