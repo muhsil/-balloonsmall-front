@@ -13,7 +13,8 @@ export async function POST(req: Request) {
       billing: body.billing,
       shipping: body.shipping,
       line_items: body.items.map((item: any) => ({
-        product_id: item.id,
+        product_id: item.productId || item.id,
+        ...(item.productId ? { variation_id: item.id } : {}),
         quantity: item.quantity,
         meta_data: item.variant ? [
           { key: 'Variation', value: item.variant }

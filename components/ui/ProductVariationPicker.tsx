@@ -88,6 +88,7 @@ export default function ProductVariationPicker({
 
     addToCart({
       id: matchedVariation?.id || productId,
+      productId: matchedVariation ? productId : undefined,
       name: productName,
       price: currentPrice,
       quantity,

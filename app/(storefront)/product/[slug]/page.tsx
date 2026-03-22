@@ -221,8 +221,10 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
         </div>
       )}
 
-      {/* Mobile Sticky Add to Cart */}
-      <StickyAddToCart productId={product.id} name={product.name} price={price} image={mainImage} />
+      {/* Mobile Sticky Add to Cart (only for simple products — variable products use ProductVariationPicker) */}
+      {product.type !== 'variable' && (
+        <StickyAddToCart productId={product.id} name={product.name} price={price} image={mainImage} />
+      )}
     </div>
   );
 }
