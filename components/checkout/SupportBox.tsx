@@ -12,7 +12,7 @@ export default function SupportBox() {
         Expert assistance is just a message away.
       </p>
       <a
-        href="https://wa.me/971500000000"
+        href="https://wa.me/971563554303"
         className="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all text-sm"
       >
         WhatsApp Support 💬

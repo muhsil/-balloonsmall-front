@@ -23,7 +23,7 @@ export default function OrderSuccess({ deliveryDate, deliveryTime, customer }: O
           Woohoo! Order Confirmed
         </h1>
         <p className="text-xl max-md:text-sm text-gray-600 mb-10 max-md:mb-6 leading-relaxed font-medium">
-          Your customized balloons are being prepared with love and will arrive on
+          Your balloons are being prepared with love and will arrive on
           <span className="text-violet-600 block sm:inline">
             {' '}
             {new Date(deliveryDate).toLocaleDateString('en-US', {
@@ -51,7 +51,7 @@ export default function OrderSuccess({ deliveryDate, deliveryTime, customer }: O
           <span className="text-2xl">💡</span>
           <p className="text-sm text-violet-700 leading-relaxed font-medium">
             Need help with your order? Our team is available on WhatsApp to assist you with
-            customization or any questions you may have.
+            any questions you may have.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -62,7 +62,7 @@ export default function OrderSuccess({ deliveryDate, deliveryTime, customer }: O
             Continue Shopping
           </button>
           <a
-            href="https://wa.me/971500000000"
+            href="https://wa.me/971563554303"
             target="_blank"
             rel="noopener noreferrer"
             className="px-8 py-4 bg-white text-violet-600 font-bold rounded-2xl border-2 border-violet-100 hover:bg-violet-50 transition-all text-center"

@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { href: '/shop?category=wedding', label: 'Wedding', icon: '💒' },
   { href: '/shop?category=baby-shower', label: 'Baby', icon: '👶' },
   { href: '/shop?category=events', label: 'Events', icon: '🎉' },
-  { href: '/shop?category=custom', label: 'Custom', icon: '🎨' },
+  { href: '/shop?category=graduation', label: 'Graduation', icon: '🎓' },
 ];
 
 export default function Navbar() {

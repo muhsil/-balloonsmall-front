@@ -8,14 +8,15 @@ interface StickyAddToCartProps {
   productId: number;
   name: string;
   price: number;
+  image?: string;
 }
 
-export default function StickyAddToCart({ productId, name, price }: StickyAddToCartProps) {
+export default function StickyAddToCart({ productId, name, price, image }: StickyAddToCartProps) {
   const [added, setAdded] = useState(false);
   const addToCart = useCartStore((state) => state.addToCart);
 
   const handleAdd = () => {
-    addToCart({ id: productId, name, price, quantity: 1 });
+    addToCart({ id: productId, name, price, quantity: 1, image });
     toast(`Added ${name} to cart!`, 'success');
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
