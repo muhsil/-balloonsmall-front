@@ -81,6 +81,10 @@ export default function ProductVariationPicker({
       toast('Please select all options', 'error');
       return;
     }
+    if (hasVariations && !matchedVariation) {
+      toast('This combination is not available', 'error');
+      return;
+    }
 
     const variantLabel = hasVariations
       ? variationAttributes.map((a) => selected[a.slug]).join(' / ')
@@ -145,7 +149,7 @@ export default function ProductVariationPicker({
         <QuantitySelector value={quantity} onChange={setQuantity} size="sm" />
         <button
           onClick={handleAddToCart}
-          disabled={!isInStock || (hasVariations && !allSelected)}
+          disabled={!isInStock || (hasVariations && (!allSelected || !matchedVariation))}
           className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
             added
               ? 'bg-[#00B578] text-white'
