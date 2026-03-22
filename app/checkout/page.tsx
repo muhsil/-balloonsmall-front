@@ -19,6 +19,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import SectionCard from '@/components/ui/SectionCard';
 import PaymentMethodCard from '@/components/ui/PaymentMethodCard';
 import PriceDisplay from '@/components/ui/PriceDisplay';
+import TestModeBadge from '@/components/ui/TestModeBadge';
 import { useStoreSettings } from '@/components/providers/StoreSettingsProvider';
 
 const CHECKOUT_DATA_KEY = 'balloonsmall-checkout';
@@ -99,6 +100,7 @@ function CheckoutContent() {
       const res = await fetch(`/api/verify-payment?id=${paymentIntentId}`);
       const data = await res.json();
 
+      // Per Ziina docs, statuses: completed, failed, pending, requires_user_action, requires_payment_instrument
       if (data.status === 'completed') {
         const saved = loadCheckoutData();
         if (saved) {
@@ -126,11 +128,17 @@ function CheckoutContent() {
         clearCheckoutData();
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (data.status === 'failed') {
-        toast('Payment failed. Please try again.', 'error');
-      } else if (data.status === 'pending' || data.status === 'requires_user_action') {
-        toast('Payment is still processing. Please wait...', 'info');
-      } else {
+        // Per Ziina docs: check latest_error for detailed failure description
+        const errorDetail = data.latestError?.message || data.latestError?.code || '';
+        toast(`Payment failed${errorDetail ? `: ${errorDetail}` : ''}. Please try again.`, 'error');
+      } else if (data.status === 'pending') {
+        toast('Payment is processing. Please wait...', 'info');
+      } else if (data.status === 'requires_user_action') {
+        toast('Additional verification required. Please complete the payment.', 'info');
+      } else if (data.status === 'requires_payment_instrument') {
         toast('Payment was not completed. Please try again.', 'error');
+      } else {
+        toast('Payment status unknown. Please contact support.', 'error');
       }
     } catch (err) {
       console.error('Payment verification error:', err);
@@ -268,6 +276,7 @@ function CheckoutContent() {
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] py-6 max-md:py-4 max-md:pb-36">
+      <TestModeBadge />
       <div className="max-w-5xl mx-auto px-6 max-md:px-3">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">

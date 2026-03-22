@@ -3,7 +3,6 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { OrganizationJsonLd, WebSiteJsonLd, LocalBusinessJsonLd } from '@/components/seo/JsonLd';
 import StoreSettingsProvider from '@/components/providers/StoreSettingsProvider';
-import TestModeBadge from '@/components/ui/TestModeBadge';
 import { getStoreSettings } from '@/lib/store-settings';
 
 const inter = Inter({
@@ -96,7 +95,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <OrganizationJsonLd />
         <WebSiteJsonLd />
         <LocalBusinessJsonLd currency={settings.currency} />
-        <TestModeBadge />
         <StoreSettingsProvider currency={settings.currency} numDecimals={settings.numDecimals}>
           {children}
         </StoreSettingsProvider>
