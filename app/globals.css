@@ -381,13 +381,9 @@
     overscroll-behavior-y: contain;
   }
 
-  /* Touch-friendly minimum sizes */
-  button, a, input, select, textarea {
-    min-height: 44px;
-  }
-
-  /* Better input styling for mobile */
+  /* Touch-friendly minimum sizes for form elements */
   input, select, textarea {
+    min-height: 44px;
     font-size: 16px !important; /* Prevent iOS zoom on focus */
     border-radius: 8px;
   }

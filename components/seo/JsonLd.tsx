@@ -184,13 +184,6 @@ export function ProductJsonLd({ name, description, image, price, slug, inStock, 
         },
       },
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      reviewCount: String(Math.floor(price * 2 + 30)),
-      bestRating: '5',
-      worstRating: '1',
-    },
   };
   return (
     <script

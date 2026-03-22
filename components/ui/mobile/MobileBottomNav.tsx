@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useCartStore } from '@/store/useCartStore';
 import { useState } from 'react';
 
@@ -60,8 +60,12 @@ export default function MobileBottomNav() {
   const cartCount = items.reduce((sum, i) => sum + i.quantity, 0);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const searchParams = useSearchParams();
+  const isFeatured = searchParams.get('featured') === 'true';
+
   const isHome = pathname === '/';
-  const isShop = pathname.startsWith('/shop');
+  const isShop = pathname.startsWith('/shop') && !isFeatured;
+  const isDeals = pathname.startsWith('/shop') && isFeatured;
   const isCart = pathname === '/checkout';
   const isMenu = ['/about', '/contact', '/faq', '/shipping', '/terms', '/privacy'].includes(pathname);
 
@@ -137,8 +141,8 @@ export default function MobileBottomNav() {
           <span className="mobile-nav-label">Cart</span>
         </Link>
 
-        <Link href="/shop?featured=true" className="mobile-nav-item">
-          <DealsIcon active={false} />
+        <Link href="/shop?featured=true" className={`mobile-nav-item ${isDeals ? 'mobile-nav-active' : ''}`}>
+          <DealsIcon active={isDeals} />
           <span className="mobile-nav-label">Deals</span>
         </Link>
 
