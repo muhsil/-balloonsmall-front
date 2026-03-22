@@ -2,7 +2,7 @@ function safeJsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, '\\u003c');
 }
 
-export function OrganizationJsonLd({ currency = 'AED' }: { currency?: string }) {
+export function OrganizationJsonLd() {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'Organization',

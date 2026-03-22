@@ -92,7 +92,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   return (
     <html lang="en" className={inter.variable}>
       <body className="font-sans antialiased">
-        <OrganizationJsonLd currency={settings.currency} />
+        <OrganizationJsonLd />
         <WebSiteJsonLd />
         <LocalBusinessJsonLd currency={settings.currency} />
         <StoreSettingsProvider currency={settings.currency} numDecimals={settings.numDecimals}>
