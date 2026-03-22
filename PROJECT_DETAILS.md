@@ -28,7 +28,7 @@ BalloonsMall is a premium balloon and event decoration e-commerce store based in
 - **API Docs:** https://docs.ziina.com/getting-started
 - **API Base URL:** https://api-v2.ziina.com/api
 - **Payment Flow:** Server-side payment intent creation -> redirect to Ziina checkout -> redirect back on success/cancel
-- **Test Mode:** Pass `test: true` when creating payment intents (auto-enabled in dev)
+- **Test Mode:** Controlled by `ZIINA_TEST_MODE` env var (set to `"true"` to enable) or auto-enabled in dev (NODE_ENV !== production)
 - **Currency:** Dynamically fetched from WooCommerce settings (currently AED)
 - **Amount Format:** Fils (smallest currency unit, e.g. 100 AED = 10000 fils)
 
@@ -66,6 +66,7 @@ WC_CONSUMER_SECRET="<your-woocommerce-consumer-secret>"
 
 # Ziina Payment Gateway
 ZIINA_API_KEY="<your-ziina-api-key>"
+ZIINA_TEST_MODE="true"   # Set to "true" to enable test mode in production (for test cards)
 ```
 
 ### How to generate WooCommerce API keys:
