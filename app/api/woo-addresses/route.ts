@@ -26,7 +26,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Customer ID required' }, { status: 400 });
     }
 
-    const response = await wooApi.get(`/customers/${customerId}`);
+    const response = await wooApi.get(`/customers/${customerId}?_=${Date.now()}`);
     const customer = response.data;
 
     // Get addresses from customer meta
@@ -97,7 +97,7 @@ export async function POST(req: Request) {
     }
 
     // Fetch current addresses
-    const response = await wooApi.get(`/customers/${customerId}`);
+    const response = await wooApi.get(`/customers/${customerId}?_=${Date.now()}`);
     const customer = response.data;
 
     const metaEntry = customer.meta_data?.find(
@@ -176,7 +176,7 @@ export async function PUT(req: Request) {
     }
 
     // Update custom address in meta
-    const response = await wooApi.get(`/customers/${customerId}`);
+    const response = await wooApi.get(`/customers/${customerId}?_=${Date.now()}`);
     const customer = response.data;
 
     const metaEntry = customer.meta_data?.find(
@@ -228,7 +228,7 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: 'Cannot delete default billing/shipping address' }, { status: 400 });
     }
 
-    const response = await wooApi.get(`/customers/${customerId}`);
+    const response = await wooApi.get(`/customers/${customerId}?_=${Date.now()}`);
     const customer = response.data;
 
     const metaEntry = customer.meta_data?.find(

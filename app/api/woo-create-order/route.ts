@@ -31,7 +31,8 @@ export async function POST(req: Request) {
       orderData.customer_note = body.customerNote;
     }
 
-    if (body.status) {
+    const ALLOWED_STATUSES = ['pending', 'processing'];
+    if (body.status && ALLOWED_STATUSES.includes(body.status)) {
       orderData.status = body.status;
     }
 
