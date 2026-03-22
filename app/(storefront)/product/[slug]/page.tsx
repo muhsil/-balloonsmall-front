@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { wooApi } from '@/lib/woocommerce';
 import Link from 'next/link';
 import ProductCard from '@/components/ui/ProductCard';
@@ -9,6 +10,7 @@ import ShippingBadge from '@/components/ui/ShippingBadge';
 import ProductImageGallery from '@/components/ui/ProductImageGallery';
 import StickyAddToCart from '@/components/ui/StickyAddToCart';
 import ProductVariationPicker from '@/components/ui/ProductVariationPicker';
+import { ProductJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 export const revalidate = 60;
 
@@ -45,6 +47,29 @@ async function getRelated(categoryIds: number[]) {
   } catch { return []; }
 }
 
+export async function generateMetadata({ params: paramsPromise }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await paramsPromise;
+  try {
+    const { data } = await wooApi.get('/products', { params: { slug: params.slug } });
+    const product = data?.[0] as any;
+    if (!product) return { title: 'Product Not Found' };
+    const desc = (product.short_description || product.description || '').replace(/<[^>]*>/g, '').slice(0, 160);
+    return {
+      title: product.name,
+      description: desc || `Buy ${product.name} from BalloonsMall. Premium balloons delivered in Dubai.`,
+      alternates: { canonical: `/product/${params.slug}` },
+      openGraph: {
+        title: `${product.name} | BalloonsMall Dubai`,
+        description: desc || `Buy ${product.name} from BalloonsMall Dubai.`,
+        type: 'website',
+        images: product.images?.[0]?.src ? [{ url: product.images[0].src, width: 800, height: 800, alt: product.name }] : [],
+      },
+    };
+  } catch {
+    return { title: 'Product' };
+  }
+}
+
 export default async function ProductPage({ params: paramsPromise }: { params: Promise<{ slug: string }> }) {
   const params = await paramsPromise;
   const product = await getProduct(params.slug);
@@ -78,6 +103,21 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
 
   return (
     <div className="max-w-7xl mx-auto pb-10 max-md:pb-24">
+      <ProductJsonLd
+        name={product.name}
+        description={product.short_description || product.description || ''}
+        image={mainImage}
+        price={price}
+        slug={params.slug}
+        inStock={product.in_stock !== false}
+        category={product.categories?.[0]?.name}
+      />
+      <BreadcrumbJsonLd items={[
+        { name: 'Home', href: '/' },
+        { name: 'Shop', href: '/shop' },
+        { name: product.name, href: `/product/${params.slug}` },
+      ]} />
+
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs text-gray-400 px-4 py-3 max-md:px-3 overflow-x-auto no-scrollbar">
         <Link href="/" className="hover:text-[#F26522] transition-colors shrink-0">Home</Link>

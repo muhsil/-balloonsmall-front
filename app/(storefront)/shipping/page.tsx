@@ -1,8 +1,24 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+
+export const metadata: Metadata = {
+  title: 'Shipping & Delivery',
+  description: 'BalloonsMall delivers across all of Dubai. Free delivery on orders over AED 100. Same-day delivery available when you order before 2 PM.',
+  alternates: { canonical: '/shipping' },
+  openGraph: {
+    title: 'Shipping & Delivery | BalloonsMall Dubai',
+    description: 'Free delivery on orders over AED 100. Same-day delivery available in Dubai.',
+  },
+};
 
 export default function ShippingPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-10 max-md:px-3 max-md:py-6 max-md:pb-20">
+      <BreadcrumbJsonLd items={[
+        { name: 'Home', href: '/' },
+        { name: 'Shipping & Delivery', href: '/shipping' },
+      ]} />
       <nav className="flex items-center gap-2 text-xs text-gray-400 mb-6">
         <Link href="/" className="hover:text-[#F26522]">Home</Link>
         <span>&gt;</span>
