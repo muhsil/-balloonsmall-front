@@ -7,6 +7,8 @@ import { toast } from '@/components/ui/Toast';
 
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import PersonalInfoForm, { CustomerInfo } from '@/components/checkout/PersonalInfoForm';
+import BillingAddressForm, { BillingInfo } from '@/components/checkout/BillingAddressForm';
+import OrderNotes from '@/components/checkout/OrderNotes';
 import DeliveryScheduler from '@/components/checkout/DeliveryScheduler';
 import OrderSummary from '@/components/checkout/OrderSummary';
 import OrderSuccess from '@/components/checkout/OrderSuccess';
@@ -56,13 +58,31 @@ function CheckoutContent() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [savedDeliveryDate, setSavedDeliveryDate] = useState<string | null>(null);
   const [savedDeliveryTime, setSavedDeliveryTime] = useState<string | null>(null);
+  const [orderNotes, setOrderNotes] = useState('');
+  const [sameAsShipping, setSameAsShipping] = useState(true);
 
   const [customer, setCustomer] = useState<CustomerInfo>({
     firstName: '',
     lastName: '',
     email: '',
+    phone: '',
+    countryCode: '+971',
     address: '',
     city: 'Dubai',
+    state: '',
+    country: 'AE',
+  });
+
+  const [billing, setBilling] = useState<BillingInfo>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    countryCode: '+971',
+    address: '',
+    city: '',
+    state: '',
+    country: 'AE',
   });
 
   const subtotal = useMemo(
@@ -71,7 +91,7 @@ function CheckoutContent() {
   );
 
   const isDeliverySelected = !!(deliveryDate && deliveryTime);
-  const isFormValid = customer.firstName && customer.email && customer.address && isDeliverySelected;
+  const isFormValid = customer.firstName && customer.email && customer.phone && customer.address && customer.city && customer.country && isDeliverySelected;
 
   const verifyPayment = useCallback(async (paymentIntentId: string) => {
     setIsVerifying(true);
@@ -140,6 +160,28 @@ function CheckoutContent() {
     try {
       setIsInitializing(true);
 
+      const billingData = sameAsShipping
+        ? {
+            first_name: customer.firstName,
+            last_name: customer.lastName,
+            email: customer.email,
+            phone: `${customer.countryCode}${customer.phone}`,
+            address_1: customer.address,
+            city: customer.city,
+            state: customer.state,
+            country: customer.country,
+          }
+        : {
+            first_name: billing.firstName,
+            last_name: billing.lastName,
+            email: billing.email,
+            phone: `${billing.countryCode}${billing.phone}`,
+            address_1: billing.address,
+            city: billing.city,
+            state: billing.state,
+            country: billing.country,
+          };
+
       const resWoo = await fetch('/api/woo-create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -150,18 +192,16 @@ function CheckoutContent() {
           items,
           deliveryDate,
           deliveryTime,
-          billing: {
-            first_name: customer.firstName,
-            last_name: customer.lastName,
-            email: customer.email,
-            address_1: customer.address,
-            city: customer.city,
-          },
+          customerNote: orderNotes,
+          billing: billingData,
           shipping: {
             first_name: customer.firstName,
             last_name: customer.lastName,
+            phone: `${customer.countryCode}${customer.phone}`,
             address_1: customer.address,
             city: customer.city,
+            state: customer.state,
+            country: customer.country,
           },
         }),
       });
@@ -250,9 +290,18 @@ function CheckoutContent() {
           <div className="lg:col-span-8 space-y-5">
             <PersonalInfoForm customer={customer} onChange={setCustomer} />
 
+            <BillingAddressForm
+              sameAsShipping={sameAsShipping}
+              onSameAsShippingChange={setSameAsShipping}
+              billing={billing}
+              onChange={setBilling}
+            />
+
             <SectionCard icon="📅" title="Delivery Schedule">
               <DeliveryScheduler />
             </SectionCard>
+
+            <OrderNotes value={orderNotes} onChange={setOrderNotes} />
 
             <SectionCard icon="💳" title="Payment Method">
               <PaymentMethodCard selected />

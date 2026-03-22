@@ -6,13 +6,13 @@ export async function POST(req: Request) {
     const body = await req.json();
     
     // Construct the payload for WooCommerce
-    const orderData = {
+    const orderData: Record<string, unknown> = {
       payment_method: body.paymentMethod,
       payment_method_title: body.paymentMethodTitle,
       set_paid: body.isPaid,
       billing: body.billing,
       shipping: body.shipping,
-      line_items: body.items.map((item: any) => ({
+      line_items: body.items.map((item: { productId?: number; id: number; quantity: number; variant?: string }) => ({
         product_id: item.productId || item.id,
         ...(item.productId ? { variation_id: item.id } : {}),
         quantity: item.quantity,
@@ -21,10 +21,14 @@ export async function POST(req: Request) {
         ] : []
       })),
       meta_data: [
-        { key: '_delivery_date', value: body.deliveryDate },
-        { key: '_delivery_time', value: body.deliveryTime }
-      ]
+        { key: 'delivery_date', value: body.deliveryDate },
+        { key: 'delivery_time', value: body.deliveryTime }
+      ],
     };
+
+    if (body.customerNote) {
+      orderData.customer_note = body.customerNote;
+    }
 
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wc/v3/orders`,
