@@ -252,6 +252,7 @@ function CheckoutContent() {
             paymentMethod: 'cod',
             paymentMethodTitle: 'Cash on Delivery',
             isPaid: false,
+            status: 'processing',
             items,
             deliveryDate,
             deliveryTime,
