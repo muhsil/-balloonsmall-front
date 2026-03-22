@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { wooApi } from '@/lib/woocommerce';
+import { hashPassword } from '@/lib/password';
 
 export async function POST(req: Request) {
   try {
@@ -39,9 +40,9 @@ export async function POST(req: Request) {
         first_name: firstName,
         last_name: lastName || '',
       },
-      // Store password hash in meta for simple auth (no JWT plugin needed)
+      // Store hashed password in meta for simple auth (no JWT plugin needed)
       meta_data: [
-        { key: '_balloonsmall_password', value: password },
+        { key: '_balloonsmall_password', value: hashPassword(password) },
       ],
     });
 
