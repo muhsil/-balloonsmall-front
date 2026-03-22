@@ -14,11 +14,17 @@ export async function POST(req: Request) {
     }
 
     // Search for customer by email using WooCommerce REST API
+    // Note: use 'search' param instead of 'email' because axios URL-encodes '@' to '%40'
+    // which WooCommerce's email filter doesn't decode, returning 0 results.
     const response = await wooApi.get('/customers', {
-      params: { email, per_page: 1 },
+      params: { search: email, per_page: 10 },
     });
 
-    const customers = response.data;
+    // Filter to exact email match (search is a text search that can match partials)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const customers = (response.data as any[]).filter(
+      (c) => c.email?.toLowerCase() === email.toLowerCase()
+    );
 
     if (customers.length === 0) {
       return NextResponse.json(
