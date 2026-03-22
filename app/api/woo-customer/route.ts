@@ -1,10 +1,18 @@
 import { NextResponse } from 'next/server';
 import { wooApi } from '@/lib/woocommerce';
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    // Get the most recent customer (guest orders use customer_id=0)
-    // For a real auth system, you'd get the customer ID from session
+    const { searchParams } = new URL(req.url);
+    const customerId = searchParams.get('id');
+
+    if (customerId) {
+      // Fetch specific customer by ID (authenticated user)
+      const response = await wooApi.get(`/customers/${customerId}`);
+      return NextResponse.json({ customer: response.data });
+    }
+
+    // Fallback: get most recent customer
     const response = await wooApi.get('/customers', {
       params: { per_page: 1, orderby: 'id', order: 'desc' },
     });
@@ -22,7 +30,16 @@ export async function GET() {
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
-    // For now, update the most recent customer
+    const customerId = body.customerId;
+
+    if (customerId) {
+      // Update specific customer (authenticated user)
+      const { customerId: _id, ...updateData } = body;
+      const response = await wooApi.put(`/customers/${customerId}`, updateData);
+      return NextResponse.json({ customer: response.data });
+    }
+
+    // Fallback: update most recent customer
     const listRes = await wooApi.get('/customers', {
       params: { per_page: 1, orderby: 'id', order: 'desc' },
     });
@@ -30,8 +47,8 @@ export async function PUT(req: Request) {
     if (customers.length === 0) {
       return NextResponse.json({ error: 'No customer found' }, { status: 404 });
     }
-    const customerId = customers[0].id;
-    const response = await wooApi.put(`/customers/${customerId}`, body);
+    const fallbackId = customers[0].id;
+    const response = await wooApi.put(`/customers/${fallbackId}`, body);
     return NextResponse.json({ customer: response.data });
   } catch (error) {
     console.error('Failed to update customer:', error);

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import AccountLayout from '@/components/account/AccountLayout';
 import AddressCard from '@/components/account/AddressCard';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { useAuthStore } from '@/store/useAuthStore';
 
 interface AddressData {
   first_name: string;
@@ -24,11 +25,13 @@ interface CustomerData {
 export default function AddressesPage() {
   const [data, setData] = useState<CustomerData | null>(null);
   const [loading, setLoading] = useState(true);
+  const authCustomer = useAuthStore((s) => s.customer);
 
   useEffect(() => {
     async function fetchAddresses() {
       try {
-        const res = await fetch('/api/woo-customer');
+        const url = authCustomer?.id ? `/api/woo-customer?id=${authCustomer.id}` : '/api/woo-customer';
+        const res = await fetch(url);
         if (res.ok) {
           const json = await res.json();
           setData(json.customer);

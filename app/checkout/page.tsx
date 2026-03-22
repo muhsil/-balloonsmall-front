@@ -21,6 +21,7 @@ import PaymentMethodCard from '@/components/ui/PaymentMethodCard';
 import PriceDisplay from '@/components/ui/PriceDisplay';
 import TestModeBadge from '@/components/ui/TestModeBadge';
 import { useStoreSettings } from '@/components/providers/StoreSettingsProvider';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const CHECKOUT_DATA_KEY = 'balloonsmall-checkout';
 
@@ -53,6 +54,7 @@ function CheckoutContent() {
   const { items, deliveryDate, deliveryTime, clearCart } = useCartStore();
   const { currency } = useStoreSettings();
   const searchParams = useSearchParams();
+  const authCustomer = useAuthStore((s) => s.customer);
 
   const [orderCreated, setOrderCreated] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
@@ -63,10 +65,10 @@ function CheckoutContent() {
   const [sameAsShipping, setSameAsShipping] = useState(true);
 
   const [customer, setCustomer] = useState<CustomerInfo>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
+    firstName: authCustomer?.firstName || '',
+    lastName: authCustomer?.lastName || '',
+    email: authCustomer?.email || '',
+    phone: authCustomer?.phone || '',
     countryCode: '+971',
     address: '',
     city: 'Dubai',
@@ -201,6 +203,7 @@ function CheckoutContent() {
           deliveryDate,
           deliveryTime,
           customerNote: orderNotes,
+          customerId: authCustomer?.id || 0,
           billing: billingData,
           shipping: {
             first_name: customer.firstName,
@@ -222,13 +225,6 @@ function CheckoutContent() {
         console.warn('WooCommerce order creation failed, continuing with payment...');
       }
 
-      saveCheckoutData({
-        customer,
-        deliveryDate: deliveryDate!,
-        deliveryTime: deliveryTime!,
-        orderId: wooOrderId,
-      });
-
       const origin = window.location.origin;
       const resPayment = await fetch('/api/create-payment-intent', {
         method: 'POST',
@@ -243,11 +239,30 @@ function CheckoutContent() {
 
       const data = await resPayment.json();
 
-      if (data.redirectUrl) {
-        window.location.href = data.redirectUrl;
-      } else {
+      if (!data.redirectUrl) {
         throw new Error(data.error || 'No redirect URL returned');
       }
+
+      // Store payment_intent_id in WooCommerce order meta for webhook lookup
+      if (wooOrderId && data.paymentIntentId) {
+        fetch('/api/woo-update-order', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: wooOrderId,
+            paymentIntentId: data.paymentIntentId,
+          }),
+        }).catch((err) => console.error('Failed to store payment intent ID:', err));
+      }
+
+      saveCheckoutData({
+        customer,
+        deliveryDate: deliveryDate!,
+        deliveryTime: deliveryTime!,
+        orderId: wooOrderId,
+      });
+
+      window.location.href = data.redirectUrl;
     } catch (err) {
       console.error(err);
       toast('Checkout error: ' + (err as Error).message, 'error');

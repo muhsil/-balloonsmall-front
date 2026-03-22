@@ -12,6 +12,7 @@ export async function POST(req: Request) {
       set_paid: body.isPaid,
       billing: body.billing,
       shipping: body.shipping,
+      ...(body.customerId ? { customer_id: body.customerId } : {}),
       line_items: body.items.map((item: { productId?: number; id: number; quantity: number; variant?: string }) => ({
         product_id: item.productId || item.id,
         ...(item.productId ? { variation_id: item.id } : {}),
