@@ -1,6 +1,6 @@
 export default function ContentPageSkeleton() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6 max-md:px-3">
+    <div className="max-w-4xl mx-auto px-4 py-10 max-md:px-3 max-md:py-6 max-md:pb-20">
       {/* Breadcrumb skeleton */}
       <div className="flex gap-2 mb-6">
         <div className="h-3 w-10 skeleton rounded" />
