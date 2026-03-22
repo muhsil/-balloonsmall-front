@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         message: message || 'BalloonsMall Order',
         success_url: successUrl,
         cancel_url: cancelUrl,
-        test: process.env.NODE_ENV !== 'production',
+        test: process.env.ZIINA_TEST_MODE === 'true' || process.env.NODE_ENV !== 'production',
       }),
     });
 
