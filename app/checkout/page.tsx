@@ -470,6 +470,8 @@ function CheckoutContent() {
                 onClick={handleCreateOrder}
                 disabled={!isFormValid || isInitializing}
                 isLoading={isInitializing}
+                label={paymentMethod === 'cod' ? 'Place Order (Cash on Delivery) 💵' : 'Continue to Payment 💳'}
+                loadingLabel={paymentMethod === 'cod' ? 'Placing Order...' : 'Preparing Payment...'}
               />
             </div>
           </div>
