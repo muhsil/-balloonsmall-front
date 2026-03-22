@@ -15,10 +15,10 @@ import { ProductJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 export const revalidate = 60;
 
 const PRODUCT_HIGHLIGHTS = [
-  { icon: '\u26A1', title: 'Same-Day', description: 'Order before 2 PM' },
-  { icon: '\u{1F31F}', title: 'Premium', description: 'Finest quality balloons' },
-  { icon: '\u{1F69A}', title: 'Free Delivery', description: 'Orders over AED 100' },
-  { icon: '\u{1F4AC}', title: 'WhatsApp', description: 'Instant support' },
+  { icon: '⚡', title: 'Same-Day', description: 'Order before 2 PM' },
+  { icon: '🌟', title: 'Premium', description: 'Finest quality balloons' },
+  { icon: '🚚', title: 'Free Delivery', description: 'Orders over AED 100' },
+  { icon: '💬', title: 'WhatsApp', description: 'Instant support' },
 ];
 
 async function getProduct(slug: string) {
@@ -77,7 +77,7 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
   if (!product) {
     return (
       <EmptyState
-        icon="\u{1F388}"
+        icon="🎈"
         title="Product Not Found"
         description="This balloon may have floated away! Browse our full collection."
         actionLabel="Browse All Balloons"
@@ -95,7 +95,6 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
   const price = parseFloat(product.price || '0');
   const regularPrice = product.regular_price ? parseFloat(product.regular_price) : null;
   const discount = product.on_sale && regularPrice ? Math.round(((regularPrice - price) / regularPrice) * 100) : 0;
-  // Deterministic pseudo-random matching ProductCard formula
   const hash = params.slug.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 0);
   const soldNum = Math.floor((hash * 7 + price * 3) % 900 + 100);
   const reviewCount = Math.floor(price * 2 + 30);
@@ -119,16 +118,16 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
       ]} />
 
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs text-gray-400 px-4 py-3 max-md:px-3 overflow-x-auto no-scrollbar">
-        <Link href="/" className="hover:text-[#F26522] transition-colors shrink-0">Home</Link>
+      <nav className="flex items-center gap-2 text-xs text-[#999] px-4 py-3 max-md:px-3 overflow-x-auto no-scrollbar">
+        <Link href="/" className="hover:text-[#E53935] transition-colors shrink-0">Home</Link>
         <span className="shrink-0">&gt;</span>
-        <Link href="/shop" className="hover:text-[#F26522] transition-colors shrink-0">Shop</Link>
+        <Link href="/shop" className="hover:text-[#E53935] transition-colors shrink-0">Shop</Link>
         <span className="shrink-0">&gt;</span>
-        <span className="text-gray-600 font-medium truncate">{product.name}</span>
+        <span className="text-[#191919] font-medium truncate">{product.name}</span>
       </nav>
 
       {/* Product Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-md:gap-0 px-4 max-md:px-0 mb-10 max-md:mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-md:gap-0 px-4 max-md:px-0 mb-10 max-md:mb-6">
         {/* Left: Image Gallery */}
         <ProductImageGallery
           images={product.images || []}
@@ -142,13 +141,13 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
           {product.categories?.length > 0 && (
             <div className="flex gap-1.5 mb-2">
               {product.categories.slice(0, 2).map((cat: any) => (
-                <span key={cat.id} className="badge badge-brand text-[10px]">{cat.name}</span>
+                <span key={cat.id} className="text-[10px] font-medium bg-[#FFEBEE] text-[#E53935] px-2 py-0.5 rounded">{cat.name}</span>
               ))}
             </div>
           )}
 
           {/* Title */}
-          <h1 className="text-xl md:text-2xl font-extrabold text-gray-900 mb-2 leading-tight">{product.name}</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-[#191919] mb-2 leading-tight">{product.name}</h1>
 
           {/* Rating + Sold */}
           <div className="flex items-center gap-3 mb-3">
@@ -156,13 +155,13 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
             <SoldCount count={soldNum} className="text-xs" />
           </div>
 
-          {/* Price Block - Temu style */}
-          <div className="bg-[#FFF3EC] rounded-lg p-3 mb-3">
+          {/* Price Block - AliExpress style */}
+          <div className="bg-[#FFEBEE] rounded-lg p-3 mb-3">
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl max-md:text-xl font-extrabold text-[#F26522]">AED {price.toFixed(0)}</span>
+              <span className="text-2xl max-md:text-xl font-bold text-[#E53935]">AED {price.toFixed(0)}</span>
               {product.on_sale && regularPrice && (
                 <>
-                  <span className="text-sm text-gray-400 line-through">AED {regularPrice.toFixed(0)}</span>
+                  <span className="text-sm text-[#999] line-through">AED {regularPrice.toFixed(0)}</span>
                   <DealBadge text={`${discount}% OFF`} variant="red" />
                 </>
               )}
@@ -175,15 +174,15 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
 
           {/* Short description */}
           {product.short_description && (
-            <div className="text-gray-500 text-sm leading-relaxed mb-3 prose"
+            <div className="text-[#666] text-sm leading-relaxed mb-3 prose"
               dangerouslySetInnerHTML={{ __html: product.short_description }} />
           )}
 
           {/* Stock badge */}
           <div className="flex items-center gap-2 mb-4">
             <div className={`w-2 h-2 rounded-full ${product.in_stock !== false ? 'bg-[#00B578]' : 'bg-red-400'}`} />
-            <span className="text-xs font-medium text-gray-600">
-              {product.in_stock !== false ? 'In Stock - Ready for delivery' : 'Out of Stock'}
+            <span className="text-xs font-medium text-[#666]">
+              {product.in_stock !== false ? 'In Stock — Ready for delivery' : 'Out of Stock'}
             </span>
           </div>
 
@@ -200,11 +199,11 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
           {/* Highlights Grid */}
           <div className="grid grid-cols-2 gap-2 mt-4">
             {PRODUCT_HIGHLIGHTS.map((h) => (
-              <div key={h.title} className="flex items-center gap-2 bg-white border border-gray-100 rounded-lg px-3 py-2">
+              <div key={h.title} className="flex items-center gap-2 bg-white border border-[#f0f0f0] rounded-lg px-3 py-2">
                 <span className="text-sm">{h.icon}</span>
                 <div>
-                  <span className="text-xs font-bold text-gray-800">{h.title}</span>
-                  <p className="text-[10px] text-gray-400">{h.description}</p>
+                  <span className="text-xs font-semibold text-[#191919]">{h.title}</span>
+                  <p className="text-[10px] text-[#999]">{h.description}</p>
                 </div>
               </div>
             ))}
@@ -214,22 +213,22 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
 
       {/* Product Description */}
       {product.description && (
-        <div className="mx-4 max-md:mx-3 mb-10 max-md:mb-6 bg-white rounded-xl p-5 max-md:p-4 border border-gray-100">
-          <h3 className="text-base font-bold text-gray-900 mb-3">Product Details</h3>
-          <div className="prose text-gray-500 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: product.description }} />
+        <div className="mx-4 max-md:mx-3 mb-10 max-md:mb-6 bg-white rounded-lg p-5 max-md:p-4 border border-[#f0f0f0]">
+          <h3 className="text-base font-bold text-[#191919] mb-3">Product Details</h3>
+          <div className="prose text-[#666] text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: product.description }} />
         </div>
       )}
 
       {/* Related Products */}
       {similarProducts.length > 0 && (
         <div className="mx-4 max-md:mx-3 mb-10 max-md:mb-6">
-          <div className="flex items-center justify-between mb-4 max-md:mb-3">
-            <h2 className="text-lg font-extrabold text-gray-900 max-md:text-sm">You May Also Like</h2>
-            <Link href="/shop" className="text-xs font-semibold text-[#F26522]">See All &gt;</Link>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-bold text-[#191919]">You May Also Like</h2>
+            <Link href="/shop" className="text-xs text-[#999] hover:text-[#E53935]">See All &gt;</Link>
           </div>
 
           {/* Desktop grid */}
-          <div className="hidden md:grid grid-cols-4 gap-4">
+          <div className="hidden md:grid grid-cols-4 gap-2">
             {similarProducts.map((p: any) => (
               <ProductCard
                 key={p.id}
@@ -244,9 +243,9 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
           </div>
 
           {/* Mobile horizontal scroll */}
-          <div className="md:hidden mobile-scroll-x">
+          <div className="md:hidden flex overflow-x-auto no-scrollbar gap-1.5">
             {similarProducts.map((p: any) => (
-              <div key={p.id} className="w-[42vw] min-w-[150px]">
+              <div key={p.id} className="w-[42vw] min-w-[145px] shrink-0">
                 <ProductCard
                   slug={p.slug}
                   name={p.name}
@@ -261,7 +260,7 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
         </div>
       )}
 
-      {/* Mobile Sticky Add to Cart (only for simple products — variable products use ProductVariationPicker) */}
+      {/* Mobile Sticky Add to Cart (only for simple products) */}
       {product.type !== 'variable' && (
         <StickyAddToCart productId={product.id} name={product.name} price={price} image={mainImage} />
       )}

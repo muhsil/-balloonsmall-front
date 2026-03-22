@@ -8,22 +8,18 @@ interface CategoryIconPillProps {
   active?: boolean;
 }
 
-export default function CategoryIconPill({ icon, label, href, active = false }: CategoryIconPillProps) {
+export default function CategoryIconPill({ icon, label, href, active }: CategoryIconPillProps) {
   return (
     <Link
       href={href}
-      className={`flex flex-col items-center gap-1.5 min-w-[70px] max-md:min-w-[56px] py-2 transition-all ${
-        active ? 'text-[#F26522]' : 'text-gray-600 hover:text-[#F26522]'
+      className={`flex flex-col items-center gap-1 shrink-0 min-w-[56px] px-2 py-1.5 rounded-lg transition-colors ${
+        active
+          ? 'bg-[#FFEBEE] text-[#E53935]'
+          : 'text-[#666] hover:bg-[#f5f5f5]'
       }`}
     >
-      <div className={`w-14 h-14 max-md:w-10 max-md:h-10 rounded-full flex items-center justify-center text-2xl max-md:text-lg ${
-        active ? 'bg-[#FFF3EC] ring-2 ring-[#F26522]' : 'bg-gray-50'
-      }`}>
-        {icon}
-      </div>
-      <span className={`text-[10px] font-semibold whitespace-nowrap ${active ? 'text-[#F26522]' : 'text-gray-600'}`}>
-        {label}
-      </span>
+      <span className="text-xl max-md:text-lg">{icon}</span>
+      <span className="text-[10px] font-medium whitespace-nowrap">{label}</span>
     </Link>
   );
 }

@@ -1,22 +1,21 @@
 import React from 'react';
 
 interface ShippingBadgeProps {
-  text?: string;
-  variant?: 'free' | 'fast' | 'same-day';
+  variant: 'free' | 'same-day' | 'fast';
 }
 
-const VARIANTS = {
-  free: { bg: 'bg-[#E8F8F0]', text: 'text-[#00B578]', icon: '🚚', label: 'Free Shipping' },
-  fast: { bg: 'bg-[#FFF8E6]', text: 'text-[#FF9F00]', icon: '⚡', label: 'Fast Delivery' },
-  'same-day': { bg: 'bg-[#FFF3EC]', text: 'text-[#F26522]', icon: '🏃', label: 'Same-Day' },
+const BADGE_CONFIG = {
+  free: { icon: '🚚', text: 'Free Shipping', color: 'text-[#00B578]' },
+  'same-day': { icon: '⚡', text: 'Same-Day Delivery', color: 'text-[#FF6D00]' },
+  fast: { icon: '📦', text: 'Fast Delivery', color: 'text-[#1976D2]' },
 };
 
-export default function ShippingBadge({ text, variant = 'free' }: ShippingBadgeProps) {
-  const style = VARIANTS[variant];
+export default function ShippingBadge({ variant }: ShippingBadgeProps) {
+  const config = BADGE_CONFIG[variant];
   return (
-    <span className={`inline-flex items-center gap-1 ${style.bg} ${style.text} text-[10px] font-bold px-2 py-1 rounded`}>
-      <span>{style.icon}</span>
-      {text || style.label}
+    <span className={`inline-flex items-center gap-1 text-[11px] font-medium ${config.color}`}>
+      <span className="text-xs">{config.icon}</span>
+      {config.text}
     </span>
   );
 }

@@ -113,7 +113,7 @@ export default function ProductVariationPicker({
           <label className="text-xs font-bold text-gray-700 mb-2 block">
             {attr.name}
             {selected[attr.slug] && (
-              <span className="text-[#F26522] ml-1">: {selected[attr.slug]}</span>
+              <span className="text-[#E53935] ml-1">: {selected[attr.slug]}</span>
             )}
           </label>
           <div className="flex flex-wrap gap-2">
@@ -125,7 +125,7 @@ export default function ProductVariationPicker({
                   onClick={() => handleSelect(attr.slug, opt)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                     isSelected
-                      ? 'border-[#F26522] bg-[#FFF3EC] text-[#F26522]'
+                      ? 'border-[#E53935] bg-[#FFEBEE] text-[#E53935]'
                       : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
                   }`}
                 >
@@ -139,7 +139,7 @@ export default function ProductVariationPicker({
 
       {/* Price update for selected variation */}
       {hasVariations && matchedVariation && currentPrice !== basePrice && (
-        <div className="text-sm font-bold text-[#F26522]">
+        <div className="text-sm font-bold text-[#E53935]">
           AED {currentPrice.toFixed(0)}
         </div>
       )}
@@ -153,7 +153,7 @@ export default function ProductVariationPicker({
           className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
             added
               ? 'bg-[#00B578] text-white'
-              : 'bg-[#F26522] text-white hover:bg-[#D4520F] active:scale-[0.98]'
+              : 'bg-[#E53935] text-white hover:bg-[#C62828] active:scale-[0.98]'
           }`}
         >
           {added ? '\u2713 Added!' : !isInStock ? 'Out of Stock' : `Add to Cart \u2022 AED ${(currentPrice * quantity).toFixed(0)}`}

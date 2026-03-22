@@ -26,7 +26,7 @@ export default function ProductImageGallery({ images, name, discount, fallbackIc
         )}
         {discount !== undefined && discount > 0 && (
           <div className="absolute top-3 left-3 max-md:top-2 max-md:left-2">
-            <DealBadge text={`-${discount}%`} variant="red" size="md" />
+            <DealBadge text={`-${discount}%`} variant="red" />
           </div>
         )}
         {/* Image counter */}
@@ -46,7 +46,7 @@ export default function ProductImageGallery({ images, name, discount, fallbackIc
               onClick={() => setActiveIndex(idx)}
               className={`w-16 h-16 max-md:w-14 max-md:h-14 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${
                 idx === activeIndex
-                  ? 'border-[#F26522] ring-1 ring-[#F26522]/30'
+                  ? 'border-[#E53935] ring-1 ring-[#E53935]/30'
                   : 'border-transparent hover:border-gray-300'
               }`}
             >

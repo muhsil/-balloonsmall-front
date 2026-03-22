@@ -1,73 +1,64 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions',
-  description: 'Read BalloonsMall terms and conditions including orders, payment, delivery, returns, and refund policies for balloon purchases in Dubai.',
+  description: 'Read BalloonsMall\'s terms and conditions for ordering balloons and decorations in Dubai.',
   alternates: { canonical: '/terms' },
-  robots: { index: true, follow: true },
 };
+
+const SECTIONS = [
+  {
+    title: '1. General',
+    content: 'By accessing and using BalloonsMall (balloonsmall.com), you agree to be bound by these Terms & Conditions. We reserve the right to modify these terms at any time without prior notice.',
+  },
+  {
+    title: '2. Products & Pricing',
+    content: 'All prices are listed in AED (UAE Dirhams) and include VAT where applicable. Prices are subject to change without notice. Product images are for illustration purposes and may vary slightly from the actual product.',
+  },
+  {
+    title: '3. Orders & Payment',
+    content: 'Orders are confirmed upon successful payment through our Ziina payment gateway. We accept all major credit and debit cards. Payment must be completed in full at the time of ordering.',
+  },
+  {
+    title: '4. Delivery',
+    content: 'We deliver across Dubai. Same-day delivery is available for orders placed before 2:00 PM. Delivery times are estimates and may vary due to traffic, weather, or other factors beyond our control. Free delivery on orders over AED 100.',
+  },
+  {
+    title: '5. Returns & Refunds',
+    content: 'Due to the perishable nature of balloon products, we do not accept returns. If your order arrives damaged or incorrect, please contact us within 2 hours of delivery for a replacement or refund.',
+  },
+  {
+    title: '6. Liability',
+    content: 'BalloonsMall shall not be liable for any indirect, incidental, or consequential damages arising from the use of our products or services. Our total liability shall not exceed the amount paid for the order in question.',
+  },
+  {
+    title: '7. Contact',
+    content: 'For questions about these terms, contact us at hello@balloonsmall.com or WhatsApp +971 56 355 4303.',
+  },
+];
 
 export default function TermsPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 max-md:px-3 max-md:py-6 max-md:pb-20">
-      <BreadcrumbJsonLd items={[
-        { name: 'Home', href: '/' },
-        { name: 'Terms & Conditions', href: '/terms' },
-      ]} />
-      <nav className="flex items-center gap-2 text-xs text-gray-400 mb-6">
-        <Link href="/" className="hover:text-[#F26522]">Home</Link>
+    <div className="max-w-4xl mx-auto px-4 max-md:px-3 py-8 max-md:py-5 max-md:pb-20">
+      <nav className="flex items-center gap-2 text-xs text-[#999] mb-6">
+        <Link href="/" className="hover:text-[#E53935]">Home</Link>
         <span>&gt;</span>
-        <span className="text-gray-600 font-medium">Terms &amp; Conditions</span>
+        <span className="text-[#191919] font-medium">Terms &amp; Conditions</span>
       </nav>
 
-      <div className="bg-white rounded-2xl p-8 max-md:p-5 border border-gray-100">
-        <h1 className="text-2xl max-md:text-xl font-extrabold text-gray-900 mb-2">Terms &amp; Conditions</h1>
-        <p className="text-xs text-gray-400 mb-8">Last updated: March 2026</p>
+      <h1 className="text-2xl max-md:text-xl font-bold text-[#191919] mb-6">Terms &amp; Conditions</h1>
 
-        <div className="prose max-w-none text-gray-600 text-sm leading-relaxed space-y-6">
-          <section>
-            <h2 className="text-base font-bold text-gray-900">1. General</h2>
-            <p>By accessing and using BalloonsMall (&quot;the Website&quot;), you agree to be bound by these Terms and Conditions. BalloonsMall is operated in Dubai, UAE, and primarily serves customers within the Dubai region.</p>
-          </section>
-
-          <section>
-            <h2 className="text-base font-bold text-gray-900">2. Products &amp; Pricing</h2>
-            <p>All prices are listed in UAE Dirhams (AED) and include VAT where applicable. We reserve the right to modify prices without prior notice. Product images are for illustration purposes and the actual product may vary slightly in color or arrangement.</p>
-          </section>
-
-          <section>
-            <h2 className="text-base font-bold text-gray-900">3. Orders &amp; Payment</h2>
-            <p>All orders are subject to availability. Payment is processed securely through Ziina payment gateway. By placing an order, you confirm that the payment details provided are valid and that you are authorized to use the payment method.</p>
-          </section>
-
-          <section>
-            <h2 className="text-base font-bold text-gray-900">4. Delivery</h2>
-            <p>We offer same-day delivery for orders placed before 2:00 PM. Delivery is available across Dubai. Free delivery applies to orders over AED 100. Delivery times are estimates and may vary due to traffic or weather conditions.</p>
-          </section>
-
-          <section>
-            <h2 className="text-base font-bold text-gray-900">5. Returns &amp; Refunds</h2>
-            <p>Due to the perishable nature of balloon products, we do not accept returns. However, if your order arrives damaged or incorrect, please contact us within 2 hours of delivery via WhatsApp for a full refund or replacement.</p>
-          </section>
-
-          <section>
-            <h2 className="text-base font-bold text-gray-900">6. Cancellation</h2>
-            <p>Orders may be cancelled at least 4 hours before the scheduled delivery window for a full refund. Cancellations within 4 hours of delivery may be subject to a cancellation fee.</p>
-          </section>
-
-          <section>
-            <h2 className="text-base font-bold text-gray-900">7. Product Variations</h2>
-            <p>Please review your selected product variations carefully before placing your order. Orders with specific variations cannot be modified once processing has begun.</p>
-          </section>
-
-          <section>
-            <h2 className="text-base font-bold text-gray-900">8. Contact</h2>
-            <p>For any questions regarding these terms, please contact us via WhatsApp at +971 56 355 4303 or email at hello@balloonsmall.com.</p>
-          </section>
-        </div>
+      <div className="bg-white rounded-lg border border-[#f0f0f0] divide-y divide-[#f0f0f0]">
+        {SECTIONS.map((section) => (
+          <div key={section.title} className="p-4">
+            <h2 className="text-sm font-bold text-[#191919] mb-2">{section.title}</h2>
+            <p className="text-sm text-[#666] leading-relaxed">{section.content}</p>
+          </div>
+        ))}
       </div>
+
+      <p className="text-xs text-[#999] mt-4 text-center">Last updated: January 2025</p>
     </div>
   );
 }

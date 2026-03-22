@@ -14,7 +14,7 @@ export default function OrderSummary({ items, subtotal }: OrderSummaryProps) {
   return (
     <div className="bg-white p-5 max-md:p-4 rounded-xl border border-gray-100">
       <h3 className="text-base font-extrabold text-gray-900 mb-4 flex items-center gap-2">
-        Order Summary <span className="text-[#F26522]">({items.length})</span>
+        Order Summary <span className="text-[#E53935]">({items.length})</span>
       </h3>
 
       <div className="space-y-3 mb-4 max-h-[40vh] overflow-y-auto pr-1">
@@ -52,7 +52,7 @@ export default function OrderSummary({ items, subtotal }: OrderSummaryProps) {
           placeholder="Promo code"
           className="form-input text-xs py-2 bg-gray-50 border-gray-100"
         />
-        <button className="text-xs font-bold text-[#F26522] border border-[#F26522]/20 px-4 rounded-lg hover:bg-[#FFF3EC]">
+        <button className="text-xs font-bold text-[#E53935] border border-[#E53935]/20 px-4 rounded-lg hover:bg-[#FFEBEE]">
           Apply
         </button>
       </div>

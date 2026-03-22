@@ -21,18 +21,7 @@ export const metadata: Metadata = {
 const CATEGORY_ICONS: Record<string, string> = {
   birthday: '🎂', wedding: '💒', 'baby-shower': '👶',
   events: '🎉', anniversary: '💝', graduation: '🎓',
-  custom: '🎨', default: '🎈',
-};
-
-const CATEGORY_GRADIENTS: Record<string, string> = {
-  birthday: 'from-pink-400 to-rose-500',
-  wedding: 'from-violet-400 to-purple-500',
-  'baby-shower': 'from-blue-300 to-cyan-400',
-  events: 'from-amber-400 to-orange-500',
-  anniversary: 'from-red-400 to-pink-500',
-  graduation: 'from-indigo-400 to-blue-500',
-  custom: 'from-emerald-400 to-teal-500',
-  default: 'from-gray-400 to-gray-600',
+  default: '🎈',
 };
 
 async function getProducts(search?: string, category?: string) {
@@ -68,7 +57,6 @@ export default async function ShopPage({
     getCategories(),
   ]);
 
-  // Filter to featured/on-sale products when Deals tab is active
   const isFeatured = searchParams.featured === 'true';
   const displayProducts = isFeatured
     ? products.filter((p: any) => p.featured || p.on_sale)
@@ -84,18 +72,17 @@ export default async function ShopPage({
       ]} />
       <TrustBanner />
 
-      <div className="max-w-7xl mx-auto px-4 max-md:px-2 pb-10 max-md:pb-20">
-        {/* Search Bar */}
-        {/* Mobile search bar - desktop uses navbar search */}
+      <div className="max-w-7xl mx-auto px-4 max-md:px-3 pb-8 max-md:pb-20">
+        {/* Mobile search */}
         <form method="GET" action="/shop" className="md:hidden pt-3 mb-3">
-          <div className="flex border-2 border-[#F26522] rounded-full overflow-hidden bg-white">
+          <div className="flex rounded-full overflow-hidden bg-[#f5f5f5] border border-[#e8e8e8] focus-within:border-[#E53935]">
             <input
               name="search"
               defaultValue={searchParams.search || ''}
-              placeholder="Search balloons, occasions..."
-              className="flex-1 px-3 py-2.5 text-xs outline-none"
+              placeholder="Search balloons..."
+              className="flex-1 px-3 py-2 text-sm outline-none bg-transparent"
             />
-            <button type="submit" className="bg-[#F26522] text-white px-3 font-bold text-sm hover:bg-[#D4520F] transition-colors">
+            <button type="submit" className="bg-[#E53935] text-white px-3">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -103,15 +90,10 @@ export default async function ShopPage({
           </div>
         </form>
 
-        {/* Category Pills */}
+        {/* Category pills */}
         {topCategories.length > 0 && (
-          <div className="flex gap-4 max-md:gap-1.5 overflow-x-auto no-scrollbar pb-3 pt-3 md:pt-4">
-            <CategoryIconPill
-              icon="🎈"
-              label="All"
-              href="/shop"
-              active={!searchParams.category}
-            />
+          <div className="flex gap-2 max-md:gap-1 overflow-x-auto no-scrollbar py-3">
+            <CategoryIconPill icon="🎈" label="All" href="/shop" active={!searchParams.category} />
             {topCategories.map((cat: any) => (
               <CategoryIconPill
                 key={cat.id}
@@ -124,9 +106,9 @@ export default async function ShopPage({
           </div>
         )}
 
-        {/* Results header */}
-        <div className="flex items-center justify-between mb-2 mt-1">
-          <p className="text-xs text-gray-500 font-medium">
+        {/* Results count */}
+        <div className="flex items-center justify-between mb-3 mt-1">
+          <p className="text-xs text-[#999]">
             {displayProducts.length} {displayProducts.length === 1 ? 'item' : 'items'}
             {isFeatured && <> — Deals &amp; Featured</>}
             {searchParams.search && <> for &quot;{searchParams.search}&quot;</>}
@@ -139,30 +121,25 @@ export default async function ShopPage({
           <EmptyState
             icon="🎈"
             title={isFeatured ? 'No deals right now' : 'No balloons found'}
-            description={isFeatured ? 'Check back soon for new deals and featured products.' : 'Try a different search or browse all categories.'}
+            description={isFeatured ? 'Check back soon for new deals.' : 'Try a different search or browse all categories.'}
             actionLabel="Browse All"
             actionHref="/shop"
           />
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-md:gap-1.5">
-            {displayProducts.map((p: any) => {
-              const catSlug = p.categories?.[0]?.slug || 'default';
-              return (
-                <ProductCard
-                  key={p.id}
-                  slug={p.slug}
-                  name={p.name}
-                  price={parseFloat(p.price || '0')}
-                  regularPrice={p.regular_price ? parseFloat(p.regular_price) : null}
-                  imageSrc={p.images?.[0]?.src}
-                  categoryName={p.categories?.[0]?.name}
-                  categoryIcon={CATEGORY_ICONS[catSlug] || '🎈'}
-                  categoryGradient={CATEGORY_GRADIENTS[catSlug] || CATEGORY_GRADIENTS.default}
-                  onSale={p.on_sale}
-                  featured={p.featured}
-                />
-              );
-            })}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 max-md:gap-1.5">
+            {displayProducts.map((p: any) => (
+              <ProductCard
+                key={p.id}
+                slug={p.slug}
+                name={p.name}
+                price={parseFloat(p.price || '0')}
+                regularPrice={p.regular_price ? parseFloat(p.regular_price) : null}
+                imageSrc={p.images?.[0]?.src}
+                categoryName={p.categories?.[0]?.name}
+                onSale={p.on_sale}
+                featured={p.featured}
+              />
+            ))}
           </div>
         )}
       </div>

@@ -267,7 +267,7 @@ function CheckoutContent() {
       <div className="md:hidden mobile-sticky-bottom">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-bold text-gray-400">Total</span>
-          <span className="text-lg font-extrabold text-[#F26522]">AED {subtotal.toFixed(0)}</span>
+          <span className="text-lg font-extrabold text-[#E53935]">AED {subtotal.toFixed(0)}</span>
         </div>
         <button
           onClick={handleCreateOrder}

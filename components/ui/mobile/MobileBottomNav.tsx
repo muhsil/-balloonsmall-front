@@ -76,13 +76,13 @@ export default function MobileBottomNav() {
         <div className="mobile-menu-overlay" onClick={() => setMenuOpen(false)}>
           <div className="mobile-menu-sheet" onClick={(e) => e.stopPropagation()}>
             <div className="mobile-menu-handle" />
-            <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
-              <span className="font-bold text-gray-900 text-sm">Menu</span>
+            <div className="flex items-center justify-between px-5 py-3 border-b border-[#f0f0f0]">
+              <span className="font-bold text-[#191919] text-sm">Menu</span>
               <button
                 onClick={() => setMenuOpen(false)}
-                className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+                className="p-1.5 rounded-full hover:bg-[#f5f5f5] transition-colors"
               >
-                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-[#666]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -93,18 +93,18 @@ export default function MobileBottomNav() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className={`flex items-center gap-3 px-5 py-3.5 text-sm font-medium transition-colors active:bg-gray-50 ${
-                    pathname === link.href ? 'text-[#F26522] bg-[#FFF3EC]' : 'text-gray-700'
+                  className={`flex items-center gap-3 px-5 py-3.5 text-sm font-medium transition-colors active:bg-[#f5f5f5] ${
+                    pathname === link.href ? 'text-[#E53935] bg-[#FFEBEE]' : 'text-[#333]'
                   }`}
                 >
                   <span className="text-base">{link.icon}</span>
                   {link.label}
                 </Link>
               ))}
-              <div className="border-t border-gray-100 mt-2 pt-2">
+              <div className="border-t border-[#f0f0f0] mt-2 pt-2">
                 <a
                   href="https://wa.me/971563554303"
-                  className="flex items-center gap-3 px-5 py-3.5 text-sm font-medium text-gray-700 active:bg-gray-50"
+                  className="flex items-center gap-3 px-5 py-3.5 text-sm font-medium text-[#333] active:bg-[#f5f5f5]"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

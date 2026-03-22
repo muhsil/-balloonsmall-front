@@ -5,16 +5,11 @@ interface SoldCountProps {
   className?: string;
 }
 
-function formatCount(count: number): string {
-  if (count >= 1000) return `${(count / 1000).toFixed(1)}K+`;
-  if (count >= 100) return `${count}+`;
-  return `${count}`;
-}
-
 export default function SoldCount({ count, className = '' }: SoldCountProps) {
+  const formatted = count >= 1000 ? `${(count / 1000).toFixed(1)}k` : `${count}`;
   return (
-    <span className={`text-[10px] text-gray-400 font-medium ${className}`}>
-      {formatCount(count)} sold
+    <span className={`text-[11px] text-[#999] ${className}`}>
+      {formatted}+ sold
     </span>
   );
 }
