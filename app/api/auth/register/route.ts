@@ -14,11 +14,18 @@ export async function POST(req: Request) {
     }
 
     // Check if customer already exists
+    // Note: use 'search' param instead of 'email' because axios URL-encodes '@' to '%40'
+    // which WooCommerce's email filter doesn't decode, returning 0 results.
     const existingRes = await wooApi.get('/customers', {
-      params: { email, per_page: 1 },
+      params: { search: email, per_page: 10 },
     });
 
-    if (existingRes.data.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const existing = (existingRes.data as any[]).filter(
+      (c) => c.email?.toLowerCase() === email.toLowerCase()
+    );
+
+    if (existing.length > 0) {
       return NextResponse.json(
         { error: 'An account with this email already exists. Please log in.' },
         { status: 409 }
