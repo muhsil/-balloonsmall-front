@@ -15,7 +15,8 @@ export async function GET() {
       );
     }
 
-    const response = await wooApi.get('/payment_gateways');
+    // Add cache-busting param to bypass LiteSpeed Cache on WooCommerce server
+    const response = await wooApi.get(`/payment_gateways?_=${Date.now()}`);
     const allGateways = response.data as {
       id: string;
       title: string;
