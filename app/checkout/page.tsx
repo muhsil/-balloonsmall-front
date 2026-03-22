@@ -50,6 +50,13 @@ function clearCheckoutData() {
   sessionStorage.removeItem(CHECKOUT_DATA_KEY);
 }
 
+interface PaymentGateway {
+  id: string;
+  title: string;
+  description: string;
+  enabled: boolean;
+}
+
 function CheckoutContent() {
   const { items, deliveryDate, deliveryTime, clearCart } = useCartStore();
   const { currency } = useStoreSettings();
@@ -63,6 +70,8 @@ function CheckoutContent() {
   const [savedDeliveryTime, setSavedDeliveryTime] = useState<string | null>(null);
   const [orderNotes, setOrderNotes] = useState('');
   const [sameAsShipping, setSameAsShipping] = useState(true);
+  const [paymentMethod, setPaymentMethod] = useState<'ziina' | 'cod'>('ziina');
+  const [availableGateways, setAvailableGateways] = useState<PaymentGateway[]>([]);
 
   const [customer, setCustomer] = useState<CustomerInfo>({
     firstName: authCustomer?.firstName || '',
@@ -89,6 +98,22 @@ function CheckoutContent() {
       }));
     }
   }, [authCustomer]);
+
+  // Fetch available payment gateways from WooCommerce
+  useEffect(() => {
+    async function fetchGateways() {
+      try {
+        const res = await fetch('/api/woo-payment-gateways');
+        if (res.ok) {
+          const data = await res.json();
+          setAvailableGateways(data.gateways || []);
+        }
+      } catch (err) {
+        console.error('Failed to fetch payment gateways:', err);
+      }
+    }
+    fetchGateways();
+  }, []);
 
   const [billing, setBilling] = useState<BillingInfo>({
     firstName: '',
@@ -175,6 +200,8 @@ function CheckoutContent() {
     }
   }, [searchParams, verifyPayment]);
 
+  const isCodAvailable = availableGateways.some((g) => g.id === 'cod');
+
   const handleCreateOrder = async () => {
     if (!isFormValid) {
       toast('Please complete all delivery and contact details', 'error');
@@ -206,6 +233,48 @@ function CheckoutContent() {
             country: billing.country,
           };
 
+      const shippingData = {
+        first_name: customer.firstName,
+        last_name: customer.lastName,
+        phone: `${customer.countryCode}${customer.phone}`,
+        address_1: customer.address,
+        city: customer.city,
+        state: customer.state,
+        country: customer.country,
+      };
+
+      // COD flow: create order directly and mark as processing
+      if (paymentMethod === 'cod') {
+        const resWoo = await fetch('/api/woo-create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            paymentMethod: 'cod',
+            paymentMethodTitle: 'Cash on Delivery',
+            isPaid: false,
+            items,
+            deliveryDate,
+            deliveryTime,
+            customerNote: orderNotes,
+            customerId: authCustomer?.id || 0,
+            billing: billingData,
+            shipping: shippingData,
+          }),
+        });
+
+        if (!resWoo.ok) {
+          throw new Error('Failed to create order');
+        }
+
+        setOrderCreated(true);
+        setSavedDeliveryDate(deliveryDate);
+        setSavedDeliveryTime(deliveryTime);
+        clearCart();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      // Ziina flow: create order then redirect to payment
       const resWoo = await fetch('/api/woo-create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -219,15 +288,7 @@ function CheckoutContent() {
           customerNote: orderNotes,
           customerId: authCustomer?.id || 0,
           billing: billingData,
-          shipping: {
-            first_name: customer.firstName,
-            last_name: customer.lastName,
-            phone: `${customer.countryCode}${customer.phone}`,
-            address_1: customer.address,
-            city: customer.city,
-            state: customer.state,
-            country: customer.country,
-          },
+          shipping: shippingData,
         }),
       });
 
@@ -343,17 +404,64 @@ function CheckoutContent() {
             <OrderNotes value={orderNotes} onChange={setOrderNotes} />
 
             <SectionCard icon="💳" title="Payment Method">
-              <PaymentMethodCard selected />
-              <div className="mt-3 p-3 bg-[#E8F8F0] rounded-lg border border-[#00B578]/20">
-                <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-[#00B578] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                  <p className="text-xs text-[#00B578] font-medium">
-                    Secure payment via Ziina. You&apos;ll be redirected to complete payment.
-                  </p>
-                </div>
+              <div className="space-y-3">
+                <PaymentMethodCard
+                  selected={paymentMethod === 'ziina'}
+                  onClick={() => setPaymentMethod('ziina')}
+                />
+                {isCodAvailable && (
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod('cod')}
+                    className={`w-full text-left p-4 max-md:p-3 rounded-lg border-2 transition-all ${
+                      paymentMethod === 'cod'
+                        ? 'border-[#E53935] bg-[#FFEBEE]'
+                        : 'border-gray-200 bg-white hover:border-[#E53935]/30'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 max-md:w-8 max-md:h-8 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white text-base max-md:text-sm font-bold">
+                          💵
+                        </div>
+                        <div>
+                          <p className="font-bold text-gray-900 text-sm max-md:text-xs">Cash on Delivery</p>
+                          <p className="text-[10px] text-gray-400">Pay when you receive your order</p>
+                        </div>
+                      </div>
+                      {paymentMethod === 'cod' && (
+                        <div className="w-5 h-5 rounded-full bg-[#E53935] flex items-center justify-center">
+                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                )}
               </div>
+              {paymentMethod === 'ziina' && (
+                <div className="mt-3 p-3 bg-[#E8F8F0] rounded-lg border border-[#00B578]/20">
+                  <div className="flex items-center gap-2">
+                    <svg className="w-4 h-4 text-[#00B578] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    <p className="text-xs text-[#00B578] font-medium">
+                      Secure payment via Ziina. You&apos;ll be redirected to complete payment.
+                    </p>
+                  </div>
+                </div>
+              )}
+              {paymentMethod === 'cod' && (
+                <div className="mt-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm">💵</span>
+                    <p className="text-xs text-amber-700 font-medium">
+                      Pay cash when your order is delivered. Please have the exact amount ready.
+                    </p>
+                  </div>
+                </div>
+              )}
             </SectionCard>
 
             {/* Desktop payment button */}
@@ -385,7 +493,11 @@ function CheckoutContent() {
           disabled={!isFormValid || isInitializing}
           className="btn-primary w-full py-3.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isInitializing ? 'Preparing Payment...' : 'Pay with Ziina 💳'}
+          {isInitializing
+            ? 'Processing...'
+            : paymentMethod === 'cod'
+              ? 'Place Order (Cash on Delivery) 💵'
+              : 'Pay with Ziina 💳'}
         </button>
       </div>
     </div>

@@ -17,7 +17,14 @@ export async function GET(req: Request) {
     }
 
     const response = await wooApi.get('/orders', { params });
-    return NextResponse.json({ orders: response.data });
+    return NextResponse.json(
+      { orders: response.data },
+      {
+        headers: {
+          'Cache-Control': 'private, max-age=30, stale-while-revalidate=60',
+        },
+      }
+    );
   } catch (error) {
     console.error('Failed to fetch orders:', error);
     return NextResponse.json({ orders: [] }, { status: 500 });
