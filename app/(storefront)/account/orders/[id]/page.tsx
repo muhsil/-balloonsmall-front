@@ -78,11 +78,13 @@ function StatusTimeline({ current }: { current: string }) {
 
   const isCancelled = current === 'cancelled' || current === 'failed' || current === 'refunded';
   const currentIdx = STATUS_STEPS.indexOf(current);
+  // For statuses not in the steps array (like 'on-hold'), show at least the first step as active
+  const effectiveIdx = currentIdx === -1 && !isCancelled ? 0 : currentIdx;
 
   return (
     <div className="flex items-center gap-1 mt-4">
       {STATUS_STEPS.map((step, idx) => {
-        const isActive = !isCancelled && idx <= currentIdx;
+        const isActive = !isCancelled && idx <= effectiveIdx;
         const isCurrent = step === current;
         return (
           <React.Fragment key={step}>
