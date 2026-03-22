@@ -64,15 +64,3 @@ export async function getStoreSettings(): Promise<StoreSettings> {
     return DEFAULT_SETTINGS;
   }
 }
-
-/**
- * Format a price using store settings.
- * Works on both server and client.
- */
-export function formatPrice(
-  amount: number,
-  currency: string = DEFAULT_SETTINGS.currency,
-  numDecimals: number = DEFAULT_SETTINGS.numDecimals,
-): string {
-  return `${currency} ${amount.toFixed(numDecimals)}`;
-}

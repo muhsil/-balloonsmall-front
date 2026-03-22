@@ -73,7 +73,7 @@ export default async function ShopPage({
         { name: 'Home', href: '/' },
         { name: 'Shop', href: '/shop' },
       ]} />
-      <TrustBanner />
+      <TrustBanner currency={currency} />
 
       <div className="max-w-7xl mx-auto px-4 max-md:px-3 pb-8 max-md:pb-20">
         {/* Mobile search */}
