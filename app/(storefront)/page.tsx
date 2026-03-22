@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { wooApi } from '@/lib/woocommerce';
 import ProductCard from '@/components/ui/ProductCard';
 import TrustBanner from '@/components/ui/TrustBanner';
-import PromoBanner from '@/components/ui/PromoBanner';
 import CategoryIconPill from '@/components/ui/CategoryIconPill';
 import PromoStrip from '@/components/ui/PromoStrip';
 
@@ -57,6 +56,11 @@ export default async function HomePage() {
 
   const topCategories = categories.filter((c: any) => c.count > 0).slice(0, 8);
 
+  // Pick hero images from featured products or all products
+  const heroProducts = (featured.length > 0 ? featured : allProducts).filter(
+    (p: any) => p.images?.[0]?.src
+  );
+
   return (
     <>
       {/* Promo Strip */}
@@ -65,15 +69,73 @@ export default async function HomePage() {
       {/* Trust Banner */}
       <TrustBanner />
 
-      {/* Hero Banner */}
+      {/* Hero Banner with Product Images */}
       <section className="px-4 pt-4 max-md:px-2 max-md:pt-2 max-w-7xl mx-auto">
-        <PromoBanner
-          title="Celebrate Every Moment"
-          subtitle="Premium balloon decorations delivered to your door in Dubai"
-          ctaLabel="Shop All Balloons"
-          ctaHref="/shop"
-          discount="UP TO 30% OFF"
-        />
+        <div className="relative overflow-hidden rounded-2xl max-md:rounded-xl bg-gradient-to-r from-[#F26522] to-[#FF4747]">
+          <div className="grid grid-cols-1 md:grid-cols-2 items-center">
+            {/* Text side */}
+            <div className="px-8 py-10 max-md:px-5 max-md:py-6 relative z-10">
+              <span className="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
+                UP TO 30% OFF
+              </span>
+              <h1 className="text-3xl max-md:text-xl font-extrabold text-white mb-2 leading-tight">
+                Celebrate Every Moment
+              </h1>
+              <p className="text-white/80 text-sm max-md:text-xs mb-5 max-w-md leading-relaxed">
+                Premium balloon decorations delivered to your door in Dubai. Same-day delivery available!
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  href="/shop"
+                  className="inline-flex items-center gap-2 bg-white text-[#F26522] font-bold text-sm px-6 py-2.5 rounded-full hover:bg-gray-50 transition-all active:scale-[0.98] shadow-lg"
+                >
+                  Shop All Balloons
+                </Link>
+                <Link
+                  href="/shop?category=birthday"
+                  className="inline-flex items-center gap-2 bg-white/20 text-white font-bold text-sm px-5 py-2.5 rounded-full hover:bg-white/30 transition-all max-md:hidden"
+                >
+                  Birthday Specials
+                </Link>
+              </div>
+            </div>
+
+            {/* Image collage side - desktop */}
+            <div className="hidden md:grid grid-cols-2 gap-2 p-4">
+              {heroProducts.slice(0, 4).map((p: any) => (
+                <Link key={p.id} href={`/product/${p.slug}`} className="group">
+                  <div className="relative overflow-hidden rounded-xl aspect-square">
+                    <img
+                      src={p.images[0].src}
+                      alt={p.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <div className="absolute bottom-2 left-2 right-2">
+                      <p className="text-white text-xs font-bold line-clamp-1 drop-shadow">{p.name}</p>
+                      <p className="text-white/90 text-xs font-semibold">AED {parseFloat(p.price || '0').toFixed(0)}</p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Image strip - mobile */}
+            <div className="md:hidden flex gap-2 px-5 pb-5 overflow-x-auto no-scrollbar">
+              {heroProducts.slice(0, 3).map((p: any) => (
+                <Link key={p.id} href={`/product/${p.slug}`} className="flex-shrink-0 w-20">
+                  <div className="w-20 h-20 rounded-lg overflow-hidden border-2 border-white/30">
+                    <img src={p.images[0].src} alt={p.name} className="w-full h-full object-cover" />
+                  </div>
+                  <p className="text-white text-[9px] font-semibold mt-1 line-clamp-1 text-center">AED {parseFloat(p.price || '0').toFixed(0)}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Decorative elements */}
+          <div className="absolute top-2 right-4 opacity-10 text-7xl pointer-events-none select-none max-md:hidden">🎈</div>
+        </div>
       </section>
 
       {/* Categories Row */}
