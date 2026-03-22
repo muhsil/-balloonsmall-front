@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useCartStore } from '@/store/useCartStore';
 import { toast } from '@/components/ui/Toast';
 import QuantitySelector from './QuantitySelector';
+import { useStoreSettings } from '@/components/providers/StoreSettingsProvider';
 
 interface Attribute {
   id: number;
@@ -40,6 +41,7 @@ export default function ProductVariationPicker({
   variations,
 }: ProductVariationPickerProps) {
   const addToCart = useCartStore((s) => s.addToCart);
+  const { currency } = useStoreSettings();
   const [quantity, setQuantity] = useState(1);
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [added, setAdded] = useState(false);
@@ -140,7 +142,7 @@ export default function ProductVariationPicker({
       {/* Price update for selected variation */}
       {hasVariations && matchedVariation && currentPrice !== basePrice && (
         <div className="text-sm font-bold text-[#E53935]">
-          AED {currentPrice.toFixed(0)}
+          {currency} {currentPrice.toFixed(0)}
         </div>
       )}
 
@@ -156,7 +158,7 @@ export default function ProductVariationPicker({
               : 'bg-[#E53935] text-white hover:bg-[#C62828] active:scale-[0.98]'
           }`}
         >
-          {added ? '\u2713 Added!' : !isInStock ? 'Out of Stock' : `Add to Cart \u2022 AED ${(currentPrice * quantity).toFixed(0)}`}
+          {added ? '\u2713 Added!' : !isInStock ? 'Out of Stock' : `Add to Cart \u2022 ${currency} ${(currentPrice * quantity).toFixed(0)}`}
         </button>
       </div>
     </div>

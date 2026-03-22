@@ -1,4 +1,7 @@
+"use client";
+
 import React from 'react';
+import { useStoreSettings } from '@/components/providers/StoreSettingsProvider';
 
 interface PriceDisplayProps {
   amount: number;
@@ -11,12 +14,14 @@ interface PriceDisplayProps {
 
 export default function PriceDisplay({
   amount,
-  currency = 'AED',
+  currency: currencyProp,
   size = 'md',
   showCurrency = true,
   originalAmount,
   onSale,
 }: PriceDisplayProps) {
+  const settings = useStoreSettings();
+  const currency = currencyProp || settings.currency;
   const sizeClasses = {
     sm: 'text-base',
     md: 'text-xl',

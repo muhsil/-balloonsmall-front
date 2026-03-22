@@ -2,7 +2,7 @@ function safeJsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, '\\u003c');
 }
 
-export function OrganizationJsonLd() {
+export function OrganizationJsonLd({ currency = 'AED' }: { currency?: string }) {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -57,7 +57,7 @@ export function WebSiteJsonLd() {
   );
 }
 
-export function LocalBusinessJsonLd() {
+export function LocalBusinessJsonLd({ currency = 'AED' }: { currency?: string }) {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -85,8 +85,8 @@ export function LocalBusinessJsonLd() {
       opens: '09:00',
       closes: '21:00',
     },
-    priceRange: 'AED 45 - AED 599',
-    currenciesAccepted: 'AED',
+    priceRange: `${currency} 45 - ${currency} 599`,
+    currenciesAccepted: currency,
     paymentAccepted: 'Credit Card, Debit Card',
     areaServed: {
       '@type': 'City',
@@ -133,9 +133,10 @@ interface ProductJsonLdProps {
   slug: string;
   inStock: boolean;
   category?: string;
+  currency?: string;
 }
 
-export function ProductJsonLd({ name, description, image, price, slug, inStock, category }: ProductJsonLdProps) {
+export function ProductJsonLd({ name, description, image, price, slug, inStock, category, currency = 'AED' }: ProductJsonLdProps) {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -151,7 +152,7 @@ export function ProductJsonLd({ name, description, image, price, slug, inStock, 
     offers: {
       '@type': 'Offer',
       url: `https://balloonsmall.com/product/${slug}`,
-      priceCurrency: 'AED',
+      priceCurrency: currency,
       price: price.toFixed(2),
       availability: inStock
         ? 'https://schema.org/InStock'
@@ -165,7 +166,7 @@ export function ProductJsonLd({ name, description, image, price, slug, inStock, 
         shippingRate: {
           '@type': 'MonetaryAmount',
           value: '0',
-          currency: 'AED',
+          currency: currency,
         },
         shippingDestination: {
           '@type': 'DefinedRegion',

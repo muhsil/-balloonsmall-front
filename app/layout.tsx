@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { OrganizationJsonLd, WebSiteJsonLd, LocalBusinessJsonLd } from '@/components/seo/JsonLd';
+import StoreSettingsProvider from '@/components/providers/StoreSettingsProvider';
+import { getStoreSettings } from '@/lib/store-settings';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -84,14 +86,18 @@ export const metadata: Metadata = {
   category: 'shopping',
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const settings = await getStoreSettings();
+
   return (
     <html lang="en" className={inter.variable}>
       <body className="font-sans antialiased">
-        <OrganizationJsonLd />
+        <OrganizationJsonLd currency={settings.currency} />
         <WebSiteJsonLd />
-        <LocalBusinessJsonLd />
-        {children}
+        <LocalBusinessJsonLd currency={settings.currency} />
+        <StoreSettingsProvider currency={settings.currency} numDecimals={settings.numDecimals}>
+          {children}
+        </StoreSettingsProvider>
       </body>
     </html>
   );

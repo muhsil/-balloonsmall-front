@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { wooApi } from '@/lib/woocommerce';
+import { getStoreSettings } from '@/lib/store-settings';
 import Link from 'next/link';
 import ProductCard from '@/components/ui/ProductCard';
 import EmptyState from '@/components/ui/EmptyState';
@@ -14,12 +15,14 @@ import { ProductJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 export const revalidate = 60;
 
-const PRODUCT_HIGHLIGHTS = [
-  { icon: '⚡', title: 'Same-Day', description: 'Order before 2 PM' },
-  { icon: '🌟', title: 'Premium', description: 'Finest quality balloons' },
-  { icon: '🚚', title: 'Free Delivery', description: 'Orders over AED 100' },
-  { icon: '💬', title: 'WhatsApp', description: 'Instant support' },
-];
+function getProductHighlights(currency: string) {
+  return [
+    { icon: '⚡', title: 'Same-Day', description: 'Order before 2 PM' },
+    { icon: '🌟', title: 'Premium', description: 'Finest quality balloons' },
+    { icon: '🚚', title: 'Free Delivery', description: `Orders over ${currency} 100` },
+    { icon: '💬', title: 'WhatsApp', description: 'Instant support' },
+  ];
+}
 
 async function getProduct(slug: string) {
   try {
@@ -86,10 +89,12 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
     );
   }
 
-  const [variations, related] = await Promise.all([
+  const [variations, related, settings] = await Promise.all([
     product.type === 'variable' ? getVariations(product.id) : Promise.resolve([]),
     getRelated(product.categories?.map((c: any) => c.id)),
+    getStoreSettings(),
   ]);
+  const { currency } = settings;
   const similarProducts = related.filter((p: any) => p.slug !== params.slug).slice(0, 4);
 
   const price = parseFloat(product.price || '0');
@@ -110,6 +115,7 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
         slug={params.slug}
         inStock={product.in_stock !== false}
         category={product.categories?.[0]?.name}
+        currency={currency}
       />
       <BreadcrumbJsonLd items={[
         { name: 'Home', href: '/' },
@@ -158,10 +164,10 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
           {/* Price Block - AliExpress style */}
           <div className="bg-[#FFEBEE] rounded-lg p-3 mb-3">
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl max-md:text-xl font-bold text-[#E53935]">AED {price.toFixed(0)}</span>
+              <span className="text-2xl max-md:text-xl font-bold text-[#E53935]">{currency} {price.toFixed(0)}</span>
               {product.on_sale && regularPrice && (
                 <>
-                  <span className="text-sm text-[#999] line-through">AED {regularPrice.toFixed(0)}</span>
+                  <span className="text-sm text-[#999] line-through">{currency} {regularPrice.toFixed(0)}</span>
                   <DealBadge text={`${discount}% OFF`} variant="red" />
                 </>
               )}
@@ -198,7 +204,7 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
 
           {/* Highlights Grid */}
           <div className="grid grid-cols-2 gap-2 mt-4">
-            {PRODUCT_HIGHLIGHTS.map((h) => (
+            {getProductHighlights(currency).map((h) => (
               <div key={h.title} className="flex items-center gap-2 bg-white border border-[#f0f0f0] rounded-lg px-3 py-2">
                 <span className="text-sm">{h.icon}</span>
                 <div>
@@ -238,6 +244,7 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
                 regularPrice={p.regular_price ? parseFloat(p.regular_price) : null}
                 imageSrc={p.images?.[0]?.src}
                 variant="compact"
+                currency={currency}
               />
             ))}
           </div>
@@ -253,6 +260,7 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
                   regularPrice={p.regular_price ? parseFloat(p.regular_price) : null}
                   imageSrc={p.images?.[0]?.src}
                   variant="compact"
+                  currency={currency}
                 />
               </div>
             ))}

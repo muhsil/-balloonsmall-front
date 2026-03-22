@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { getStoreSettings } from '@/lib/store-settings';
 
 export const metadata: Metadata = {
   title: 'FAQ',
@@ -21,7 +22,7 @@ const FAQ_SECTIONS = [
     items: [
       { q: 'Do you offer same-day delivery?', a: 'Yes! Orders placed before 2:00 PM are eligible for same-day delivery within Dubai.' },
       { q: 'What are your delivery hours?', a: 'We deliver Saturday–Thursday from 9 AM to 9 PM, and Fridays from 2 PM to 9 PM.' },
-      { q: 'Is delivery free?', a: 'Delivery is free on orders over AED 100. Orders under AED 100 have a small delivery fee.' },
+      { q: 'Is delivery free?', a: 'DYNAMIC_DELIVERY_FAQ' },
     ],
   },
   {
@@ -40,7 +41,21 @@ const FAQ_SECTIONS = [
   },
 ];
 
-export default function FAQPage() {
+export default async function FAQPage() {
+  const settings = await getStoreSettings();
+  const { currency } = settings;
+
+  // Replace dynamic FAQ content
+  const sections = FAQ_SECTIONS.map((section) => ({
+    ...section,
+    items: section.items.map((item) => ({
+      ...item,
+      a: item.a === 'DYNAMIC_DELIVERY_FAQ'
+        ? `Delivery is free on orders over ${currency} 100. Orders under ${currency} 100 have a small delivery fee.`
+        : item.a,
+    })),
+  }));
+
   return (
     <div className="max-w-4xl mx-auto px-4 max-md:px-3 py-8 max-md:py-5 max-md:pb-20">
       {/* Breadcrumb */}
@@ -53,7 +68,7 @@ export default function FAQPage() {
       <h1 className="text-2xl max-md:text-xl font-bold text-[#191919] mb-6">Frequently Asked Questions</h1>
 
       <div className="space-y-4">
-        {FAQ_SECTIONS.map((section) => (
+        {sections.map((section) => (
           <div key={section.title} className="bg-white rounded-lg border border-[#f0f0f0] overflow-hidden">
             <h2 className="text-sm font-bold text-[#191919] px-4 py-3 bg-[#fafafa] border-b border-[#f0f0f0]">
               {section.title}

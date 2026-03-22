@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useCartStore } from '@/store/useCartStore';
 import { toast } from '@/components/ui/Toast';
+import { useStoreSettings } from '@/components/providers/StoreSettingsProvider';
 
 interface StickyAddToCartProps {
   productId: number;
@@ -14,6 +15,7 @@ interface StickyAddToCartProps {
 export default function StickyAddToCart({ productId, name, price, image }: StickyAddToCartProps) {
   const [added, setAdded] = useState(false);
   const addToCart = useCartStore((state) => state.addToCart);
+  const { currency } = useStoreSettings();
 
   const handleAdd = () => {
     addToCart({ id: productId, name, price, quantity: 1, image });
@@ -27,7 +29,7 @@ export default function StickyAddToCart({ productId, name, price, image }: Stick
       <div className="flex items-center gap-3">
         <div className="flex-1 min-w-0">
           <div className="text-xs text-gray-500 truncate">{name}</div>
-          <div className="text-lg font-extrabold text-[#E53935]">AED {price.toFixed(0)}</div>
+          <div className="text-lg font-extrabold text-[#E53935]">{currency} {price.toFixed(0)}</div>
         </div>
         <button
           onClick={handleAdd}
