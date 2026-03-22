@@ -33,9 +33,12 @@ export async function POST(req: Request) {
       );
     }
 
+    const isTestMode = process.env.ZIINA_TEST_MODE === 'true' || process.env.NODE_ENV !== 'production';
+
     return NextResponse.json({
       paymentIntentId: data.id,
       redirectUrl: data.redirect_url,
+      testMode: isTestMode,
     });
   } catch (error) {
     console.error('Ziina payment intent error:', error);

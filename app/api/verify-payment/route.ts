@@ -41,11 +41,16 @@ export async function GET(req: Request) {
       );
     }
 
+    const isTestMode =
+      process.env.ZIINA_TEST_MODE === 'true' ||
+      process.env.NODE_ENV !== 'production';
+
     return NextResponse.json({
       id: data.id,
       status: data.status,
       amount: data.amount,
       currencyCode: data.currency_code,
+      testMode: isTestMode,
     });
   } catch (error) {
     console.error('Ziina verify payment error:', error);

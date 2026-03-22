@@ -25,6 +25,7 @@ interface CheckoutData {
   customer: CustomerInfo;
   deliveryDate: string;
   deliveryTime: string;
+  orderId?: number;
 }
 
 function saveCheckoutData(data: CheckoutData) {
@@ -84,6 +85,21 @@ function CheckoutContent() {
           setCustomer(saved.customer);
           setSavedDeliveryDate(saved.deliveryDate);
           setSavedDeliveryTime(saved.deliveryTime);
+
+          // Update WooCommerce order status to completed with payment details
+          if (saved.orderId) {
+            fetch('/api/woo-update-order', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                orderId: saved.orderId,
+                status: 'completed',
+                paymentIntentId,
+                paymentMethod: 'Ziina Payment (Card/Apple Pay/Google Pay)',
+                testMode: data.testMode ?? false,
+              }),
+            }).catch((err) => console.error('Failed to update WooCommerce order:', err));
+          }
         }
         setOrderCreated(true);
         clearCart();
@@ -150,7 +166,11 @@ function CheckoutContent() {
         }),
       });
 
-      if (!resWoo.ok && resWoo.status === 500) {
+      let wooOrderId: number | undefined;
+      if (resWoo.ok) {
+        const wooData = await resWoo.json();
+        wooOrderId = wooData.orderId;
+      } else {
         console.warn('WooCommerce order creation failed, continuing with payment...');
       }
 
@@ -158,6 +178,7 @@ function CheckoutContent() {
         customer,
         deliveryDate: deliveryDate!,
         deliveryTime: deliveryTime!,
+        orderId: wooOrderId,
       });
 
       const origin = window.location.origin;
