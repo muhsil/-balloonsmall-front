@@ -76,6 +76,20 @@ function CheckoutContent() {
     country: 'AE',
   });
 
+  // Fix: Zustand persist hydration — authCustomer is null on first render,
+  // so we update form fields once hydration completes
+  useEffect(() => {
+    if (authCustomer) {
+      setCustomer((prev) => ({
+        ...prev,
+        firstName: prev.firstName || authCustomer.firstName || '',
+        lastName: prev.lastName || authCustomer.lastName || '',
+        email: prev.email || authCustomer.email || '',
+        phone: prev.phone || authCustomer.phone || '',
+      }));
+    }
+  }, [authCustomer]);
+
   const [billing, setBilling] = useState<BillingInfo>({
     firstName: '',
     lastName: '',
@@ -244,8 +258,9 @@ function CheckoutContent() {
       }
 
       // Store payment_intent_id in WooCommerce order meta for webhook lookup
+      // Fix: await fetch so it completes before the redirect navigates away
       if (wooOrderId && data.paymentIntentId) {
-        fetch('/api/woo-update-order', {
+        await fetch('/api/woo-update-order', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

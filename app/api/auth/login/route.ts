@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { wooApi } from '@/lib/woocommerce';
+import { verifyPassword } from '@/lib/password';
 
 export async function POST(req: Request) {
   try {
@@ -53,8 +54,8 @@ export async function POST(req: Request) {
         );
       }
 
-      // Simple comparison (in production, use bcrypt)
-      if (storedHash.value !== password) {
+      // Verify password against stored hash (supports both PBKDF2 and legacy plaintext)
+      if (!verifyPassword(password, storedHash.value)) {
         return NextResponse.json(
           { error: 'Incorrect password' },
           { status: 401 }
