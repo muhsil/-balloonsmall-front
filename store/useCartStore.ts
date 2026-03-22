@@ -3,11 +3,12 @@ import { persist } from 'zustand/middleware';
 
 export interface CartItem {
   id: number;
+  productId?: number;
   name: string;
   price: number;
   quantity: number;
-  customText?: string;
-  customColor?: string;
+  image?: string;
+  variant?: string;
 }
 
 interface CartState {

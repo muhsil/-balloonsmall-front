@@ -22,7 +22,7 @@ export default function AboutPage() {
             {[
               { icon: '🎈', title: 'Premium Quality', desc: 'We use only the finest quality latex and foil balloons sourced from top manufacturers worldwide.' },
               { icon: '🚚', title: 'Same-Day Delivery', desc: 'Order before 2 PM and get your balloons delivered the same day anywhere in Dubai.' },
-              { icon: '🎨', title: 'Custom Designs', desc: 'Personalize your balloons with custom text, colors, and arrangements tailored to your event.' },
+              { icon: '🎨', title: 'Wide Variety', desc: 'Choose from a wide range of balloon styles, colors, and arrangements for any event.' },
             ].map((item) => (
               <div key={item.title} className="bg-[#FFF3EC] rounded-xl p-4 text-center">
                 <span className="text-3xl block mb-2">{item.icon}</span>
@@ -45,7 +45,7 @@ export default function AboutPage() {
             <li>Affordable prices with bundle discounts up to 20% off</li>
             <li>Free delivery on orders over AED 100</li>
             <li>Same-day delivery available (order before 2 PM)</li>
-            <li>Custom text and color options for personalization</li>
+            <li>Multiple product variations to choose from</li>
             <li>Secure payment via Ziina</li>
             <li>Dedicated WhatsApp support for quick assistance</li>
           </ul>

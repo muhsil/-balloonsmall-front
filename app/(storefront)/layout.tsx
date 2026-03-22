@@ -49,8 +49,8 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
               <h4 className="font-bold text-gray-900 text-sm mb-3">Contact Us</h4>
               <div className="flex flex-col gap-2 text-gray-500 text-sm">
                 <span>📍 Dubai, UAE</span>
-                <a href="https://wa.me/971585501786" className="hover:text-[#F26522] transition-colors">💬 WhatsApp Support</a>
-                <a href="mailto:muhsilv@gmail.com" className="hover:text-[#F26522] transition-colors">📧 muhsilv@gmail.com</a>
+                                <a href="https://wa.me/971563554303" className="hover:text-[#F26522] transition-colors">💬 WhatsApp Support</a>
+                                <a href="mailto:hello@balloonsmall.com" className="hover:text-[#F26522] transition-colors">📧 hello@balloonsmall.com</a>
               </div>
               <div className="flex flex-col gap-2 mt-4">
                 <h4 className="font-bold text-gray-900 text-sm">Legal</h4>
@@ -91,7 +91,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
             <span className="text-gray-200">|</span>
             <Link href="/faq" className="hover:text-[#F26522]">FAQ</Link>
             <span className="text-gray-200">|</span>
-            <a href="https://wa.me/971585501786" className="hover:text-[#F26522]">WhatsApp</a>
+            <a href="https://wa.me/971563554303" className="hover:text-[#F26522]">WhatsApp</a>
           </div>
           <div className="flex items-center justify-center gap-3 text-[10px] text-gray-400 mt-1.5">
             <Link href="/terms" className="hover:text-[#F26522]">Terms</Link>

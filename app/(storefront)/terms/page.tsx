@@ -45,13 +45,13 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-base font-bold text-gray-900">7. Custom Orders</h2>
-            <p>Custom text and personalized balloon orders cannot be modified or cancelled once production has begun. Please review your customization details carefully before placing your order.</p>
+            <h2 className="text-base font-bold text-gray-900">7. Product Variations</h2>
+            <p>Please review your selected product variations carefully before placing your order. Orders with specific variations cannot be modified once processing has begun.</p>
           </section>
 
           <section>
             <h2 className="text-base font-bold text-gray-900">8. Contact</h2>
-            <p>For any questions regarding these terms, please contact us via WhatsApp at +971 58 550 1786 or email at muhsilv@gmail.com.</p>
+            <p>For any questions regarding these terms, please contact us via WhatsApp at +971 56 355 4303 or email at hello@balloonsmall.com.</p>
           </section>
         </div>
       </div>

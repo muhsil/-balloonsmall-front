@@ -52,7 +52,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-base font-bold text-gray-900">7. Contact</h2>
-            <p>For privacy-related inquiries, contact us at muhsilv@gmail.com or via WhatsApp at +971 58 550 1786.</p>
+            <p>For privacy-related inquiries, contact us at hello@balloonsmall.com or via WhatsApp at +971 56 355 4303.</p>
           </section>
         </div>
       </div>

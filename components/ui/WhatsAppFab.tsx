@@ -9,7 +9,7 @@ interface WhatsAppFabProps {
 export default function WhatsAppFab({ 
   productName = "Custom Balloon", 
   price = 0, 
-  phoneNumber = "971500000000" 
+  phoneNumber = "971563554303" 
 }: WhatsAppFabProps) {
   
   const text = encodeURIComponent(

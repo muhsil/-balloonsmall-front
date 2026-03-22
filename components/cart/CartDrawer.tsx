@@ -57,7 +57,8 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                 name={item.name}
                 price={item.price}
                 quantity={item.quantity}
-                customText={item.customText}
+                image={item.image}
+                variantLabel={item.variant}
                 variant="drawer"
                 onQuantityChange={(q) => updateQuantity(item.id, q)}
                 onRemove={() => handleRemove(item.id, item.name)}

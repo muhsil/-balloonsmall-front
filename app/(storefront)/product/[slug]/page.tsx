@@ -1,4 +1,3 @@
-import BalloonCustomizer from '@/components/customizer/BalloonCustomizer';
 import { wooApi } from '@/lib/woocommerce';
 import Link from 'next/link';
 import ProductCard from '@/components/ui/ProductCard';
@@ -9,14 +8,15 @@ import DealBadge from '@/components/ui/DealBadge';
 import ShippingBadge from '@/components/ui/ShippingBadge';
 import ProductImageGallery from '@/components/ui/ProductImageGallery';
 import StickyAddToCart from '@/components/ui/StickyAddToCart';
+import ProductVariationPicker from '@/components/ui/ProductVariationPicker';
 
 export const revalidate = 60;
 
 const PRODUCT_HIGHLIGHTS = [
-  { icon: '🎨', title: 'Customizable', description: 'Add your own text & colors' },
-  { icon: '⚡', title: 'Same-Day', description: 'Order before 2 PM' },
-  { icon: '🌟', title: 'Premium', description: 'Finest quality balloons' },
-  { icon: '💬', title: 'WhatsApp', description: 'Instant support' },
+  { icon: '\u26A1', title: 'Same-Day', description: 'Order before 2 PM' },
+  { icon: '\u{1F31F}', title: 'Premium', description: 'Finest quality balloons' },
+  { icon: '\u{1F69A}', title: 'Free Delivery', description: 'Orders over AED 100' },
+  { icon: '\u{1F4AC}', title: 'WhatsApp', description: 'Instant support' },
 ];
 
 async function getProduct(slug: string) {
@@ -24,6 +24,15 @@ async function getProduct(slug: string) {
     const { data } = await wooApi.get('/products', { params: { slug } });
     return data?.[0] as any;
   } catch { return null; }
+}
+
+async function getVariations(productId: number) {
+  try {
+    const { data } = await wooApi.get(`/products/${productId}/variations`, {
+      params: { per_page: 50 }
+    });
+    return data as any[];
+  } catch { return []; }
 }
 
 async function getRelated(categoryIds: number[]) {
@@ -39,13 +48,11 @@ async function getRelated(categoryIds: number[]) {
 export default async function ProductPage({ params: paramsPromise }: { params: Promise<{ slug: string }> }) {
   const params = await paramsPromise;
   const product = await getProduct(params.slug);
-  const related = product ? await getRelated(product.categories?.map((c: any) => c.id)) : [];
-  const similarProducts = related.filter((p: any) => p.slug !== params.slug).slice(0, 4);
 
   if (!product) {
     return (
       <EmptyState
-        icon="🎈"
+        icon="\u{1F388}"
         title="Product Not Found"
         description="This balloon may have floated away! Browse our full collection."
         actionLabel="Browse All Balloons"
@@ -54,6 +61,12 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
     );
   }
 
+  const [variations, related] = await Promise.all([
+    product.type === 'variable' ? getVariations(product.id) : Promise.resolve([]),
+    getRelated(product.categories?.map((c: any) => c.id)),
+  ]);
+  const similarProducts = related.filter((p: any) => p.slug !== params.slug).slice(0, 4);
+
   const price = parseFloat(product.price || '0');
   const regularPrice = product.regular_price ? parseFloat(product.regular_price) : null;
   const discount = product.on_sale && regularPrice ? Math.round(((regularPrice - price) / regularPrice) * 100) : 0;
@@ -61,6 +74,7 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
   const hash = params.slug.split('').reduce((acc: number, c: string) => acc + c.charCodeAt(0), 0);
   const soldNum = Math.floor((hash * 7 + price * 3) % 900 + 100);
   const reviewCount = Math.floor(price * 2 + 30);
+  const mainImage = product.images?.[0]?.src || '';
 
   return (
     <div className="max-w-7xl mx-auto pb-10 max-md:pb-24">
@@ -133,8 +147,18 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
             </span>
           </div>
 
+          {/* Variations / Add to Cart */}
+          <ProductVariationPicker
+            productId={product.id}
+            productName={product.name}
+            basePrice={price}
+            image={mainImage}
+            attributes={product.attributes || []}
+            variations={variations}
+          />
+
           {/* Highlights Grid */}
-          <div className="grid grid-cols-2 gap-2 mb-4">
+          <div className="grid grid-cols-2 gap-2 mt-4">
             {PRODUCT_HIGHLIGHTS.map((h) => (
               <div key={h.title} className="flex items-center gap-2 bg-white border border-gray-100 rounded-lg px-3 py-2">
                 <span className="text-sm">{h.icon}</span>
@@ -145,17 +169,6 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
               </div>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* Customizer Section */}
-      <div className="mx-4 max-md:mx-3 mb-10 max-md:mb-6">
-        <div className="mb-4">
-          <h2 className="text-lg font-extrabold text-gray-900 max-md:text-base">Customize Your Balloon 🎨</h2>
-          <p className="text-xs text-gray-400 mt-1">Add your own text and choose a color</p>
-        </div>
-        <div className="bg-white rounded-xl p-4 md:p-6 border border-gray-100">
-          <BalloonCustomizer productId={product.id} price={price} name={product.name} />
         </div>
       </div>
 
@@ -208,8 +221,10 @@ export default async function ProductPage({ params: paramsPromise }: { params: P
         </div>
       )}
 
-      {/* Mobile Sticky Add to Cart */}
-      <StickyAddToCart productId={product.id} name={product.name} price={price} />
+      {/* Mobile Sticky Add to Cart (only for simple products — variable products use ProductVariationPicker) */}
+      {product.type !== 'variable' && (
+        <StickyAddToCart productId={product.id} name={product.name} price={price} image={mainImage} />
+      )}
     </div>
   );
 }

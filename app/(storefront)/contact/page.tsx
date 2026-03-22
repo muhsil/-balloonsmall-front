@@ -21,8 +21,8 @@ export default function ContactPage() {
 
             <div className="space-y-4">
               {[
-                { icon: '💬', label: 'WhatsApp', value: '+971 58 550 1786', href: 'https://wa.me/971585501786', desc: 'Fastest response — typically within minutes' },
-                { icon: '📧', label: 'Email', value: 'muhsilv@gmail.com', href: 'mailto:muhsilv@gmail.com', desc: 'We reply within 24 hours' },
+                                { icon: '💬', label: 'WhatsApp', value: '+971 56 355 4303', href: 'https://wa.me/971563554303', desc: 'Fastest response — typically within minutes' },
+                                { icon: '📧', label: 'Email', value: 'hello@balloonsmall.com', href: 'mailto:hello@balloonsmall.com', desc: 'We reply within 24 hours' },
                 { icon: '📍', label: 'Location', value: 'Dubai, UAE', href: '#', desc: 'Delivery across all of Dubai' },
                 { icon: '🕐', label: 'Business Hours', value: '9 AM – 9 PM', href: '#', desc: 'Saturday to Thursday' },
               ].map((item) => (
@@ -46,7 +46,7 @@ export default function ContactPage() {
                 WhatsApp is our fastest channel. Tap below to start a conversation with our support team.
               </p>
               <a
-                href="https://wa.me/971585501786?text=Hello%2C%20I%20need%20help%20with%20my%20order"
+                href="https://wa.me/971563554303?text=Hello%2C%20I%20need%20help%20with%20my%20order"
                 className="inline-block bg-white text-[#F26522] font-bold text-sm px-6 py-2.5 rounded-full hover:bg-gray-50 transition-colors"
               >
                 Chat on WhatsApp
@@ -59,7 +59,7 @@ export default function ContactPage() {
                 {[
                   { q: 'What is your delivery area?', a: 'We deliver across all areas of Dubai.' },
                   { q: 'Do you offer same-day delivery?', a: 'Yes! Order before 2 PM for same-day delivery.' },
-                  { q: 'Can I customize my balloons?', a: 'Absolutely! Add custom text, choose colors, and select sizes.' },
+                  { q: 'What variations are available?', a: 'We offer different sizes, colors, and styles depending on the product.' },
                   { q: 'What payment methods do you accept?', a: 'We accept all major cards via Ziina secure payment.' },
                 ].map((item) => (
                   <div key={item.q} className="border-b border-gray-50 last:border-0 pb-2 last:pb-0">

@@ -12,12 +12,12 @@ const FAQ_SECTIONS = [
     ],
   },
   {
-    title: 'Products & Customization',
+    title: 'Products & Variations',
     items: [
-      { q: 'Can I customize my balloons?', a: 'Absolutely! You can add custom text, choose from 10+ colors, select different sizes (12" to 36"), and pick from multiple font styles. Use our balloon customizer on any product page.' },
+      { q: 'What product variations are available?', a: 'Many of our products come with different size, color, and style variations. Select your preferred option on the product page before adding to cart.' },
       { q: 'What types of balloons do you offer?', a: 'We offer latex balloons, foil balloons, number balloons, balloon arches, garland kits, and complete decoration packages for all occasions.' },
       { q: 'How long do helium balloons last?', a: 'Standard latex helium balloons last 8-12 hours. Foil helium balloons can last 3-5 days. We recommend ordering for day-of delivery for the best experience.' },
-      { q: 'Do you offer bundle discounts?', a: 'Yes! Save 10% on 3-piece bundles, 15% on 5-piece bundles, and 20% on 10-piece bundles. Discounts are applied automatically at checkout.' },
+      { q: 'Do you offer bulk pricing?', a: 'Yes! Contact us via WhatsApp for special pricing on bulk and corporate orders.' },
     ],
   },
   {
@@ -32,7 +32,7 @@ const FAQ_SECTIONS = [
   {
     title: 'General',
     items: [
-      { q: 'How do I contact customer support?', a: 'The fastest way is via WhatsApp at +971 58 550 1786. You can also email us at muhsilv@gmail.com. We typically respond within minutes on WhatsApp.' },
+      { q: 'How do I contact customer support?', a: 'The fastest way is via WhatsApp at +971 56 355 4303. You can also email us at hello@balloonsmall.com. We typically respond within minutes on WhatsApp.' },
       { q: 'Can I place a bulk order for events?', a: 'Yes! We offer special pricing for bulk and corporate orders. Contact us via WhatsApp or email with your requirements for a custom quote.' },
       { q: 'Do you set up the decorations?', a: 'Our Luxury Event Decoration Package includes a setup guide. For professional on-site setup services, please contact us for pricing and availability.' },
     ],
@@ -81,7 +81,7 @@ export default function FAQPage() {
           <h3 className="font-bold text-gray-900 text-sm mb-2">Still have questions?</h3>
           <p className="text-xs text-gray-500 mb-4">Our support team is always happy to help.</p>
           <div className="flex items-center justify-center gap-3">
-            <a href="https://wa.me/971585501786" className="btn-primary text-xs px-4 py-2">
+            <a href="https://wa.me/971563554303" className="btn-primary text-xs px-4 py-2">
               WhatsApp Us
             </a>
             <Link href="/contact" className="btn-outline text-xs px-4 py-2">

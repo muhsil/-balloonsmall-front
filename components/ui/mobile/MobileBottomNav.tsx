@@ -63,7 +63,7 @@ export default function MobileBottomNav() {
     { href: '/shop', label: 'Shop', icon: <ShopIcon active={false} />, activeIcon: <ShopIcon active={true} /> },
     { href: '/checkout', label: 'Cart', icon: <CartIcon active={false} />, activeIcon: <CartIcon active={true} /> },
     { href: '/shop?featured=true', label: 'Deals', icon: <HeartIcon active={false} />, activeIcon: <HeartIcon active={true} /> },
-    { href: 'https://wa.me/971585501786', label: 'Support', icon: <SupportIcon active={false} />, activeIcon: <SupportIcon active={true} /> },
+    { href: 'https://wa.me/971563554303', label: 'Support', icon: <SupportIcon active={false} />, activeIcon: <SupportIcon active={true} /> },
   ];
 
   return (

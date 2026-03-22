@@ -24,7 +24,8 @@ export default function OrderSummary({ items, subtotal }: OrderSummaryProps) {
             name={item.name}
             price={item.price}
             quantity={item.quantity}
-            customText={item.customText}
+            image={item.image}
+            variantLabel={item.variant}
             variant="summary"
           />
         ))}
