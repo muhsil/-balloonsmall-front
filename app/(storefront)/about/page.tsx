@@ -1,8 +1,24 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+
+export const metadata: Metadata = {
+  title: 'About Us',
+  description: 'BalloonsMall is Dubai\'s premier balloon decoration and delivery service. Premium quality balloons, same-day delivery, and wide variety for every occasion.',
+  alternates: { canonical: '/about' },
+  openGraph: {
+    title: 'About BalloonsMall Dubai',
+    description: 'Dubai\'s premier balloon decoration and delivery service.',
+  },
+};
 
 export default function AboutPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-10 max-md:px-3 max-md:py-6 max-md:pb-20">
+      <BreadcrumbJsonLd items={[
+        { name: 'Home', href: '/' },
+        { name: 'About Us', href: '/about' },
+      ]} />
       <nav className="flex items-center gap-2 text-xs text-gray-400 mb-6">
         <Link href="/" className="hover:text-[#F26522]">Home</Link>
         <span>&gt;</span>

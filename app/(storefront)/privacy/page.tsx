@@ -1,8 +1,21 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+  description: 'BalloonsMall privacy policy. Learn how we collect, use, and protect your personal information when you shop for balloons in Dubai.',
+  alternates: { canonical: '/privacy' },
+  robots: { index: true, follow: true },
+};
 
 export default function PrivacyPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-10 max-md:px-3 max-md:py-6 max-md:pb-20">
+      <BreadcrumbJsonLd items={[
+        { name: 'Home', href: '/' },
+        { name: 'Privacy Policy', href: '/privacy' },
+      ]} />
       <nav className="flex items-center gap-2 text-xs text-gray-400 mb-6">
         <Link href="/" className="hover:text-[#F26522]">Home</Link>
         <span>&gt;</span>

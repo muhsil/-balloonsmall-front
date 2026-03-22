@@ -1,8 +1,21 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+
+export const metadata: Metadata = {
+  title: 'Terms & Conditions',
+  description: 'Read BalloonsMall terms and conditions including orders, payment, delivery, returns, and refund policies for balloon purchases in Dubai.',
+  alternates: { canonical: '/terms' },
+  robots: { index: true, follow: true },
+};
 
 export default function TermsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-10 max-md:px-3 max-md:py-6 max-md:pb-20">
+      <BreadcrumbJsonLd items={[
+        { name: 'Home', href: '/' },
+        { name: 'Terms & Conditions', href: '/terms' },
+      ]} />
       <nav className="flex items-center gap-2 text-xs text-gray-400 mb-6">
         <Link href="/" className="hover:text-[#F26522]">Home</Link>
         <span>&gt;</span>

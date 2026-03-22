@@ -1,4 +1,16 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+import { FAQPageJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+
+export const metadata: Metadata = {
+  title: 'Frequently Asked Questions',
+  description: 'Find answers about BalloonsMall delivery, payment, product variations, refunds, and more. Same-day balloon delivery in Dubai.',
+  alternates: { canonical: '/faq' },
+  openGraph: {
+    title: 'FAQ | BalloonsMall Dubai',
+    description: 'Common questions about balloon delivery, payment, and products in Dubai.',
+  },
+};
 
 const FAQ_SECTIONS = [
   {
@@ -42,6 +54,11 @@ const FAQ_SECTIONS = [
 export default function FAQPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-10 max-md:px-3 max-md:py-6 max-md:pb-20">
+      <BreadcrumbJsonLd items={[
+        { name: 'Home', href: '/' },
+        { name: 'FAQ', href: '/faq' },
+      ]} />
+      <FAQPageJsonLd questions={FAQ_SECTIONS.flatMap((s) => s.items)} />
       <nav className="flex items-center gap-2 text-xs text-gray-400 mb-6">
         <Link href="/" className="hover:text-[#F26522]">Home</Link>
         <span>&gt;</span>

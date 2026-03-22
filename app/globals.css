@@ -219,11 +219,90 @@
   display: none;
   align-items: center;
   justify-content: space-around;
-  height: 56px;
+  height: 60px;
   background: #fff;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #f0f0f0;
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.06);
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 0;
+  flex: 1;
+  color: #9ca3af;
+  transition: color 0.2s ease, transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
+}
+.mobile-nav-item:active { transform: scale(0.9); }
+.mobile-nav-active { color: #F26522 !important; }
+
+.mobile-nav-label {
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.mobile-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  background: #FF4747;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 99px;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid #fff;
+}
+
+/* Bottom sheet menu */
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.2s ease;
+}
+.mobile-menu-sheet {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  animation: slideUp 0.25s ease;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.12);
+}
+.mobile-menu-handle {
+  width: 36px;
+  height: 4px;
+  background: #ddd;
+  border-radius: 99px;
+  margin: 8px auto 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
 @media (max-width: 767px) {
@@ -231,7 +310,7 @@
     display: flex;
   }
   .mobile-body-padding {
-    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
   }
   .product-card:hover {
     transform: none;
@@ -240,10 +319,10 @@
   .product-card:active { transform: scale(0.98); }
   .product-card { border-radius: 0.5rem; }
   .section-title { font-size: clamp(1.125rem, 5vw, 1.375rem); }
-  .fixed.bottom-6.right-6 { bottom: 72px !important; right: 12px !important; }
+  .fixed.bottom-6.right-6 { bottom: 76px !important; right: 12px !important; }
   .mobile-sticky-bottom {
     position: fixed;
-    bottom: 56px;
+    bottom: 60px;
     left: 0;
     right: 0;
     z-index: 70;
@@ -283,3 +362,51 @@
 
 .promo-scroll { animation: slide-left 20s linear infinite; }
 .deal-pulse { animation: pulse-deal 2s ease-in-out infinite; }
+
+/* ── Mobile Web App Enhancements ── */
+@media (max-width: 767px) {
+  /* Prevent text selection on interactive elements for app-like feel */
+  button, a, .mobile-nav-item, .mobile-card {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Smooth page transitions */
+  main, [role="main"] {
+    animation: pageEnter 0.25s ease-out;
+  }
+
+  /* Overscroll behavior - prevent pull-to-refresh on Chrome */
+  html {
+    overscroll-behavior-y: contain;
+  }
+
+  /* Touch-friendly minimum sizes for form elements */
+  input, select, textarea {
+    min-height: 44px;
+    font-size: 16px !important; /* Prevent iOS zoom on focus */
+    border-radius: 8px;
+  }
+
+  /* Smoother scrolling in overflowing containers */
+  .overflow-x-auto, .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* App-like card press feedback */
+  .product-card, .mobile-card, details {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Safe area padding for notched devices */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+}

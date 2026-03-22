@@ -1,10 +1,22 @@
+import type { Metadata } from 'next';
 import { wooApi } from '@/lib/woocommerce';
 import ProductCard from '@/components/ui/ProductCard';
 import EmptyState from '@/components/ui/EmptyState';
 import CategoryIconPill from '@/components/ui/CategoryIconPill';
 import TrustBanner from '@/components/ui/TrustBanner';
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: 'Shop Balloons & Decorations',
+  description: 'Browse our full collection of premium balloons, balloon arches, garland kits, and event decorations. Birthday, wedding, baby shower balloons with same-day delivery in Dubai.',
+  alternates: { canonical: '/shop' },
+  openGraph: {
+    title: 'Shop Balloons & Decorations | BalloonsMall Dubai',
+    description: 'Browse premium balloons for every occasion. Same-day delivery across Dubai.',
+  },
+};
 
 const CATEGORY_ICONS: Record<string, string> = {
   birthday: '🎂', wedding: '💒', 'baby-shower': '👶',
@@ -66,6 +78,10 @@ export default async function ShopPage({
 
   return (
     <>
+      <BreadcrumbJsonLd items={[
+        { name: 'Home', href: '/' },
+        { name: 'Shop', href: '/shop' },
+      ]} />
       <TrustBanner />
 
       <div className="max-w-7xl mx-auto px-4 max-md:px-2 pb-10 max-md:pb-20">
