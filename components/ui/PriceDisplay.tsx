@@ -26,7 +26,7 @@ export default function PriceDisplay({
 
   return (
     <div className="flex items-baseline gap-2">
-      <span className={`${sizeClasses[size]} font-extrabold text-[#F26522]`}>
+      <span className={`${sizeClasses[size]} font-extrabold text-[#E53935]`}>
         {showCurrency && `${currency} `}{amount.toFixed(0)}
       </span>
       {onSale && originalAmount && (

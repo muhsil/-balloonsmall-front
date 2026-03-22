@@ -26,7 +26,7 @@ export default function CheckoutSteps({ paymentReady }: CheckoutStepsProps) {
           <div
             className={`w-7 h-7 max-md:w-6 max-md:h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${
               s.active
-                ? 'bg-[#F26522] text-white'
+                ? 'bg-[#E53935] text-white'
                 : 'bg-gray-200 text-gray-400'
             }`}
           >

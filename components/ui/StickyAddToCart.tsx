@@ -27,14 +27,14 @@ export default function StickyAddToCart({ productId, name, price, image }: Stick
       <div className="flex items-center gap-3">
         <div className="flex-1 min-w-0">
           <div className="text-xs text-gray-500 truncate">{name}</div>
-          <div className="text-lg font-extrabold text-[#F26522]">AED {price.toFixed(0)}</div>
+          <div className="text-lg font-extrabold text-[#E53935]">AED {price.toFixed(0)}</div>
         </div>
         <button
           onClick={handleAdd}
           className={`px-6 py-3 rounded-xl font-bold text-sm transition-all shrink-0 ${
             added
               ? 'bg-[#00B578] text-white'
-              : 'bg-[#F26522] text-white hover:bg-[#D4520F] active:scale-[0.98]'
+              : 'bg-[#E53935] text-white hover:bg-[#C62828] active:scale-[0.98]'
           }`}
         >
           {added ? '✓ Added!' : 'Add to Cart'}

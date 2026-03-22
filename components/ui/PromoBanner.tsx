@@ -17,7 +17,7 @@ export default function PromoBanner({
   subtitle,
   ctaLabel,
   ctaHref,
-  bgColor = 'bg-gradient-to-r from-[#F26522] to-[#FF4747]',
+  bgColor = 'bg-gradient-to-r from-[#E53935] to-[#EF5350]',
   discount,
 }: PromoBannerProps) {
   return (
@@ -32,7 +32,7 @@ export default function PromoBanner({
         <p className="text-white/80 text-sm max-md:text-xs mb-4 max-w-md">{subtitle}</p>
         <Link
           href={ctaHref}
-          className="inline-flex bg-white text-[#F26522] font-bold text-sm max-md:text-xs px-4 py-2 rounded-full hover:shadow-lg transition-all"
+          className="inline-flex bg-white text-[#E53935] font-bold text-sm max-md:text-xs px-4 py-2 rounded-full hover:shadow-lg transition-all"
         >
           {ctaLabel}
         </Link>
