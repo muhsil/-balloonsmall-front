@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { wooApi } from '@/lib/woocommerce';
+import { getStoreSettings } from '@/lib/store-settings';
 import ProductCard from '@/components/ui/ProductCard';
 import EmptyState from '@/components/ui/EmptyState';
 import CategoryIconPill from '@/components/ui/CategoryIconPill';
@@ -52,10 +53,12 @@ export default async function ShopPage({
   searchParams: Promise<{ search?: string; category?: string; featured?: string }>;
 }) {
   const searchParams = await searchParamsPromise;
-  const [products, categories] = await Promise.all([
+  const [products, categories, settings] = await Promise.all([
     getProducts(searchParams.search, searchParams.category),
     getCategories(),
+    getStoreSettings(),
   ]);
+  const { currency } = settings;
 
   const isFeatured = searchParams.featured === 'true';
   const displayProducts = isFeatured
@@ -138,6 +141,7 @@ export default async function ShopPage({
                 categoryName={p.categories?.[0]?.name}
                 onSale={p.on_sale}
                 featured={p.featured}
+                currency={currency}
               />
             ))}
           </div>

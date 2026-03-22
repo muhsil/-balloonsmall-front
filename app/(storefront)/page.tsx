@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { wooApi } from '@/lib/woocommerce';
+import { getStoreSettings } from '@/lib/store-settings';
 import ProductCard from '@/components/ui/ProductCard';
 import TrustBanner from '@/components/ui/TrustBanner';
 import CategoryIconPill from '@/components/ui/CategoryIconPill';
@@ -15,12 +16,14 @@ const CATEGORY_ICONS: Record<string, string> = {
   default: '🎈',
 };
 
-const PROMO_MESSAGES = [
-  'Free Delivery on orders over AED 100',
-  'Same-Day Delivery — Order before 2 PM',
-  'Premium Quality Balloons — Dubai #1 Balloon Store',
-  'Wide variety of balloon styles for every occasion!',
-];
+function getPromoMessages(currency: string) {
+  return [
+    `Free Delivery on orders over ${currency} 100`,
+    'Same-Day Delivery — Order before 2 PM',
+    'Premium Quality Balloons — Dubai #1 Balloon Store',
+    'Wide variety of balloon styles for every occasion!',
+  ];
+}
 
 async function getFeaturedProducts() {
   try {
@@ -50,11 +53,13 @@ async function getAllProducts() {
 }
 
 export default async function HomePage() {
-  const [featured, categories, allProducts] = await Promise.all([
+  const [featured, categories, allProducts, settings] = await Promise.all([
     getFeaturedProducts(),
     getCategories(),
     getAllProducts(),
+    getStoreSettings(),
   ]);
+  const { currency } = settings;
 
   const topCategories = categories.filter((c: any) => c.count > 0).slice(0, 8);
   const heroProducts = (featured.length > 0 ? featured : allProducts).filter(
@@ -63,8 +68,8 @@ export default async function HomePage() {
 
   return (
     <>
-      <PromoStrip messages={PROMO_MESSAGES} />
-      <TrustBanner />
+      <PromoStrip messages={getPromoMessages(currency)} />
+      <TrustBanner currency={currency} />
 
       {/* Hero Banner */}
       <section className="max-w-7xl mx-auto px-4 max-md:px-3 pt-4 max-md:pt-3">
@@ -105,7 +110,7 @@ export default async function HomePage() {
                     <img src={p.images[0].src} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-2">
                       <p className="text-white text-xs font-medium line-clamp-1">{p.name}</p>
-                      <p className="text-white/90 text-xs">AED {parseFloat(p.price || '0').toFixed(0)}</p>
+                      <p className="text-white/90 text-xs">{currency} {parseFloat(p.price || '0').toFixed(0)}</p>
                     </div>
                   </div>
                 </Link>
@@ -119,7 +124,7 @@ export default async function HomePage() {
                   <div className="w-[72px] h-[72px] rounded-lg overflow-hidden bg-white/10">
                     <img src={p.images[0].src} alt={p.name} className="w-full h-full object-cover" />
                   </div>
-                  <p className="text-white text-[9px] font-medium mt-1 text-center line-clamp-1">AED {parseFloat(p.price || '0').toFixed(0)}</p>
+                  <p className="text-white text-[9px] font-medium mt-1 text-center line-clamp-1">{currency} {parseFloat(p.price || '0').toFixed(0)}</p>
                 </Link>
               ))}
             </div>
@@ -159,6 +164,7 @@ export default async function HomePage() {
             products={featured.slice(0, 8)}
             icon="⚡"
             accentColor="#E53935"
+            currency={currency}
           >
             <CountdownTimer hours={12} />
           </DealSection>
@@ -184,6 +190,7 @@ export default async function HomePage() {
                 categoryName={p.categories?.[0]?.name}
                 onSale={p.on_sale}
                 featured={p.featured}
+                currency={currency}
               />
             ))}
           </div>

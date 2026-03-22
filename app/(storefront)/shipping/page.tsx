@@ -1,17 +1,20 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { getStoreSettings } from '@/lib/store-settings';
 
 export const metadata: Metadata = {
   title: 'Shipping & Delivery',
-  description: 'BalloonsMall shipping and delivery information. Same-day delivery across Dubai. Free shipping on orders over AED 100.',
+  description: 'BalloonsMall shipping and delivery information. Same-day delivery across Dubai. Free shipping on eligible orders.',
   alternates: { canonical: '/shipping' },
 };
 
-const DELIVERY_OPTIONS = [
-  { icon: '⚡', title: 'Same-Day Delivery', description: 'Order before 2:00 PM for same-day delivery across Dubai.', price: 'Free on orders over AED 100' },
-  { icon: '📦', title: 'Standard Delivery', description: 'Next-day delivery for orders placed after 2:00 PM.', price: 'Free on orders over AED 100' },
-  { icon: '🎯', title: 'Scheduled Delivery', description: 'Choose a specific date and time slot for your delivery.', price: 'Free on orders over AED 100' },
-];
+function getDeliveryOptions(currency: string) {
+  return [
+    { icon: '⚡', title: 'Same-Day Delivery', description: 'Order before 2:00 PM for same-day delivery across Dubai.', price: `Free on orders over ${currency} 100` },
+    { icon: '📦', title: 'Standard Delivery', description: 'Next-day delivery for orders placed after 2:00 PM.', price: `Free on orders over ${currency} 100` },
+    { icon: '🎯', title: 'Scheduled Delivery', description: 'Choose a specific date and time slot for your delivery.', price: `Free on orders over ${currency} 100` },
+  ];
+}
 
 const DELIVERY_AREAS = [
   'Downtown Dubai', 'Dubai Marina', 'JBR', 'Palm Jumeirah',
@@ -19,7 +22,10 @@ const DELIVERY_AREAS = [
   'Al Barsha', 'Arabian Ranches', 'Dubai Hills', 'Silicon Oasis',
 ];
 
-export default function ShippingPage() {
+export default async function ShippingPage() {
+  const settings = await getStoreSettings();
+  const { currency } = settings;
+
   return (
     <div className="max-w-4xl mx-auto px-4 max-md:px-3 py-8 max-md:py-5 max-md:pb-20">
       <nav className="flex items-center gap-2 text-xs text-[#999] mb-6">
@@ -32,7 +38,7 @@ export default function ShippingPage() {
 
       {/* Delivery Options */}
       <div className="space-y-3 mb-6">
-        {DELIVERY_OPTIONS.map((opt) => (
+        {getDeliveryOptions(currency).map((opt) => (
           <div key={opt.title} className="bg-white rounded-lg border border-[#f0f0f0] p-4 flex gap-3">
             <span className="text-2xl shrink-0">{opt.icon}</span>
             <div className="flex-1">

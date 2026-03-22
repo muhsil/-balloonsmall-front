@@ -11,6 +11,7 @@ interface ProductCardProps {
   onSale?: boolean;
   featured?: boolean;
   variant?: 'default' | 'compact';
+  currency?: string;
 }
 
 export default function ProductCard({
@@ -22,6 +23,7 @@ export default function ProductCard({
   onSale,
   featured,
   variant = 'default',
+  currency = 'AED',
 }: ProductCardProps) {
   const discount = onSale && regularPrice ? Math.round(((regularPrice - price) / regularPrice) * 100) : 0;
   const hash = slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
@@ -70,11 +72,11 @@ export default function ProductCard({
         {/* Price row */}
         <div className="flex items-baseline gap-1.5 mb-1">
           <span className="text-lg font-bold text-[#191919] max-md:text-base">
-            AED {price.toFixed(0)}
+            {currency} {price.toFixed(0)}
           </span>
           {onSale && regularPrice && (
             <span className="text-xs text-[#999] line-through">
-              AED {regularPrice.toFixed(0)}
+              {currency} {regularPrice.toFixed(0)}
             </span>
           )}
         </div>

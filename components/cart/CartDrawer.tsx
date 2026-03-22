@@ -3,6 +3,7 @@ import { useCartStore } from '@/store/useCartStore';
 import { toast } from '@/components/ui/Toast';
 import Link from 'next/link';
 import CartItemCard from '@/components/ui/CartItemCard';
+import { useStoreSettings } from '@/components/providers/StoreSettingsProvider';
 
 interface CartDrawerProps {
   open: boolean;
@@ -11,6 +12,7 @@ interface CartDrawerProps {
 
 export default function CartDrawer({ open, onClose }: CartDrawerProps) {
   const { items, removeFromCart, updateQuantity } = useCartStore();
+  const { currency } = useStoreSettings();
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
 
   const handleRemove = (id: number, name: string) => {
@@ -72,7 +74,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
           <div className="border-t border-[#f0f0f0] px-4 py-4 space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-[#666] text-sm font-medium">Subtotal</span>
-              <span className="text-xl font-bold text-[#E53935]">AED {subtotal.toFixed(0)}</span>
+              <span className="text-xl font-bold text-[#E53935]">{currency} {subtotal.toFixed(0)}</span>
             </div>
             <Link href="/checkout" onClick={onClose}
               className="btn-primary w-full justify-center py-3 text-sm rounded-lg">

@@ -17,6 +17,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import SectionCard from '@/components/ui/SectionCard';
 import PaymentMethodCard from '@/components/ui/PaymentMethodCard';
 import PriceDisplay from '@/components/ui/PriceDisplay';
+import { useStoreSettings } from '@/components/providers/StoreSettingsProvider';
 
 const CHECKOUT_DATA_KEY = 'balloonsmall-checkout';
 
@@ -46,6 +47,7 @@ function clearCheckoutData() {
 
 function CheckoutContent() {
   const { items, deliveryDate, deliveryTime, clearCart } = useCartStore();
+  const { currency } = useStoreSettings();
   const searchParams = useSearchParams();
 
   const [orderCreated, setOrderCreated] = useState(false);
@@ -267,7 +269,7 @@ function CheckoutContent() {
       <div className="md:hidden mobile-sticky-bottom">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-bold text-gray-400">Total</span>
-          <span className="text-lg font-extrabold text-[#E53935]">AED {subtotal.toFixed(0)}</span>
+          <span className="text-lg font-extrabold text-[#E53935]">{currency} {subtotal.toFixed(0)}</span>
         </div>
         <button
           onClick={handleCreateOrder}

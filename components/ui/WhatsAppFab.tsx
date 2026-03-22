@@ -3,17 +3,19 @@ import React from 'react';
 interface WhatsAppFabProps {
   productName?: string;
   price?: number;
-  phoneNumber?: string; // Default to the reference number from docs
+  phoneNumber?: string;
+  currency?: string;
 }
 
 export default function WhatsAppFab({ 
   productName = "Custom Balloon", 
   price = 0, 
-  phoneNumber = "971563554303" 
+  phoneNumber = "971563554303",
+  currency = "AED",
 }: WhatsAppFabProps) {
   
   const text = encodeURIComponent(
-    `Hello, I am interested in ordering the ${productName} for AED ${price}.`
+    `Hello, I am interested in ordering the ${productName} for ${currency} ${price}.`
   );
   
   const waUrl = `https://wa.me/${phoneNumber}?text=${text}`;

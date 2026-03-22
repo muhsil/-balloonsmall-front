@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getStoreSettings } from '@/lib/store-settings';
 
 const ZIINA_API_URL = 'https://api-v2.ziina.com/api';
 
@@ -14,7 +15,7 @@ export async function POST(req: Request) {
       },
       body: JSON.stringify({
         amount: Math.round(amount * 100), // Ziina expects amount in fils (base currency unit)
-        currency_code: 'AED',
+        currency_code: (await getStoreSettings()).currency,
         message: message || 'BalloonsMall Order',
         success_url: successUrl,
         cancel_url: cancelUrl,

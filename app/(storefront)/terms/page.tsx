@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { getStoreSettings } from '@/lib/store-settings';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions',
@@ -14,7 +15,7 @@ const SECTIONS = [
   },
   {
     title: '2. Products & Pricing',
-    content: 'All prices are listed in AED (UAE Dirhams) and include VAT where applicable. Prices are subject to change without notice. Product images are for illustration purposes and may vary slightly from the actual product.',
+    content: 'DYNAMIC_PRICING_TERMS',
   },
   {
     title: '3. Orders & Payment',
@@ -22,7 +23,7 @@ const SECTIONS = [
   },
   {
     title: '4. Delivery',
-    content: 'We deliver across Dubai. Same-day delivery is available for orders placed before 2:00 PM. Delivery times are estimates and may vary due to traffic, weather, or other factors beyond our control. Free delivery on orders over AED 100.',
+    content: 'DYNAMIC_DELIVERY_TERMS',
   },
   {
     title: '5. Returns & Refunds',
@@ -38,7 +39,19 @@ const SECTIONS = [
   },
 ];
 
-export default function TermsPage() {
+export default async function TermsPage() {
+  const settings = await getStoreSettings();
+  const { currency } = settings;
+
+  const resolvedSections = SECTIONS.map((section) => ({
+    ...section,
+    content: section.content === 'DYNAMIC_PRICING_TERMS'
+      ? `All prices are listed in ${currency} and include VAT where applicable. Prices are subject to change without notice. Product images are for illustration purposes and may vary slightly from the actual product.`
+      : section.content === 'DYNAMIC_DELIVERY_TERMS'
+        ? `We deliver across Dubai. Same-day delivery is available for orders placed before 2:00 PM. Delivery times are estimates and may vary due to traffic, weather, or other factors beyond our control. Free delivery on orders over ${currency} 100.`
+        : section.content,
+  }));
+
   return (
     <div className="max-w-4xl mx-auto px-4 max-md:px-3 py-8 max-md:py-5 max-md:pb-20">
       <nav className="flex items-center gap-2 text-xs text-[#999] mb-6">
@@ -50,7 +63,7 @@ export default function TermsPage() {
       <h1 className="text-2xl max-md:text-xl font-bold text-[#191919] mb-6">Terms &amp; Conditions</h1>
 
       <div className="bg-white rounded-lg border border-[#f0f0f0] divide-y divide-[#f0f0f0]">
-        {SECTIONS.map((section) => (
+        {resolvedSections.map((section) => (
           <div key={section.title} className="p-4">
             <h2 className="text-sm font-bold text-[#191919] mb-2">{section.title}</h2>
             <p className="text-sm text-[#666] leading-relaxed">{section.content}</p>

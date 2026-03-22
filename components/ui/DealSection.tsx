@@ -10,6 +10,7 @@ interface DealSectionProps {
   icon?: string;
   accentColor?: string;
   children?: React.ReactNode;
+  currency?: string;
 }
 
 export default function DealSection({
@@ -20,6 +21,7 @@ export default function DealSection({
   icon,
   accentColor = '#E53935',
   children,
+  currency = 'AED',
 }: DealSectionProps) {
   if (products.length === 0) return null;
 
@@ -54,6 +56,7 @@ export default function DealSection({
               onSale={p.on_sale}
               featured={p.featured}
               variant="compact"
+              currency={currency}
             />
           </div>
         ))}
