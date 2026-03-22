@@ -11,6 +11,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: 'Googlebot',
         allow: '/',
+        disallow: ['/api/', '/checkout'],
       },
     ],
     sitemap: 'https://balloonsmall.com/sitemap.xml',
