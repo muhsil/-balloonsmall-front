@@ -31,6 +31,11 @@ export async function POST(req: Request) {
       orderData.customer_note = body.customerNote;
     }
 
+    const ALLOWED_STATUSES = ['pending', 'processing'];
+    if (body.status && ALLOWED_STATUSES.includes(body.status)) {
+      orderData.status = body.status;
+    }
+
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wc/v3/orders`,
       orderData,

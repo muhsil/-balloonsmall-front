@@ -9,7 +9,14 @@ export async function GET(req: Request) {
     if (customerId) {
       // Fetch specific customer by ID (authenticated user)
       const response = await wooApi.get(`/customers/${customerId}`);
-      return NextResponse.json({ customer: response.data });
+      return NextResponse.json(
+        { customer: response.data },
+        {
+          headers: {
+            'Cache-Control': 'private, max-age=60, stale-while-revalidate=120',
+          },
+        }
+      );
     }
 
     // Fallback: get most recent customer

@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link';
 
 interface OrderCardProps {
   orderId: number;
@@ -25,7 +26,7 @@ export default function OrderCard({ orderId, date, status, total, currency, item
   const statusColor = STATUS_COLORS[status] || 'bg-gray-100 text-gray-600';
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-4 hover:shadow-sm transition-shadow">
+    <Link href={`/account/orders/${orderId}`} className="block bg-white rounded-xl border border-gray-100 p-4 hover:shadow-md hover:border-[#E53935]/20 transition-all cursor-pointer">
       <div className="flex items-center justify-between mb-3">
         <span className="font-bold text-[#191919] text-sm">#{orderId}</span>
         <span className={`text-xs font-semibold px-2 py-1 rounded-full capitalize ${statusColor}`}>
@@ -38,7 +39,8 @@ export default function OrderCard({ orderId, date, status, total, currency, item
       </div>
       <div className="mt-2 pt-2 border-t border-gray-50 flex items-center justify-between">
         <span className="text-sm font-bold text-[#191919]">{currency} {total}</span>
+        <span className="text-xs text-[#E53935] font-medium">View Details &rarr;</span>
       </div>
-    </div>
+    </Link>
   );
 }

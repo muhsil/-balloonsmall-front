@@ -6,9 +6,11 @@ interface PaymentButtonProps {
   onClick: () => void;
   disabled: boolean;
   isLoading: boolean;
+  label?: string;
+  loadingLabel?: string;
 }
 
-export default function PaymentButton({ onClick, disabled, isLoading }: PaymentButtonProps) {
+export default function PaymentButton({ onClick, disabled, isLoading, label = 'Continue to Payment 💳', loadingLabel = 'Preparing Payment...' }: PaymentButtonProps) {
   return (
     <div className="px-4">
       <button
@@ -37,10 +39,10 @@ export default function PaymentButton({ onClick, disabled, isLoading }: PaymentB
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               />
             </svg>
-            Preparing Payment...
+            {loadingLabel}
           </span>
         ) : (
-          'Continue to Payment 💳'
+          label
         )}
       </button>
       <p className="text-center text-xs text-gray-400 mt-6 font-medium">
