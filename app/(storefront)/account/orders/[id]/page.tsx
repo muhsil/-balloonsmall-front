@@ -57,14 +57,14 @@ interface OrderData {
   meta_data: OrderMeta[];
 }
 
-const STATUS_CONFIG: Record<string, { color: string; bg: string; icon: string; label: string }> = {
-  pending: { color: 'text-yellow-700', bg: 'bg-yellow-50 border-yellow-200', icon: '⏳', label: 'Pending Payment' },
-  processing: { color: 'text-blue-700', bg: 'bg-blue-50 border-blue-200', icon: '📦', label: 'Processing' },
-  'on-hold': { color: 'text-orange-700', bg: 'bg-orange-50 border-orange-200', icon: '⏸️', label: 'On Hold' },
-  completed: { color: 'text-green-700', bg: 'bg-green-50 border-green-200', icon: '✅', label: 'Completed' },
-  cancelled: { color: 'text-red-700', bg: 'bg-red-50 border-red-200', icon: '❌', label: 'Cancelled' },
-  refunded: { color: 'text-gray-600', bg: 'bg-gray-50 border-gray-200', icon: '💰', label: 'Refunded' },
-  failed: { color: 'text-red-700', bg: 'bg-red-50 border-red-200', icon: '⚠️', label: 'Failed' },
+const STATUS_CONFIG: Record<string, { color: string; bg: string; label: string }> = {
+  pending: { color: 'text-yellow-700', bg: 'bg-yellow-50 border-yellow-200', label: 'Pending Payment' },
+  processing: { color: 'text-blue-700', bg: 'bg-blue-50 border-blue-200', label: 'Processing' },
+  'on-hold': { color: 'text-orange-700', bg: 'bg-orange-50 border-orange-200', label: 'On Hold' },
+  completed: { color: 'text-green-700', bg: 'bg-green-50 border-green-200', label: 'Completed' },
+  cancelled: { color: 'text-red-700', bg: 'bg-red-50 border-red-200', label: 'Cancelled' },
+  refunded: { color: 'text-gray-600', bg: 'bg-gray-50 border-gray-200', label: 'Refunded' },
+  failed: { color: 'text-red-700', bg: 'bg-red-50 border-red-200', label: 'Failed' },
 };
 
 const STATUS_STEPS = ['pending', 'processing', 'completed'];
@@ -96,7 +96,7 @@ function StatusTimeline({ current }: { current: string }) {
                     : 'bg-white border-gray-200 text-gray-400'
                 } ${isCurrent ? 'ring-2 ring-[#E53935]/30' : ''}`}
               >
-                {isActive ? '✓' : idx + 1}
+                {isActive ? <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg> : idx + 1}
               </div>
               <span className={`text-[10px] mt-1 font-medium ${isActive ? 'text-[#191919]' : 'text-gray-400'}`}>
                 {stepLabels[step]}
@@ -178,7 +178,7 @@ export default function OrderDetailPage() {
         <div className={`rounded-xl border p-4 ${statusConfig.bg}`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-xl">{statusConfig.icon}</span>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
               <div>
                 <span className={`text-sm font-bold ${statusConfig.color}`}>{statusConfig.label}</span>
                 <p className="text-xs text-[#999] mt-0.5">
@@ -195,7 +195,7 @@ export default function OrderDetailPage() {
         {(deliveryDate || deliveryTime) && (
           <div className="bg-white rounded-xl border border-gray-100 p-4">
             <h3 className="text-sm font-bold text-[#191919] mb-2 flex items-center gap-2">
-              <span>📅</span> Delivery Schedule
+              <svg className="w-4 h-4 text-[#E53935]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> Delivery Schedule
             </h3>
             <div className="flex gap-4 text-sm text-[#666]">
               {deliveryDate && (
@@ -217,7 +217,7 @@ export default function OrderDetailPage() {
         {/* Line Items */}
         <div className="bg-white rounded-xl border border-gray-100 p-4">
           <h3 className="text-sm font-bold text-[#191919] mb-3 flex items-center gap-2">
-            <span>🛒</span> Items ({order.line_items.length})
+            <svg className="w-4 h-4 text-[#E53935]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" /></svg> Items ({order.line_items.length})
           </h3>
           <div className="divide-y divide-gray-50">
             {order.line_items.map((item) => (
@@ -226,7 +226,7 @@ export default function OrderDetailPage() {
                   {item.image?.src ? (
                     <img src={item.image.src} alt={item.name} className="w-full h-full object-cover" loading="lazy" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-xl text-gray-300">🎈</div>
+                    <div className="w-full h-full flex items-center justify-center text-gray-300"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-2.21 0-4 2.015-4 4.5S9.79 17 12 17s4-2.015 4-4.5S14.21 8 12 8zm0 0V3m0 14v4" /></svg></div>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -266,7 +266,7 @@ export default function OrderDetailPage() {
         {/* Shipping Address */}
         <div className="bg-white rounded-xl border border-gray-100 p-4">
           <h3 className="text-sm font-bold text-[#191919] mb-2 flex items-center gap-2">
-            <span>📦</span> Shipping Address
+            <svg className="w-4 h-4 text-[#E53935]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg> Shipping Address
           </h3>
           <div className="text-sm text-[#666] space-y-0.5">
             <p className="font-medium text-[#333]">{order.shipping.first_name} {order.shipping.last_name}</p>
@@ -279,7 +279,7 @@ export default function OrderDetailPage() {
         {/* Payment Info */}
         <div className="bg-white rounded-xl border border-gray-100 p-4">
           <h3 className="text-sm font-bold text-[#191919] mb-2 flex items-center gap-2">
-            <span>💳</span> Payment
+            <svg className="w-4 h-4 text-[#E53935]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Payment
           </h3>
           <div className="text-sm text-[#666] space-y-1">
             <div className="flex justify-between">
@@ -299,7 +299,7 @@ export default function OrderDetailPage() {
         {order.customer_note && (
           <div className="bg-white rounded-xl border border-gray-100 p-4">
             <h3 className="text-sm font-bold text-[#191919] mb-2 flex items-center gap-2">
-              <span>📝</span> Order Notes
+              <svg className="w-4 h-4 text-[#E53935]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg> Order Notes
             </h3>
             <p className="text-sm text-[#666]">{order.customer_note}</p>
           </div>

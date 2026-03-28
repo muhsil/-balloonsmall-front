@@ -27,7 +27,6 @@ export default function WishlistPage() {
     <AccountLayout title="My Wishlist">
       {items.length === 0 ? (
         <EmptyState
-          icon="❤️"
           title="Your wishlist is empty"
           message="Save items you love by tapping the heart icon on any product."
           actionLabel="Browse Products"
@@ -47,8 +46,8 @@ export default function WishlistPage() {
                       loading="lazy"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-4xl text-gray-300">
-                      🎈
+                    <div className="w-full h-full flex items-center justify-center text-gray-300">
+                      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M12 8c-2.21 0-4 2.015-4 4.5S9.79 17 12 17s4-2.015 4-4.5S14.21 8 12 8zm0 0V3m0 14v4" /></svg>
                     </div>
                   )}
                 </div>

@@ -20,9 +20,9 @@ export const metadata: Metadata = {
 };
 
 const CATEGORY_ICONS: Record<string, string> = {
-  birthday: '🎂', wedding: '💒', 'baby-shower': '👶',
-  events: '🎉', anniversary: '💝', graduation: '🎓',
-  default: '🎈',
+  birthday: 'birthday', wedding: 'wedding', 'baby-shower': 'baby-shower',
+  events: 'events', anniversary: 'anniversary', graduation: 'graduation',
+  default: 'all',
 };
 
 async function getProducts(search?: string, category?: string) {
@@ -96,7 +96,7 @@ export default async function ShopPage({
         {/* Category pills */}
         {topCategories.length > 0 && (
           <div className="flex gap-2 max-md:gap-1 overflow-x-auto no-scrollbar py-3">
-            <CategoryIconPill icon="🎈" label="All" href="/shop" active={!searchParams.category} />
+            <CategoryIconPill icon="all" label="All" href="/shop" active={!searchParams.category} />
             {topCategories.map((cat: any) => (
               <CategoryIconPill
                 key={cat.id}
@@ -122,7 +122,7 @@ export default async function ShopPage({
         {/* Product Grid */}
         {displayProducts.length === 0 ? (
           <EmptyState
-            icon="🎈"
+            icon="all"
             title={isFeatured ? 'No deals right now' : 'No balloons found'}
             description={isFeatured ? 'Check back soon for new deals.' : 'Try a different search or browse all categories.'}
             actionLabel="Browse All"

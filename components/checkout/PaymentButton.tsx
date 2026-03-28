@@ -10,7 +10,7 @@ interface PaymentButtonProps {
   loadingLabel?: string;
 }
 
-export default function PaymentButton({ onClick, disabled, isLoading, label = 'Continue to Payment 💳', loadingLabel = 'Preparing Payment...' }: PaymentButtonProps) {
+export default function PaymentButton({ onClick, disabled, isLoading, label = 'Place Order', loadingLabel = 'Preparing Payment...' }: PaymentButtonProps) {
   return (
     <div className="px-4">
       <button

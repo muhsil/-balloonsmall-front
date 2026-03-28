@@ -36,7 +36,7 @@ export default function BillingAddressForm({
   };
 
   return (
-    <SectionCard icon="🧾" title="Billing Address">
+    <SectionCard title="Billing Address">
       <label className="flex items-center gap-3 cursor-pointer mb-4">
         <input
           type="checkbox"

@@ -7,13 +7,22 @@ import { useState, useEffect, useRef } from 'react';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { ToastContainer } from '@/components/ui/Toast';
 
+const NAV_ICONS: Record<string, React.ReactNode> = {
+  all: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>,
+  birthday: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A1.75 1.75 0 003 15.546V12a2 2 0 012-2h14a2 2 0 012 2v3.546zM12 4v4m-4-2v2m8-2v2" /></svg>,
+  wedding: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>,
+  'baby-shower': <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+  events: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>,
+  graduation: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" /></svg>,
+};
+
 const NAV_LINKS = [
-  { href: '/shop', label: 'All', icon: '🎈' },
-  { href: '/shop?category=birthday', label: 'Birthday', icon: '🎂' },
-  { href: '/shop?category=wedding', label: 'Wedding', icon: '💒' },
-  { href: '/shop?category=baby-shower', label: 'Baby Shower', icon: '👶' },
-  { href: '/shop?category=events', label: 'Events', icon: '🎉' },
-  { href: '/shop?category=graduation', label: 'Graduation', icon: '🎓' },
+  { href: '/shop', label: 'All', key: 'all' },
+  { href: '/shop?category=birthday', label: 'Birthday', key: 'birthday' },
+  { href: '/shop?category=wedding', label: 'Wedding', key: 'wedding' },
+  { href: '/shop?category=baby-shower', label: 'Baby Shower', key: 'baby-shower' },
+  { href: '/shop?category=events', label: 'Events', key: 'events' },
+  { href: '/shop?category=graduation', label: 'Graduation', key: 'graduation' },
 ];
 
 export default function Navbar() {
@@ -48,9 +57,11 @@ export default function Navbar() {
       {/* Announcement Bar */}
       <div className="bg-gradient-to-r from-[#E53935] via-[#FF5252] to-[#E53935] text-white text-center text-[11px] font-medium py-1.5 px-4 tracking-wide">
         <span className="inline-flex items-center gap-1.5">
-          <span className="hidden sm:inline">🚚 Free Delivery on orders over AED 100</span>
+          <svg className="w-3.5 h-3.5 hidden sm:inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" /></svg>
+          <span className="hidden sm:inline">Free Delivery on orders over AED 100</span>
           <span className="hidden sm:inline mx-2 opacity-40">|</span>
-          <span>⚡ Same-Day Delivery — Order before 2 PM</span>
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+          <span>Same-Day Delivery — Order before 2 PM</span>
         </span>
       </div>
 
@@ -62,7 +73,7 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 shrink-0 group">
               <div className="w-9 h-9 bg-gradient-to-br from-[#E53935] to-[#FF6B6B] rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
-                <span className="text-white text-lg leading-none">🎈</span>
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-2.21 0-4 2.015-4 4.5S9.79 17 12 17s4-2.015 4-4.5S14.21 8 12 8zm0 0V3m0 14v4" /></svg>
               </div>
               <div className="flex flex-col">
                 <span className="font-extrabold text-[17px] text-[#1a1a1a] leading-tight tracking-tight">BalloonsMall</span>
@@ -156,7 +167,7 @@ export default function Navbar() {
                   href={link.href}
                   className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[#555] hover:text-[#E53935] hover:bg-white text-[13px] font-medium whitespace-nowrap transition-all border border-transparent hover:border-[#f0f0f0] hover:shadow-sm"
                 >
-                  <span className="text-sm">{link.icon}</span>
+                  <span className="text-[#888]">{NAV_ICONS[link.key]}</span>
                   {link.label}
                 </Link>
               ))}
@@ -185,7 +196,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#E53935] to-[#FF5252]">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-              <span className="text-white text-base">🎈</span>
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-2.21 0-4 2.015-4 4.5S9.79 17 12 17s4-2.015 4-4.5S14.21 8 12 8zm0 0V3m0 14v4" /></svg>
             </div>
             <span className="font-bold text-sm text-white">BalloonsMall</span>
           </div>
@@ -218,7 +229,7 @@ export default function Navbar() {
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#333] text-sm font-medium hover:bg-[#FFF5F5] hover:text-[#E53935] transition-all"
               onClick={() => setMenuOpen(false)}
             >
-              <span className="w-8 h-8 bg-[#f8f8f8] rounded-lg flex items-center justify-center text-base">{link.icon}</span>
+              <span className="w-8 h-8 bg-[#f8f8f8] rounded-lg flex items-center justify-center text-[#666]">{NAV_ICONS[link.key]}</span>
               {link.label}
             </Link>
           ))}
@@ -229,7 +240,7 @@ export default function Navbar() {
             onClick={() => { setMenuOpen(false); setCartOpen(true); }}
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#333] text-sm font-medium hover:bg-[#FFF5F5] hover:text-[#E53935] transition-all w-full text-left"
           >
-            <span className="w-8 h-8 bg-[#f8f8f8] rounded-lg flex items-center justify-center text-base">🛒</span>
+            <span className="w-8 h-8 bg-[#f8f8f8] rounded-lg flex items-center justify-center text-[#666]"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" /></svg></span>
             Cart
             {cartCount > 0 && (
               <span className="ml-auto bg-[#E53935] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -242,7 +253,7 @@ export default function Navbar() {
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#333] text-sm font-medium hover:bg-[#FFF5F5] hover:text-[#E53935] transition-all"
             onClick={() => setMenuOpen(false)}
           >
-            <span className="w-8 h-8 bg-[#f8f8f8] rounded-lg flex items-center justify-center text-base">❤️</span>
+            <span className="w-8 h-8 bg-[#f8f8f8] rounded-lg flex items-center justify-center text-[#666]"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg></span>
             Wishlist
             {wishlistCount > 0 && (
               <span className="ml-auto bg-[#E53935] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -255,7 +266,7 @@ export default function Navbar() {
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#333] text-sm font-medium hover:bg-[#FFF5F5] hover:text-[#E53935] transition-all"
             onClick={() => setMenuOpen(false)}
           >
-            <span className="w-8 h-8 bg-[#f8f8f8] rounded-lg flex items-center justify-center text-base">👤</span>
+            <span className="w-8 h-8 bg-[#f8f8f8] rounded-lg flex items-center justify-center text-[#666]"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></span>
             {isLoggedIn ? 'My Account' : 'Sign In'}
           </Link>
         </nav>
@@ -267,7 +278,7 @@ export default function Navbar() {
             className="btn-primary w-full text-center text-sm py-3 rounded-xl shadow-lg"
             onClick={() => setMenuOpen(false)}
           >
-            🎈 Shop Now
+            Shop Now
           </Link>
         </div>
       </div>
