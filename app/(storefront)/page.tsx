@@ -4,7 +4,6 @@ import { getStoreSettings } from '@/lib/store-settings';
 import ProductCard from '@/components/ui/ProductCard';
 import TrustBanner from '@/components/ui/TrustBanner';
 import CategoryIconPill from '@/components/ui/CategoryIconPill';
-import PromoStrip from '@/components/ui/PromoStrip';
 import DealSection from '@/components/ui/DealSection';
 import CountdownTimer from '@/components/ui/CountdownTimer';
 
@@ -15,15 +14,6 @@ const CATEGORY_ICONS: Record<string, string> = {
   events: '🎉', anniversary: '💝', graduation: '🎓',
   default: '🎈',
 };
-
-function getPromoMessages(currency: string) {
-  return [
-    `Free Delivery on orders over ${currency} 100`,
-    'Same-Day Delivery — Order before 2 PM',
-    'Premium Quality Balloons — Dubai #1 Balloon Store',
-    'Wide variety of balloon styles for every occasion!',
-  ];
-}
 
 async function getFeaturedProducts() {
   try {
@@ -68,7 +58,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <PromoStrip messages={getPromoMessages(currency)} />
       <TrustBanner currency={currency} />
 
       {/* Hero Banner */}
