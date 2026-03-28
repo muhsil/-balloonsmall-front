@@ -51,7 +51,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-[#FFEBEE] rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-3xl">🎈</span>
+            <svg className="w-8 h-8 text-[#E53935]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-2.21 0-4 2.015-4 4.5S9.79 17 12 17s4-2.015 4-4.5S14.21 8 12 8zm0 0V3m0 14v4" /></svg>
           </div>
           <h1 className="text-2xl font-bold text-[#191919]">Welcome Back</h1>
           <p className="text-sm text-[#666] mt-1">Sign in to your BalloonsMall account</p>

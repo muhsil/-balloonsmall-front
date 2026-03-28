@@ -15,8 +15,8 @@ export default function OrderSuccess({ deliveryDate, deliveryTime, customer }: O
       <div className="max-w-2xl w-full bg-white p-12 max-md:p-6 rounded-[2.5rem] max-md:rounded-2xl shadow-2xl shadow-violet-100 border border-violet-50 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-violet-400 via-pink-400 to-orange-400" />
 
-        <div className="w-24 h-24 max-md:w-16 max-md:h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8 max-md:mb-5 text-5xl max-md:text-3xl shadow-inner animate-in zoom-in-50 duration-500">
-          ✓
+        <div className="w-24 h-24 max-md:w-16 max-md:h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8 max-md:mb-5 shadow-inner animate-in zoom-in-50 duration-500">
+          <svg className="w-12 h-12 max-md:w-8 max-md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
         </div>
 
         <h1 className="text-4xl max-md:text-2xl font-black text-gray-900 mb-4 max-md:mb-3 tracking-tight">
@@ -48,7 +48,7 @@ export default function OrderSuccess({ deliveryDate, deliveryTime, customer }: O
         </div>
 
         <div className="mb-8 max-md:mb-5 p-6 max-md:p-4 bg-violet-50 rounded-2xl border border-violet-100 flex items-start gap-4 max-md:gap-3">
-          <span className="text-2xl">💡</span>
+          <span className="text-violet-500"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></span>
           <p className="text-sm text-violet-700 leading-relaxed font-medium">
             Need help with your order? Our team is available on WhatsApp to assist you with
             any questions you may have.
@@ -67,7 +67,7 @@ export default function OrderSuccess({ deliveryDate, deliveryTime, customer }: O
             rel="noopener noreferrer"
             className="px-8 py-4 bg-white text-violet-600 font-bold rounded-2xl border-2 border-violet-100 hover:bg-violet-50 transition-all text-center"
           >
-            Contact Support 💬
+            Contact Support
           </a>
         </div>
       </div>

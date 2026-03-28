@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import React from 'react';
 import { getStoreSettings } from '@/lib/store-settings';
 
 export const metadata: Metadata = {
@@ -8,11 +9,17 @@ export const metadata: Metadata = {
   alternates: { canonical: '/shipping' },
 };
 
+const DELIVERY_ICONS: Record<string, React.ReactNode> = {
+  'same-day': <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>,
+  standard: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>,
+  scheduled: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>,
+};
+
 function getDeliveryOptions(currency: string) {
   return [
-    { icon: '⚡', title: 'Same-Day Delivery', description: 'Order before 2:00 PM for same-day delivery across Dubai.', price: `Free on orders over ${currency} 100` },
-    { icon: '📦', title: 'Standard Delivery', description: 'Next-day delivery for orders placed after 2:00 PM.', price: `Free on orders over ${currency} 100` },
-    { icon: '🎯', title: 'Scheduled Delivery', description: 'Choose a specific date and time slot for your delivery.', price: `Free on orders over ${currency} 100` },
+    { key: 'same-day', title: 'Same-Day Delivery', description: 'Order before 2:00 PM for same-day delivery across Dubai.', price: `Free on orders over ${currency} 100` },
+    { key: 'standard', title: 'Standard Delivery', description: 'Next-day delivery for orders placed after 2:00 PM.', price: `Free on orders over ${currency} 100` },
+    { key: 'scheduled', title: 'Scheduled Delivery', description: 'Choose a specific date and time slot for your delivery.', price: `Free on orders over ${currency} 100` },
   ];
 }
 
@@ -40,7 +47,7 @@ export default async function ShippingPage() {
       <div className="space-y-3 mb-6">
         {getDeliveryOptions(currency).map((opt) => (
           <div key={opt.title} className="bg-white rounded-lg border border-[#f0f0f0] p-4 flex gap-3">
-            <span className="text-2xl shrink-0">{opt.icon}</span>
+            <span className="text-[#E53935] shrink-0">{DELIVERY_ICONS[opt.key]}</span>
             <div className="flex-1">
               <h2 className="text-sm font-bold text-[#191919]">{opt.title}</h2>
               <p className="text-xs text-[#666] mt-1">{opt.description}</p>

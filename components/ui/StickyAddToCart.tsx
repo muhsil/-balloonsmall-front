@@ -39,7 +39,7 @@ export default function StickyAddToCart({ productId, name, price, image }: Stick
               : 'bg-[#E53935] text-white hover:bg-[#C62828] active:scale-[0.98]'
           }`}
         >
-          {added ? '✓ Added!' : 'Add to Cart'}
+          {added ? (<span className="inline-flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg> Added!</span>) : 'Add to Cart'}
         </button>
       </div>
     </div>

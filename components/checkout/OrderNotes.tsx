@@ -11,7 +11,7 @@ interface OrderNotesProps {
 
 export default function OrderNotes({ value, onChange }: OrderNotesProps) {
   return (
-    <SectionCard icon="📝" title="Order Notes">
+    <SectionCard title="Order Notes">
       <TextArea
         label="Special Instructions"
         value={value}

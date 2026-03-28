@@ -38,8 +38,8 @@ export default function PromoBanner({
         </Link>
       </div>
       <div className="absolute top-0 right-0 w-32 h-full opacity-20">
-        <div className="absolute top-2 right-2 text-6xl">🎈</div>
-        <div className="absolute bottom-2 right-8 text-4xl">🎉</div>
+        <svg className="absolute top-4 right-4 w-14 h-14 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 8c-2.21 0-4 2.015-4 4.5S9.79 17 12 17s4-2.015 4-4.5S14.21 8 12 8zm0 0V3m0 14v4" /></svg>
+        <svg className="absolute bottom-4 right-10 w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
       </div>
     </div>
   );

@@ -18,9 +18,9 @@ export default function ShopSortBar({ currentSort, currentCategory, currentSearc
   return (
     <select onChange={handleSort} defaultValue={currentSort || 'date'}
       className="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm bg-white text-gray-700 focus:border-violet-400 outline-none cursor-pointer">
-      <option value="date">✨ Newest First</option>
-      <option value="price_asc">⬆️ Price: Low to High</option>
-      <option value="price_desc">⬇️ Price: High to Low</option>
+      <option value="date">Newest First</option>
+      <option value="price_asc">Price: Low to High</option>
+      <option value="price_desc">Price: High to Low</option>
     </select>
   );
 }

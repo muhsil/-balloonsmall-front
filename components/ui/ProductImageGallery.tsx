@@ -10,7 +10,7 @@ interface ProductImageGalleryProps {
   fallbackIcon?: string;
 }
 
-export default function ProductImageGallery({ images, name, discount, fallbackIcon = '🎈' }: ProductImageGalleryProps) {
+export default function ProductImageGallery({ images, name, discount }: ProductImageGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const hasImages = images && images.length > 0;
   const activeSrc = hasImages ? images[activeIndex]?.src : null;
@@ -22,7 +22,7 @@ export default function ProductImageGallery({ images, name, discount, fallbackIc
         {activeSrc ? (
           <img src={activeSrc} alt={name} className="w-full h-full object-cover" />
         ) : (
-          <span className="text-[100px] max-md:text-[70px]">{fallbackIcon}</span>
+          <svg className="w-24 h-24 max-md:w-16 max-md:h-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
         )}
         {discount !== undefined && discount > 0 && (
           <div className="absolute top-3 left-3 max-md:top-2 max-md:left-2">

@@ -3,17 +3,12 @@ import { wooApi } from '@/lib/woocommerce';
 import { getStoreSettings } from '@/lib/store-settings';
 import ProductCard from '@/components/ui/ProductCard';
 import TrustBanner from '@/components/ui/TrustBanner';
-import CategoryIconPill from '@/components/ui/CategoryIconPill';
+import CategorySlider from '@/components/ui/CategorySlider';
 import DealSection from '@/components/ui/DealSection';
 import CountdownTimer from '@/components/ui/CountdownTimer';
 
 export const revalidate = 60;
 
-const CATEGORY_ICONS: Record<string, string> = {
-  birthday: '🎂', wedding: '💒', 'baby-shower': '👶',
-  events: '🎉', anniversary: '💝', graduation: '🎓',
-  default: '🎈',
-};
 
 async function getFeaturedProducts() {
   try {
@@ -124,23 +119,7 @@ export default async function HomePage() {
       {/* Categories */}
       {topCategories.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 max-md:px-3 pt-4">
-          <div className="bg-white rounded-lg border border-[#f0f0f0] p-3">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-sm font-bold text-[#191919]">Categories</h2>
-              <Link href="/shop" className="text-xs text-[#999] hover:text-[#E53935]">See All &gt;</Link>
-            </div>
-            <div className="flex gap-3 max-md:gap-1 overflow-x-auto no-scrollbar">
-              <CategoryIconPill icon="🎈" label="All" href="/shop" />
-              {topCategories.map((cat: any) => (
-                <CategoryIconPill
-                  key={cat.id}
-                  icon={CATEGORY_ICONS[cat.slug] || CATEGORY_ICONS.default}
-                  label={cat.name}
-                  href={`/shop?category=${cat.slug}`}
-                />
-              ))}
-            </div>
-          </div>
+          <CategorySlider categories={topCategories} />
         </section>
       )}
 
@@ -151,7 +130,7 @@ export default async function HomePage() {
             title="SuperDeals"
             href="/shop?featured=true"
             products={featured.slice(0, 8)}
-            icon="⚡"
+            icon="deals"
             accentColor="#E53935"
             currency={currency}
           >

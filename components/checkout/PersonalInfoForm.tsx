@@ -29,7 +29,7 @@ export default function PersonalInfoForm({ customer, onChange }: PersonalInfoFor
   };
 
   return (
-    <SectionCard icon="👤" title="Shipping Information">
+    <SectionCard title="Shipping Information">
       {/* Name */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-md:gap-4 mb-6 max-md:mb-4">
         <FormField

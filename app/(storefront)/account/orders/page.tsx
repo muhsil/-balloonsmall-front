@@ -49,7 +49,6 @@ export default function OrdersPage() {
         </div>
       ) : orders.length === 0 ? (
         <EmptyState
-          icon="📦"
           title="No orders yet"
           message="When you place an order, it will appear here."
           actionLabel="Start Shopping"

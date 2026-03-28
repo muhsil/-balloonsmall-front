@@ -46,7 +46,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
         <div className="flex-1 overflow-y-auto px-4 py-3">
           {items.length === 0 ? (
             <div className="text-center py-16">
-              <div className="text-5xl mb-3">🎈</div>
+              <div className="mb-3 text-gray-300"><svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg></div>
               <p className="text-[#666] font-medium text-sm">Your cart is empty</p>
               <button onClick={onClose} className="mt-3 text-[#E53935] font-semibold text-sm hover:underline">
                 Continue Shopping
