@@ -122,7 +122,6 @@ export default async function ShopPage({
         {/* Product Grid */}
         {displayProducts.length === 0 ? (
           <EmptyState
-            icon="all"
             title={isFeatured ? 'No deals right now' : 'No balloons found'}
             description={isFeatured ? 'Check back soon for new deals.' : 'Try a different search or browse all categories.'}
             actionLabel="Browse All"
