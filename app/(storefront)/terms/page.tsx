@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getStoreSettings } from '@/lib/store-settings';
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions',
@@ -53,6 +54,11 @@ export default async function TermsPage() {
   }));
 
   return (
+    <>
+    <BreadcrumbJsonLd items={[
+      { name: 'Home', href: '/' },
+      { name: 'Terms & Conditions', href: '/terms' },
+    ]} />
     <div className="max-w-4xl mx-auto px-4 max-md:px-3 py-8 max-md:py-5 max-md:pb-20">
       <nav className="flex items-center gap-2 text-xs text-[#999] mb-6">
         <Link href="/" className="hover:text-[#E53935]">Home</Link>
@@ -73,5 +79,6 @@ export default async function TermsPage() {
 
       <p className="text-xs text-[#999] mt-4 text-center">Last updated: January 2025</p>
     </div>
+    </>
   );
 }

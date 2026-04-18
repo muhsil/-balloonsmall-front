@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
   title: 'About Us',
@@ -31,6 +32,11 @@ const VALUES = [
 
 export default function AboutPage() {
   return (
+    <>
+    <BreadcrumbJsonLd items={[
+      { name: 'Home', href: '/' },
+      { name: 'About Us', href: '/about' },
+    ]} />
     <div className="max-w-4xl mx-auto px-4 max-md:px-3 py-8 max-md:py-5 max-md:pb-20">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs text-[#999] mb-6">
@@ -81,5 +87,6 @@ export default function AboutPage() {
         <Link href="/shop" className="btn-primary text-sm">Shop Now</Link>
       </div>
     </div>
+    </>
   );
 }

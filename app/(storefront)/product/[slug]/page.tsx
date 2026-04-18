@@ -15,6 +15,20 @@ import ProductVariationPicker from '@/components/ui/ProductVariationPicker';
 import { ProductJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 export const revalidate = 60;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  try {
+    const { data: products } = await wooApi.get('/products', {
+      params: { per_page: 100, status: 'publish' },
+    });
+    return (products as any[]).map((product) => ({
+      slug: product.slug,
+    }));
+  } catch {
+    return [];
+  }
+}
 
 const HIGHLIGHT_ICONS: Record<string, React.ReactNode> = {
   'same-day': <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>,
@@ -72,7 +86,7 @@ export async function generateMetadata({ params: paramsPromise }: { params: Prom
       openGraph: {
         title: `${product.name} | BalloonsMall Dubai`,
         description: desc || `Buy ${product.name} from BalloonsMall Dubai.`,
-        type: 'website',
+        type: 'article',
         images: product.images?.[0]?.src ? [{ url: product.images[0].src, width: 800, height: 800, alt: product.name }] : [],
       },
     };

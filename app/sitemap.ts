@@ -1,62 +1,66 @@
 import { MetadataRoute } from 'next';
 import { wooApi } from '@/lib/woocommerce';
 
+export const revalidate = 3600;
+
 const SITE_URL = 'https://balloonsmall.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const now = new Date();
+
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
       url: `${SITE_URL}/shop`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'daily',
       priority: 0.9,
     },
     {
       url: `${SITE_URL}/about`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
       url: `${SITE_URL}/contact`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.6,
     },
     {
       url: `${SITE_URL}/faq`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
       url: `${SITE_URL}/shipping`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
       url: `${SITE_URL}/terms`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
       url: `${SITE_URL}/privacy`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'yearly',
       priority: 0.3,
     },
   ];
 
-  // Dynamic product pages
+  // Dynamic product pages with image sitemaps
   let productPages: MetadataRoute.Sitemap = [];
   try {
     const { data: products } = await wooApi.get('/products', {
@@ -67,6 +71,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(product.date_modified || product.date_created),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
+      images: (product.images as any[])
+        ?.map((img: any) => img.src)
+        .filter(Boolean),
     }));
   } catch {
     // If WooCommerce API fails, return only static pages
@@ -80,7 +87,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
     categoryPages = (categories as any[]).map((cat) => ({
       url: `${SITE_URL}/shop?category=${cat.slug}`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     }));
