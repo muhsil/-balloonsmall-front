@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
 import { getStoreSettings } from '@/lib/store-settings';
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
   title: 'Shipping & Delivery',
@@ -34,6 +35,11 @@ export default async function ShippingPage() {
   const { currency } = settings;
 
   return (
+    <>
+    <BreadcrumbJsonLd items={[
+      { name: 'Home', href: '/' },
+      { name: 'Shipping & Delivery', href: '/shipping' },
+    ]} />
     <div className="max-w-4xl mx-auto px-4 max-md:px-3 py-8 max-md:py-5 max-md:pb-20">
       <nav className="flex items-center gap-2 text-xs text-[#999] mb-6">
         <Link href="/" className="hover:text-[#E53935]">Home</Link>
@@ -83,5 +89,6 @@ export default async function ShippingPage() {
         </ul>
       </div>
     </div>
+    </>
   );
 }
