@@ -86,7 +86,7 @@ export async function generateMetadata({ params: paramsPromise }: { params: Prom
       openGraph: {
         title: `${product.name} | BalloonsMall Dubai`,
         description: desc || `Buy ${product.name} from BalloonsMall Dubai.`,
-        type: 'article',
+        type: 'website',
         images: product.images?.[0]?.src ? [{ url: product.images[0].src, width: 800, height: 800, alt: product.name }] : [],
       },
     };
